@@ -12,7 +12,7 @@
         android:title="Đơn hàng" />
 
     <item
-        android:id="@+id/nav_food"
+        android:id="@+id/nav_menu"
         android:icon="@drawable/ic_food"
         android:title="Món ăn" />
 
