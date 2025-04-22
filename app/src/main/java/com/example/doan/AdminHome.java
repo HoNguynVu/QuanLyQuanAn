@@ -33,6 +33,9 @@ public class AdminHome extends AppCompatActivity {
             if(item.getItemId()==R.id.nav_home){
                 selectedFragment = new HomeFragment();
             }
+            if(item.getItemId()==R.id.nav_orders){
+                selectedFragment = new OrdersFragment();
+            }
             if (item.getItemId()==R.id.nav_menu) {
                 selectedFragment = new MenuFragment();
             }
