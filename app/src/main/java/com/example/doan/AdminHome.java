@@ -24,13 +24,15 @@ public class AdminHome extends AppCompatActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragmentContainer, new MenuFragment())
+                    .replace(R.id.fragmentContainer, new HomeFragment())
                     .commit();
         }
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
             Fragment selectedFragment = null;
-
+            if(item.getItemId()==R.id.nav_home){
+                selectedFragment = new HomeFragment();
+            }
             if (item.getItemId()==R.id.nav_menu) {
                 selectedFragment = new MenuFragment();
             }
