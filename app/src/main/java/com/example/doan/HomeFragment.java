@@ -1,8 +1,14 @@
 package com.example.doan;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.BarData;
@@ -10,20 +16,21 @@ import com.github.mikephil.charting.data.BarDataSet;
 
 import java.util.ArrayList;
 
-public class AdminStatsActivity extends AppCompatActivity {
+public class HomeFragment extends Fragment {
 
     private TextView txtTotalOrders, txtTodayRevenue, txtMonthlyRevenue;
     private BarChart barChart;
 
+    public HomeFragment(){
+        super(R.layout.fragment_home);
+    }
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_stats);
-
-        txtTotalOrders = findViewById(R.id.txtTotalOrders);
-        txtTodayRevenue = findViewById(R.id.txtTodayRevenue);
-        txtMonthlyRevenue = findViewById(R.id.txtMonthlyRevenue);
-        barChart = findViewById(R.id.barChart);
+        txtTotalOrders = view.findViewById(R.id.txtTotalOrders);
+        txtTodayRevenue = view.findViewById(R.id.txtTodayRevenue);
+        txtMonthlyRevenue = view.findViewById(R.id.txtMonthlyRevenue);
+        barChart = view.findViewById(R.id.barChart);
 
         // Giả lập dữ liệu thống kê
         int totalOrders = 120; // Tổng đơn hàng
