@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.database.*;
 
 import java.util.ArrayList;
@@ -85,7 +86,12 @@ public class MenuFragment extends Fragment {
             holder.txtCategory.setText(item.getCategory());
             holder.txtPrice.setText(item.getPrice() + "đ");
 
-            Glide.with(context).load(item.getImageUrl()).into(holder.imgMenu);
+            Glide.with(context)
+                    .load(item.getImageUrl())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(R.drawable.loading_spinner)
+                    .error(R.drawable.error_image)
+                    .into(holder.imgMenu);
         }
 
         @Override
