@@ -1,6 +1,7 @@
 package com.example.doan;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,23 +37,40 @@ public class MenuFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         recyclerView = view.findViewById(R.id.recyclerViewMenu);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setHasFixedSize(true); // ✅ tăng hiệu năng hiển thị
+
         menuAdapter = new MenuAdapter(getContext(), itemList);
         recyclerView.setAdapter(menuAdapter);
 
         loadMenuFromFirebase();
+        view.findViewById(R.id.btnAddMenu).setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), AdminAddMenuItem.class);
+            startActivity(intent);
+        });
     }
 
     private void loadMenuFromFirebase() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("menu");
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 itemList.clear();
+                menuAdapter.notifyDataSetChanged();
+
                 for (DataSnapshot snap : snapshot.getChildren()) {
                     MenuItem item = snap.getValue(MenuItem.class);
-                    itemList.add(item);
+                    if (item != null) {
+                        itemList.add(item);
+                        menuAdapter.notifyItemInserted(itemList.size() - 1);
+
+                        // ✅ preload ảnh nếu cần
+                        Glide.with(requireContext())
+                                .load(item.getImageUrl())
+                                .diskCacheStrategy(DiskCacheStrategy.DATA)
+                                .preload();
+                    }
                 }
-                menuAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -64,8 +82,8 @@ public class MenuFragment extends Fragment {
 
     public static class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder> {
 
-        private List<MenuItem> itemList;
-        private Context context;
+        private final List<MenuItem> itemList;
+        private final Context context;
 
         public MenuAdapter(Context context, List<MenuItem> itemList) {
             this.context = context;
@@ -88,7 +106,9 @@ public class MenuFragment extends Fragment {
 
             Glide.with(context)
                     .load(item.getImageUrl())
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .override(100, 100) // kích thước cố định
+                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.DATA)
                     .placeholder(R.drawable.loading_spinner)
                     .error(R.drawable.error_image)
                     .into(holder.imgMenu);
