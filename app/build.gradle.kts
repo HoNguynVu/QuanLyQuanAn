@@ -39,6 +39,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation("androidx.activity:activity:1.6.1")
 
     // Unit Test
     testImplementation(libs.junit)
@@ -53,6 +54,7 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-database")
     implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation("com.google.firebase:firebase-storage")
 
 
     // Glide để load ảnh
@@ -62,5 +64,8 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.15.1")
     annotationProcessor("com.github.bumptech.glide:compiler:4.15.1")
     implementation ("androidx.cardview:cardview:1.0.0")
+
+    //imur
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
 }
