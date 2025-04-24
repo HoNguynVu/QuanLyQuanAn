@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -12,6 +15,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,12 +32,30 @@ public class MenuFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private MenuAdapter menuAdapter;
-    private List<MenuItem> itemList = new ArrayList<>();
+    private List<FoodItem> itemList = new ArrayList<>();
 
     public MenuFragment() {
         super(R.layout.fragment_menu);
     }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true); // Cho phép fragment tạo menu riêng
+    }
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.add_food, menu);
+    }
 
+
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_add) {
+            startActivity(new Intent(getContext(), AdminAddFoodItem.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         recyclerView = view.findViewById(R.id.recyclerViewMenu);
@@ -43,10 +66,7 @@ public class MenuFragment extends Fragment {
         recyclerView.setAdapter(menuAdapter);
 
         loadMenuFromFirebase();
-        view.findViewById(R.id.btnAddMenu).setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), AdminAddMenuItem.class);
-            startActivity(intent);
-        });
+
     }
 
     private void loadMenuFromFirebase() {
@@ -59,8 +79,9 @@ public class MenuFragment extends Fragment {
                 menuAdapter.notifyDataSetChanged();
 
                 for (DataSnapshot snap : snapshot.getChildren()) {
-                    MenuItem item = snap.getValue(MenuItem.class);
+                    FoodItem item = snap.getValue(FoodItem.class);
                     if (item != null) {
+                        item.setKey(snap.getKey()); // Lưu lại key Firebase của món
                         itemList.add(item);
                         menuAdapter.notifyItemInserted(itemList.size() - 1);
 
@@ -81,11 +102,10 @@ public class MenuFragment extends Fragment {
     }
 
     public static class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder> {
-
-        private final List<MenuItem> itemList;
+        private final List<FoodItem> itemList;
         private final Context context;
 
-        public MenuAdapter(Context context, List<MenuItem> itemList) {
+        public MenuAdapter(Context context, List<FoodItem> itemList) {
             this.context = context;
             this.itemList = itemList;
         }
@@ -94,12 +114,13 @@ public class MenuFragment extends Fragment {
         @Override
         public MenuViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(context).inflate(R.layout.item_menu, parent, false);
+
             return new MenuViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(@NonNull MenuViewHolder holder, int position) {
-            MenuItem item = itemList.get(position);
+            FoodItem item = itemList.get(position);
             holder.txtName.setText(item.getName());
             holder.txtCategory.setText(item.getCategory());
             holder.txtPrice.setText(item.getPrice() + "đ");
@@ -112,6 +133,42 @@ public class MenuFragment extends Fragment {
                     .placeholder(R.drawable.loading_spinner)
                     .error(R.drawable.error_image)
                     .into(holder.imgMenu);
+
+            holder.btnDelete.setOnClickListener(v -> {
+                new AlertDialog.Builder(context)
+                        .setTitle("Xác nhận xoá")
+                        .setMessage("Bạn có chắc chắn muốn xoá món \"" + item.getName() + "\" không?")
+                        .setPositiveButton("Xoá", (dialog, which) -> {
+                            if (item.getKey() != null) {
+                                FirebaseDatabase.getInstance()
+                                        .getReference("menu")
+                                        .child(item.getKey())
+                                        .removeValue()
+                                        .addOnSuccessListener(aVoid -> {
+                                            int position1 = holder.getAdapterPosition();
+                                            if (position1 != RecyclerView.NO_POSITION) {
+
+                                                Toast.makeText(context, "Đã xoá món", Toast.LENGTH_SHORT).show();
+                                            }
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Toast.makeText(context, "Lỗi khi xoá: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        });
+                            }
+                        })
+                        .setNegativeButton("Huỷ", null)
+                        .show();
+            });
+
+            holder.btnEdit.setOnClickListener(v -> {
+                Intent intent = new Intent(context, AdminEditFoodItem.class);
+                intent.putExtra("name", item.getName());
+                intent.putExtra("category", item.getCategory());
+                intent.putExtra("price", item.getPrice());
+                intent.putExtra("imageUrl", item.getImageUrl());
+                intent.putExtra("key", item.getKey());
+                context.startActivity(intent);
+            });
         }
 
         @Override
@@ -122,13 +179,15 @@ public class MenuFragment extends Fragment {
         static class MenuViewHolder extends RecyclerView.ViewHolder {
             TextView txtName, txtCategory, txtPrice;
             ImageView imgMenu;
-
+            AppCompatButton btnEdit, btnDelete;
             public MenuViewHolder(@NonNull View itemView) {
                 super(itemView);
                 txtName = itemView.findViewById(R.id.txtName);
                 txtCategory = itemView.findViewById(R.id.txtCategory);
                 txtPrice = itemView.findViewById(R.id.txtPrice);
                 imgMenu = itemView.findViewById(R.id.imgMenu);
+                btnDelete = itemView.findViewById(R.id.btnDelete);
+                btnEdit = itemView.findViewById(R.id.btnEdit);
             }
         }
     }

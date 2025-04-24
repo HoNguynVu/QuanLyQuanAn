@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
@@ -15,18 +16,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_centerInParent="true">
+            android:layout_centerInParent="true"
+            tools:ignore="ExtraText">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Thêm món mới"
+                android:text="Chỉnh sửa chi tiết món ăn"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="16dp" />
 
             <EditText
-                android:id="@+id/edtName"
+                android:id="@+id/editName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Tên món"
@@ -35,7 +37,7 @@
                 android:layout_marginBottom="12dp" />
 
             <EditText
-                android:id="@+id/edtCategory"
+                android:id="@+id/editCategory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Loại món"
@@ -44,7 +46,7 @@
                 android:layout_marginBottom="12dp" />
 
             <EditText
-                android:id="@+id/edtPrice"
+                android:id="@+id/editPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Giá món (đ)"
@@ -54,14 +56,14 @@
                 android:layout_marginBottom="12dp" />
 
             <Button
-                android:id="@+id/btnChooseImage"
+                android:id="@+id/btnEditChooseImage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Chọn ảnh"
                 android:layout_marginBottom="12dp" />
 
             <ImageView
-                android:id="@+id/imgPreview"
+                android:id="@+id/EditimgPreview"
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:scaleType="centerCrop"
@@ -69,16 +71,25 @@
                 android:layout_marginBottom="16dp" />
 
             <Button
-                android:id="@+id/btnSubmit"
+                android:id="@+id/btnEditSubmit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Lưu món ăn"
                 android:background="@drawable/button_item_menu"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="8dp" />
+
+            <Button
+                android:id="@+id/btnEditCancel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Huỷ bỏ"
+                android:backgroundTint="#FF0000"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
         <ProgressBar
-            android:id="@+id/progressBar"
+            android:id="@+id/EditprogressBar"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_centerInParent="true"
