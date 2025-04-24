@@ -64,6 +64,9 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.15.1")
     annotationProcessor("com.github.bumptech.glide:compiler:4.15.1")
     implementation ("androidx.cardview:cardview:1.0.0")
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.16.0") // Dùng nếu bạn cần GlideApp
+
 
     //imur
     implementation("com.squareup.okhttp3:okhttp:4.12.0")

@@ -1,7 +1,6 @@
 package com.example.doan;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -34,7 +33,6 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.UUID;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -44,7 +42,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class AdminAddMenuItem extends AppCompatActivity {
+public class AdminAddFoodItem extends AppCompatActivity {
     private static final int REQUEST_PERMISSION_CODE = 101;
     private static final String IMGUR_CLIENT_ID = "8fefa7405406b7b";
 
@@ -69,8 +67,10 @@ public class AdminAddMenuItem extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
 
+
+
         btnChooseImage.setOnClickListener(v -> checkPermissionAndChooseImage());
-        btnSubmit.setOnClickListener(v -> uploadMenuItem());
+        btnSubmit.setOnClickListener(v -> uploadFoodItem());
 
         imagePickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -120,7 +120,7 @@ public class AdminAddMenuItem extends AppCompatActivity {
         imagePickerLauncher.launch(Intent.createChooser(intent, "Chọn ảnh"));
     }
 
-    private void uploadMenuItem() //check và upload
+    private void uploadFoodItem() //check và upload
     {
         String name = edtName.getText().toString().trim();
         String category = edtCategory.getText().toString().trim();
@@ -142,7 +142,7 @@ public class AdminAddMenuItem extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         //gọi  upload ảnh lên imur
         uploadImageToImgur(imageUri, imageUrl -> {
-            MenuItem item = new MenuItem(name, price, category, imageUrl, true);
+            FoodItem item = new FoodItem(name, price, category, imageUrl, true);
             DatabaseReference menuRef = FirebaseDatabase.getInstance().getReference("menu"); //thêm menu vào firebase
             String key = menuRef.push().getKey();
             if (key != null) {
@@ -156,53 +156,70 @@ public class AdminAddMenuItem extends AppCompatActivity {
     }
 
     private void uploadImageToImgur(Uri uri, OnSuccessListener<String> onSuccess) {
-        try {
-            InputStream inputStream = getContentResolver().openInputStream(uri);
-            byte[] imageBytes = new byte[inputStream.available()];
-            inputStream.read(imageBytes);
-            String base64Image = Base64.encodeToString(imageBytes, Base64.DEFAULT); //chuyển ảnh thành base64
+        new Thread(() -> {
+            try {
+                // B1: Đọc ảnh từ URI mà người dùng đã chọn
+                Bitmap originalBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
 
-            OkHttpClient client = new OkHttpClient();
-            RequestBody body = new FormBody.Builder()
-                    .add("image", base64Image)
-                    .build();
+                // B2: Resize ảnh về kích thước tối ưu để upload (800x800)
+                Bitmap resizedBitmap = Bitmap.createScaledBitmap(originalBitmap, 800, 800, true);
 
-            Request request = new Request.Builder()     //gửi ảnh qua POST tới Imur qua link client
-                    .url("https://api.imgur.com/3/image")
-                    .header("Authorization", "Client-ID " + IMGUR_CLIENT_ID)
-                    .post(body)
-                    .build();
+                // B3: Nén ảnh lại với chất lượng 70% để giảm dung lượng
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 70, outputStream);
 
-            client.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                    runOnUiThread(() -> {
-                        progressBar.setVisibility(View.GONE);
-                        Toast.makeText(getApplicationContext(), "Upload ảnh thất bại", Toast.LENGTH_SHORT).show();
-                    });
-                }
+                // B4: Chuyển ảnh sang định dạng base64 để gửi đi bằng HTTP
+                byte[] imageBytes = outputStream.toByteArray();
+                String base64Image = Base64.encodeToString(imageBytes, Base64.NO_WRAP);
 
-                @Override
-                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                    if (response.isSuccessful()) {
-                        try {
-                            JSONObject json = new JSONObject(response.body().string());
-                            String imageUrl = json.getJSONObject("data").getString("link"); //lấy url ảnh từ json
+                // B5: Tạo request gửi ảnh base64 đến Imgur bằng OkHttp
+                OkHttpClient client = new OkHttpClient();
+                RequestBody body = new FormBody.Builder()
+                        .add("image", base64Image)
+                        .build();
 
-                            runOnUiThread(() -> onSuccess.onSuccess(imageUrl));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    } else {
+                Request request = new Request.Builder()
+                        .url("https://api.imgur.com/3/image")
+                        .header("Authorization", "Client-ID " + IMGUR_CLIENT_ID)
+                        .post(body)
+                        .build();
+
+                runOnUiThread(() -> progressBar.setProgress(10));
+
+                // B6: Gửi request bất đồng bộ và xử lý kết quả trả về từ Imgur
+                client.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(@NonNull Call call, @NonNull IOException e) {
                         runOnUiThread(() -> {
                             progressBar.setVisibility(View.GONE);
-                            Toast.makeText(getApplicationContext(), "Upload ảnh lỗi", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Upload ảnh thất bại", Toast.LENGTH_SHORT).show();
                         });
                     }
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+                    @Override
+                    public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                        if (response.isSuccessful()) {
+                            try {
+                                // B7: Trích xuất đường dẫn ảnh từ JSON trả về của Imgur
+                                JSONObject json = new JSONObject(response.body().string());
+                                String imageUrl = json.getJSONObject("data").getString("link");
+
+                                // B8: Gọi callback sau khi upload thành công
+                                runOnUiThread(() -> onSuccess.onSuccess(imageUrl));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            runOnUiThread(() -> {
+                                progressBar.setVisibility(View.GONE);
+                                Toast.makeText(getApplicationContext(), "Upload ảnh lỗi", Toast.LENGTH_SHORT).show();
+                            });
+                        }
+                    }
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 }
