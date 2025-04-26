@@ -10,10 +10,12 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -49,7 +51,8 @@ public class AdminEditFoodItem extends AppCompatActivity {
     private static final String IMGUR_CLIENT_ID = "8fefa7405406b7b";
 
     private ActivityResultLauncher<Intent> imagePickerLauncher;
-    private EditText edtName, edtPrice, edtCategory;
+    private EditText edtName, edtPrice;
+    private Spinner spinnerCategory;
     private ImageView imgPreview;
     private Button btnChooseImage, btnSubmit, btnCancel;
     private ProgressBar progressBar;
@@ -63,7 +66,7 @@ public class AdminEditFoodItem extends AppCompatActivity {
 
         edtName = findViewById(R.id.editName);
         edtPrice = findViewById(R.id.editPrice);
-        edtCategory = findViewById(R.id.editCategory);
+        spinnerCategory = findViewById(R.id.spinnerEditCategory);
         imgPreview = findViewById(R.id.EditimgPreview);
         btnChooseImage = findViewById(R.id.btnEditChooseImage);
         btnSubmit = findViewById(R.id.btnEditSubmit);
@@ -73,9 +76,27 @@ public class AdminEditFoodItem extends AppCompatActivity {
 
         key = getIntent().getStringExtra("key");
         edtName.setText(getIntent().getStringExtra("name"));
-        edtCategory.setText(getIntent().getStringExtra("category"));
         edtPrice.setText(String.valueOf(getIntent().getIntExtra("price", 0)));
         currentImageUrl = getIntent().getStringExtra("imageUrl");
+
+        String[] categories = {"Khai vị", "Món chính", "Tráng miệng", "Thức uống"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this, R.layout.spinner_item, categories
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCategory.setAdapter(adapter);
+
+// Set spinner đúng theo category được truyền
+        String categoryFromIntent = getIntent().getStringExtra("category");
+        if (categoryFromIntent != null) {
+            for (int i = 0; i < categories.length; i++) {
+                if (categories[i].equalsIgnoreCase(categoryFromIntent)) {
+                    spinnerCategory.setSelection(i); // chọn đúng loại món
+                    break;
+                }
+            }
+        }
+
 
         Glide.with(this).load(currentImageUrl).into(imgPreview);
 
@@ -130,7 +151,7 @@ public class AdminEditFoodItem extends AppCompatActivity {
 
     private void uploadFoodItem() {
         String name = edtName.getText().toString().trim();
-        String category = edtCategory.getText().toString().trim();
+        String category = spinnerCategory.getSelectedItem().toString().trim();
         String priceStr = edtPrice.getText().toString().trim();
 
         if (name.isEmpty() || category.isEmpty() || priceStr.isEmpty()) {
