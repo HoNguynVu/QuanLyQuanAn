@@ -25,6 +25,7 @@
         </activity>
         <activity android:name=".AdminAddFoodItem"/>
         <activity android:name=".AdminEditFoodItem"/>
+
     </application>
 
 </manifest>

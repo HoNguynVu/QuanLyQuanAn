@@ -4,16 +4,21 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -47,7 +52,9 @@ public class AdminAddFoodItem extends AppCompatActivity {
     private static final String IMGUR_CLIENT_ID = "8fefa7405406b7b";
 
     private ActivityResultLauncher<Intent> imagePickerLauncher;
-    private EditText edtName, edtPrice, edtCategory;
+    private EditText edtName, edtPrice;
+    private Spinner spinnerCategory;
+
     private ImageView imgPreview;
     private Button btnChooseImage, btnSubmit;
     private ProgressBar progressBar;
@@ -60,14 +67,22 @@ public class AdminAddFoodItem extends AppCompatActivity {
 
         edtName = findViewById(R.id.edtName);
         edtPrice = findViewById(R.id.edtPrice);
-        edtCategory = findViewById(R.id.edtCategory);
+        spinnerCategory=findViewById(R.id.spinnerCategory);
         imgPreview = findViewById(R.id.imgPreview);
         btnChooseImage = findViewById(R.id.btnChooseImage);
         btnSubmit = findViewById(R.id.btnSubmit);
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
 
-
+        // Tạo danh sách các loại món
+        String[] categories = {"Khai vị", "Món chính", "Tráng miệng", "Thức uống"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this,
+                R.layout.spinner_item,   // 👈 dùng layout custom
+                categories
+        );
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        spinnerCategory.setAdapter(adapter);
 
         btnChooseImage.setOnClickListener(v -> checkPermissionAndChooseImage());
         btnSubmit.setOnClickListener(v -> uploadFoodItem());
@@ -123,7 +138,7 @@ public class AdminAddFoodItem extends AppCompatActivity {
     private void uploadFoodItem() //check và upload
     {
         String name = edtName.getText().toString().trim();
-        String category = edtCategory.getText().toString().trim();
+        String category = spinnerCategory.getSelectedItem().toString().trim();
         String priceStr = edtPrice.getText().toString().trim();
 
         if (name.isEmpty() || category.isEmpty() || priceStr.isEmpty() || imageUri == null) {
