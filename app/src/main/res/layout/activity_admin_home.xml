@@ -21,6 +21,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+
+
+
+
+
+
+
     <FrameLayout
         android:id="@+id/fragmentContainer"
         android:layout_width="0dp"
