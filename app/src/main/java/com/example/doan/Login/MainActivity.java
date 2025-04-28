@@ -1,18 +1,14 @@
-package com.example.doan;
+package com.example.doan.Login;
 
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
-import androidx.navigation.NavHostController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.doan.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Objects;

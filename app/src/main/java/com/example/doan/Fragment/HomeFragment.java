@@ -47,15 +47,10 @@ public class HomeFragment extends Fragment {
         imageList.add(new SlideModel(R.drawable.banner3, ScaleTypes.FIT));
 
         var imageSlider = binding.imageSlider;
-        imageSlider.setImageList(imageList);
         imageSlider.setImageList(imageList, ScaleTypes.FIT);
 
 
         imageSlider.setItemClickListener(new ItemClickListener() {
-            @Override
-            public void doubleClick(int i) {
-
-            }
 
             @Override
             public void onItemSelected(int position) {
