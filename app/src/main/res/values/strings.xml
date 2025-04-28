@@ -7,4 +7,5 @@
     <string name="item_name">Item name</string>
     <string name="price">Price</string>
     <string name="add">Add</string>
+    <string name="food">Food</string>
 </resources>
