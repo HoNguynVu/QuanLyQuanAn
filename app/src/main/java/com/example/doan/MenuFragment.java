@@ -1,76 +1,115 @@
 package com.example.doan;
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.firebase.database.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MenuFragment extends Fragment {
 
-    private CardView cardKhaiVi, cardMonChinh, cardTrangMieng, cardThucUong;
+    private RecyclerView recyclerView;
+    private MenuAdapter menuAdapter;
+    private List<MenuItem> itemList = new ArrayList<>();
 
     public MenuFragment() {
-        super(R.layout.fragment_menu); // Dùng fragment_menu.xml
+        super(R.layout.fragment_menu);
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true); // Cho phép fragment tạo menu riêng
-    }
-
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.add_food, menu);
-    }
-
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_add) {
-            startActivity(new Intent(getContext(), AdminAddFoodItem.class));
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        recyclerView = view.findViewById(R.id.recyclerViewMenu);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        menuAdapter = new MenuAdapter(getContext(), itemList);
+        recyclerView.setAdapter(menuAdapter);
 
-        // Gán CardView
-        cardKhaiVi = view.findViewById(R.id.cardKhaiVi);
-        cardMonChinh = view.findViewById(R.id.cardMonChinh);
-        cardTrangMieng = view.findViewById(R.id.cardTrangMieng);
-        cardThucUong = view.findViewById(R.id.cardThucUong);
-
-        // Set OnClickListener cho từng CardView
-        cardKhaiVi.setOnClickListener(v -> openCategory("Khai vị"));
-        cardMonChinh.setOnClickListener(v -> openCategory("Món chính"));
-        cardTrangMieng.setOnClickListener(v -> openCategory("Tráng miệng"));
-        cardThucUong.setOnClickListener(v -> openCategory("Thức uống"));
+        loadMenuFromFirebase();
     }
 
-    private void openCategory(String categoryName) {
-        if (getActivity() != null) { // an toàn
-            FoodByCategory fragment = new FoodByCategory();
-            Bundle bundle = new Bundle();
-            bundle.putString("category", categoryName);
-            fragment.setArguments(bundle);
+    private void loadMenuFromFirebase() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("menu");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                itemList.clear();
+                for (DataSnapshot snap : snapshot.getChildren()) {
+                    MenuItem item = snap.getValue(MenuItem.class);
+                    itemList.add(item);
+                }
+                menuAdapter.notifyDataSetChanged();
+            }
 
-            getActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragmentContainer, fragment)
-                    .addToBackStack(null)
-                    .commit();
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(), "Lỗi tải menu", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public static class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder> {
+
+        private List<MenuItem> itemList;
+        private Context context;
+
+        public MenuAdapter(Context context, List<MenuItem> itemList) {
+            this.context = context;
+            this.itemList = itemList;
+        }
+
+        @NonNull
+        @Override
+        public MenuViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(context).inflate(R.layout.item_menu, parent, false);
+            return new MenuViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull MenuViewHolder holder, int position) {
+            MenuItem item = itemList.get(position);
+            holder.txtName.setText(item.getName());
+            holder.txtCategory.setText(item.getCategory());
+            holder.txtPrice.setText(item.getPrice() + "đ");
+
+            Glide.with(context)
+                    .load(item.getImageUrl())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(R.drawable.loading_spinner)
+                    .error(R.drawable.error_image)
+                    .into(holder.imgMenu);
+        }
+
+        @Override
+        public int getItemCount() {
+            return itemList.size();
+        }
+
+        static class MenuViewHolder extends RecyclerView.ViewHolder {
+            TextView txtName, txtCategory, txtPrice;
+            ImageView imgMenu;
+
+            public MenuViewHolder(@NonNull View itemView) {
+                super(itemView);
+                txtName = itemView.findViewById(R.id.txtName);
+                txtCategory = itemView.findViewById(R.id.txtCategory);
+                txtPrice = itemView.findViewById(R.id.txtPrice);
+                imgMenu = itemView.findViewById(R.id.imgMenu);
+            }
         }
     }
 }
