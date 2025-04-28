@@ -9,7 +9,8 @@
     android:paddingTop="20dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
-    tools:context=".MainActivity">
+    android:background="@color/white"
+    tools:context=".Login.MainActivity">
 
     <TextView
         android:id="@+id/title"
@@ -28,6 +29,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/bottom_navigation"
+        android:background="@color/white"
+        app:itemIconTint="@color/black"
+        app:itemTextColor="@color/black"
         app:menu="@menu/menu"
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -44,7 +48,6 @@
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@color/black"
         app:navGraph="@navigation/navigation"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintTop_toBottomOf="@+id/title"
