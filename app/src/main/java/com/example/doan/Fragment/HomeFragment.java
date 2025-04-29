@@ -25,16 +25,15 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
 
-    RecyclerView recyclerView;
-    List<String> titles;
-    List<String> prices;
-    List<Integer> images;
-    PopularItemAdapter adapter;
+    private RecyclerView recyclerView;
+    private List<String> titles;
+    private List<String> prices;
+    private List<Integer> images;
+    private PopularItemAdapter adapter;
     private FragmentHomeBinding binding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
     }
 
@@ -61,6 +60,7 @@ public class HomeFragment extends Fragment {
         images.add(R.drawable.kale_soup);
         images.add(R.drawable.mashroom_soup);
     }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -69,10 +69,11 @@ public class HomeFragment extends Fragment {
         addAllTitles();
         addAllPrices();
         addAllImages();
-        adapter = new PopularItemAdapter(requireContext(), titles, prices, images, getActivity());
 
+        adapter = new PopularItemAdapter(requireContext(), titles, prices, images, getActivity());
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+
         return binding.getRoot();
     }
 
@@ -80,24 +81,19 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        var imageList = new ArrayList<SlideModel>();
+        ArrayList<SlideModel> imageList = new ArrayList<>();
         imageList.add(new SlideModel(R.drawable.banner1, ScaleTypes.FIT));
         imageList.add(new SlideModel(R.drawable.banner2, ScaleTypes.FIT));
         imageList.add(new SlideModel(R.drawable.banner3, ScaleTypes.FIT));
 
-        var imageSlider = binding.imageSlider;
-        imageSlider.setImageList(imageList, ScaleTypes.FIT);
+        binding.imageSlider.setImageList(imageList, ScaleTypes.FIT);
 
-
-        imageSlider.setItemClickListener(new ItemClickListener() {
-
+        binding.imageSlider.setItemClickListener(new ItemClickListener() {
             @Override
             public void onItemSelected(int position) {
-                // xử lý gì đó với item
                 String itemMessage = "Selected image " + (position + 1);
                 Toast.makeText(requireContext(), itemMessage, Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 }
