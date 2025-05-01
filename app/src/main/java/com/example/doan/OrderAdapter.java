@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.List;
+import java.text.DecimalFormat;
 
 import androidx.annotation.NonNull;
 
@@ -47,7 +48,7 @@ public class OrderAdapter extends ArrayAdapter<Order> {
         tvId.setText("Mã đơn: " + order.id);
         tvCustomer.setText("Tên khách: " + order.customerName);
         tvTime.setText("Thời gian: " + order.orderTime);
-        tvAmount.setText("Tổng tiền: " + order.totalAmount + "đ");
+        tvAmount.setText("Tổng tiền: " + formatCurrency(order.totalAmount) + " VND");
         tvStatus.setText("Trạng thái: " + order.status);
 
         // Cập nhật trạng thái đơn hàng khi nhấn nút
@@ -58,6 +59,20 @@ public class OrderAdapter extends ArrayAdapter<Order> {
                     .setItems(statuses, (dialog, which) -> {
                         order.status = statuses[which];
                         tvStatus.setText("Trạng thái: " + order.status);
+                        switch (order.status) {
+                            case "Đang chuẩn bị":
+                                tvStatus.setTextColor(0xFFFF9800); // Cam
+                                break;
+                            case "Đã giao":
+                                tvStatus.setTextColor(0xFF4CAF50); // Xanh lá
+                                break;
+                            case "Hủy":
+                                tvStatus.setTextColor(0xFFF44336); // Đỏ
+                                break;
+                            default:
+                                tvStatus.setTextColor(0xFF000000); // Mặc định: đen
+                                break;
+                        }
                         Toast.makeText(context, "Cập nhật trạng thái thành công", Toast.LENGTH_SHORT).show();
                     })
                     .show();
@@ -65,5 +80,10 @@ public class OrderAdapter extends ArrayAdapter<Order> {
 
         // Trả về view của item trong ListView
         return convertView;
+    }
+
+    private String formatCurrency(double amount) {
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        return formatter.format(amount);
     }
 }

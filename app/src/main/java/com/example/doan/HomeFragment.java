@@ -1,5 +1,6 @@
 package com.example.doan;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -10,9 +11,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import java.text.DecimalFormat;
 
 import java.util.ArrayList;
 
@@ -37,29 +42,62 @@ public class HomeFragment extends Fragment {
         double todayRevenue = 500000; // Doanh thu hôm nay
         double monthlyRevenue = 10000000; // Doanh thu theo tháng
 
+        DecimalFormat formatter = new DecimalFormat("#,###");
+
         txtTotalOrders.setText("Tổng đơn hàng: " + totalOrders);
-        txtTodayRevenue.setText("Doanh thu hôm nay: " + todayRevenue + " VND");
-        txtMonthlyRevenue.setText("Doanh thu theo tháng: " + monthlyRevenue + " VND");
+        txtTodayRevenue.setText("Doanh thu hôm nay: " + formatter.format(todayRevenue) + " VND");
+        txtMonthlyRevenue.setText("Doanh thu theo tháng: " + formatter.format(monthlyRevenue) + " VND");
 
         // Hiển thị biểu đồ
         displayChart();
     }
 
     private void displayChart() {
-        // Dữ liệu biểu đồ
         ArrayList<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(1, 500000));  // Doanh thu hôm nay
-        entries.add(new BarEntry(2, 10000000)); // Doanh thu theo tháng
+        entries.add(new BarEntry(1, 500000));
+        entries.add(new BarEntry(2, 10000000));
 
-        // Tạo BarDataSet
         BarDataSet dataSet = new BarDataSet(entries, "Doanh thu");
-        dataSet.setColor(getResources().getColor(android.R.color.holo_blue_dark));
+        dataSet.setColors(new int[]{Color.parseColor("#03A9F4"), Color.parseColor("#FFC107")}); // xanh + vàng
 
-        // Tạo BarData
         BarData barData = new BarData(dataSet);
 
-        // Cài đặt cho biểu đồ
+        // Định dạng số có dấu phẩy cho dữ liệu cột
+        ValueFormatter currencyFormatter = new ValueFormatter() {
+            private final DecimalFormat mFormat = new DecimalFormat("#,###");
+            @Override
+            public String getFormattedValue(float value) {
+                return mFormat.format(value) + " VND";
+            }
+        };
+        barData.setValueFormatter(currencyFormatter);
+
+        // Gán dữ liệu vào biểu đồ
         barChart.setData(barData);
-        barChart.invalidate(); // Cập nhật lại biểu đồ
+
+        // Tuỳ chỉnh trục Y trái: định dạng số
+        barChart.getAxisLeft().setValueFormatter(new ValueFormatter() {
+            private final DecimalFormat mFormat = new DecimalFormat("#,###");
+            @Override
+            public String getFormattedValue(float value) {
+                return mFormat.format(value);
+            }
+        });
+
+        // Tuỳ chỉnh thêm
+        barChart.getDescription().setEnabled(false);
+        barChart.getAxisRight().setEnabled(false);
+        barChart.getXAxis().setDrawGridLines(false);
+        barChart.getAxisLeft().setDrawGridLines(false);
+        barChart.getLegend().setEnabled(false);
+        barChart.animateY(1000);
+
+        // Gán nhãn trục X
+        barChart.getXAxis().setGranularity(1f);
+        barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(new String[]{"", "Hôm nay", "Tháng này"}));
+        barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        barChart.invalidate(); // Vẽ lại biểu đồ
     }
+
 }
