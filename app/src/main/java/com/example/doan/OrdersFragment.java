@@ -17,7 +17,7 @@ public class OrdersFragment extends Fragment {
     private List<Order> orderList;
     private OrderAdapter orderAdapter;
     public OrdersFragment(){
-        super(R.layout.acitivity_admin_orders);
+        super(R.layout.activity_admin_orders);
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -31,6 +31,9 @@ public class OrdersFragment extends Fragment {
 
     private List<Order> getSampleOrders() {
         List<Order> list = new ArrayList<>();
+        list.add(new Order("DH001", "Nguyễn Văn A", "21/04/2025 14:20", 500000, "Đang chuẩn bị"));
+        list.add(new Order("DH002", "Trần Thị B", "21/04/2025 15:10", 750000, "Đã giao"));
+        list.add(new Order("DH003", "Lê Văn C", "22/04/2025 10:00", 320000, "Hủy"));
         list.add(new Order("DH001", "Nguyễn Văn A", "21/04/2025 14:20", 500000, "Đang chuẩn bị"));
         list.add(new Order("DH002", "Trần Thị B", "21/04/2025 15:10", 750000, "Đã giao"));
         list.add(new Order("DH003", "Lê Văn C", "22/04/2025 10:00", 320000, "Hủy"));

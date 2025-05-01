@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:text="Mã đơn:"
         android:textSize="16sp"
-        android:textColor="#333333"
+        android:textColor="#000000"
         android:layout_marginBottom="4dp"
         android:fontFamily="sans-serif-medium"/>
 
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:text="Tên khách:"
         android:textSize="14sp"
-        android:textColor="#555555"
+        android:textColor="#222222"
         android:layout_marginBottom="4dp"/>
 
     <!-- Thời gian đặt -->
@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:text="Thời gian:"
         android:textSize="14sp"
-        android:textColor="#555555"
+        android:textColor="#222222"
         android:layout_marginBottom="4dp"/>
 
     <!-- Tổng tiền -->
@@ -48,8 +48,9 @@
         android:layout_height="wrap_content"
         android:text="Tổng tiền:"
         android:textSize="16sp"
-        android:textColor="#E91E63"
-        android:layout_marginBottom="8dp"/>
+        android:textColor="#000000"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="sans-serif-medium"/>
 
     <!-- Trạng thái đơn hàng -->
     <TextView
@@ -58,7 +59,7 @@
         android:layout_height="wrap_content"
         android:text="Trạng thái:"
         android:textSize="14sp"
-        android:textColor="#FF9800"
+        android:textColor="#444444"
         android:layout_marginBottom="8dp"/>
 
     <!-- Nút Cập nhật trạng thái -->
@@ -68,7 +69,7 @@
         android:layout_height="48dp"
         android:text="Cập nhật trạng thái"
         android:textColor="#FFFFFF"
-        android:backgroundTint="#3F51B5"
+        android:backgroundTint="#000000"
         android:layout_marginTop="8dp"
         android:drawablePadding="8dp"
         android:elevation="4dp"/>

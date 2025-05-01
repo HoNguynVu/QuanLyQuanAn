@@ -1,44 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
-    <!-- Tổng số đơn -->
-    <TextView
-        android:id="@+id/txtTotalOrders"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tổng đơn hàng: 0"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp"/>
-
-    <!-- Doanh thu hôm nay -->
-    <TextView
-        android:id="@+id/txtTodayRevenue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Doanh thu hôm nay: 0 VND"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp"/>
-
-    <!-- Doanh thu theo tháng -->
-    <TextView
-        android:id="@+id/txtMonthlyRevenue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Doanh thu theo tháng: 0 VND"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp"/>
-
-    <!-- Biểu đồ cột -->
-    <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/barChart"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:gravity="center_horizontal">
 
-</LinearLayout>
+        <!-- Tiêu đề màn hình -->
+        <TextView
+            android:id="@+id/txtStatisticsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thống kê doanh thu"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Tổng số đơn -->
+        <TextView
+            android:id="@+id/txtTotalOrders"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tổng đơn hàng: 0"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Doanh thu hôm nay -->
+        <TextView
+            android:id="@+id/txtTodayRevenue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Doanh thu hôm nay: 0 VND"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Doanh thu theo tháng -->
+        <TextView
+            android:id="@+id/txtMonthlyRevenue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Doanh thu theo tháng: 0 VND"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Đường phân cách -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCCCCC"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Biểu đồ cột -->
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/barChart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
+
+    </LinearLayout>
+</ScrollView>
