@@ -1,91 +1,71 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    tools:context=".Fragment.ProfileFragment">
+    android:background="#F5F5F5"
+    android:padding="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:orientation="vertical">
 
-        <!-- Avatar -->
-        <ImageView
-            android:id="@+id/avatarImageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/profile"
-            android:scaleType="centerCrop"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/circle_background"
-            android:padding="8dp"
-            android:contentDescription="User Avatar" />
-
-        <!-- User Name -->
-        <TextView
-            android:id="@+id/usernameTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Your Name"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_marginTop="12dp"
-            android:textColor="@android:color/black" />
-
-        <!-- Email -->
-        <TextView
-            android:id="@+id/emailTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="youremail@example.com"
-            android:textSize="16sp"
-            android:layout_marginTop="4dp"
-            android:textColor="@android:color/darker_gray" />
-
-        <!-- Divider Line -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
-            android:layout_marginTop="24dp" />
-
-        <!-- Settings List -->
+        <!-- Header: Avatar + Name + Phone -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="16dp">
+            android:gravity="center"
+            android:padding="24dp"
+            android:background="@drawable/profile_header_background_color">
+
+            <ImageView
+                android:id="@+id/avatarImageView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/profile"
+                android:scaleType="centerCrop"
+                android:background="@drawable/circle_background"
+                android:padding="8dp" />
 
             <TextView
-                android:layout_width="match_parent"
+                android:id="@+id/usernameTextView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Edit Profile"
-                android:textSize="18sp"
-                android:padding="12dp"
-                android:background="?attr/selectableItemBackground"
-                android:textColor="@android:color/black" />
+                android:text="User Name"
+                android:textColor="@color/black"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:layout_marginTop="8dp" />
 
             <TextView
-                android:layout_width="match_parent"
+                android:id="@+id/emailTextView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Change Password"
-                android:textSize="18sp"
-                android:padding="12dp"
-                android:background="?attr/selectableItemBackground"
-                android:textColor="@android:color/black" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Logout"
-                android:textSize="18sp"
-                android:padding="12dp"
-                android:background="?attr/selectableItemBackground"
-                android:textColor="@android:color/black" />
+                android:text="youremail@gmail.com"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:layout_marginTop="4dp" />
         </LinearLayout>
 
-    </LinearLayout>
+        <!-- Account Overview Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Account Overview"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp"
+            android:textColor="@android:color/black" />
 
+        <!-- RecyclerView for options -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/profileRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:orientation="vertical"/>
+
+    </LinearLayout>
 </ScrollView>
