@@ -1,6 +1,8 @@
 package com.example.doan.Login;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.widget.Button;
@@ -18,6 +20,9 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -57,18 +62,39 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
                             if (user != null && user.isEmailVerified()) {
-                                Toast.makeText(this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+                                String userId = user.getUid();
+                                DatabaseReference database = FirebaseDatabase.getInstance().getReference("Users");
 
-                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                finish();
+                                database.child(userId).get().addOnCompleteListener(dbTask -> {
+                                    if (dbTask.isSuccessful()) {
+                                        DataSnapshot snapshot = dbTask.getResult();
+                                        if (snapshot.exists()) {
+                                            String name = snapshot.child("name").getValue(String.class); // Hoặc "username" nếu bạn đặt khác
+                                            String emailValue = user.getEmail();
+
+                                            // Lưu vào SharedPreferences
+                                            SharedPreferences sharedPreferences = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+                                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                                            editor.putString("username", name);
+                                            editor.putString("email", emailValue);
+                                            editor.apply();
+
+                                            Toast.makeText(this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+                                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                            finish();
+                                        } else {
+                                            Toast.makeText(this, "Không tìm thấy dữ liệu người dùng!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    } else {
+                                        Toast.makeText(this, "Lỗi khi truy xuất tên người dùng!", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             } else {
-                                // Hiển thị dialog yêu cầu người dùng xác nhận email
+                                // Chưa xác minh email
                                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                                 builder.setMessage("Bạn chưa xác nhận email trong lúc đăng ký. Vui lòng kiểm tra email và xác nhận trước khi đăng nhập.")
                                         .setCancelable(false)
-                                        .setPositiveButton("OK", (dialog, id) -> {
-                                            dialog.dismiss();
-                                        });
+                                        .setPositiveButton("OK", (dialog, id) -> dialog.dismiss());
 
                                 AlertDialog alert = builder.create();
                                 alert.show();
@@ -90,6 +116,7 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(this, message, Toast.LENGTH_LONG).show();
                         }
                     });
+
         });
     }
 }
