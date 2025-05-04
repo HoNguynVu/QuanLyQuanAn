@@ -3,8 +3,10 @@ package com.example.doan.Login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -39,6 +41,21 @@ public class SignUpActivity extends AppCompatActivity {
         EditText txt_date_birth = findViewById(R.id.txt_date_birth_sign_up);
         EditText txt_password = findViewById(R.id.txt_password_sign_up);
         EditText txt_confirm_password = findViewById(R.id.txt_confirm_password_sign_up);
+        txt_email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    txt_email.setSelection(0);
+                }
+            }
+        });
+
+        ImageButton btn_back = findViewById(R.id.btn_arrow_back);
+        btn_back.setOnClickListener(v -> {
+            Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        });
 
         signUpBtn.setOnClickListener(v -> {
             String email = txt_email.getText().toString().trim();
