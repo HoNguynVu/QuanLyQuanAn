@@ -43,6 +43,12 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        TextView txt_sign_up = findViewById(R.id.txt_sign_up_nagivate);
+        txt_sign_up.setOnClickListener(view -> {
+            Intent intent = new Intent(this, SignUpActivity.class);
+            startActivity(intent);
+        });
+
         Button btn_login = findViewById(R.id.btn_login);
         btn_login.setOnClickListener(view -> {
             String email = txt_email.getText().toString();
