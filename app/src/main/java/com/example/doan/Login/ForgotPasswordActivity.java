@@ -1,9 +1,11 @@
 package com.example.doan.Login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -23,6 +25,12 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         EditText txt_email = findViewById(R.id.txt_email_forgot_password);
         Button btn_lg = findViewById(R.id.btn_fgpass);
 
+        ImageButton btn_back = findViewById(R.id.btn_arrow_back_FG);
+        btn_back.setOnClickListener(v -> {
+            Intent intent = new Intent(ForgotPasswordActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        });
         btn_lg.setOnClickListener(v -> {
             String email = txt_email.getText().toString().trim();
 

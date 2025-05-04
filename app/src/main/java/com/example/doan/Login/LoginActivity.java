@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Patterns;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -37,10 +38,18 @@ public class LoginActivity extends AppCompatActivity {
 
         EditText txt_email = findViewById(R.id.txt_email);
         EditText txt_password = findViewById(R.id.txt_password);
-
+        txt_email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    txt_email.setSelection(0);
+                }
+            }
+        });
         txt_forgot_pass.setOnClickListener(view -> {
             Intent intent = new Intent(this, ForgotPasswordActivity.class);
             startActivity(intent);
+            finish();
         });
 
         TextView txt_sign_up = findViewById(R.id.txt_sign_up_nagivate);
