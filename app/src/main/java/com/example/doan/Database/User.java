@@ -1,4 +1,4 @@
-package com.example.doan.Login;
+package com.example.doan.Database;
 
 public class User {
     private String email;
