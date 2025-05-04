@@ -1,6 +1,7 @@
 package com.example.doan.Fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.doan.Login.LoginActivity;
 import com.example.doan.Profile.ProfileOption;
 import com.example.doan.Profile.ProfileOptionAdapter;
 import com.example.doan.R;
@@ -60,6 +62,9 @@ public class ProfileFragment extends Fragment {
                     // Logic đăng xuất
                     FirebaseAuth.getInstance().signOut();
                     Toast.makeText(getContext(), "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
+                    ProfileFragment.this.getActivity().finish();
+                    Intent intent = new Intent(getContext(), LoginActivity.class);
+                    startActivity(intent);
                     break;
                 case "My Profile":
                     // Điều hướng đến màn hình profile (có thể thêm logic khác)
