@@ -17,15 +17,15 @@
             android:orientation="vertical"
             android:gravity="center"
             android:padding="24dp"
-            android:background="@drawable/profile_header_background_color">
+            android:background="@drawable/bg_header_profile">
 
             <ImageView
                 android:id="@+id/avatarImageView"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:src="@drawable/profile"
+                android:src="@drawable/ic_person"
                 android:scaleType="centerCrop"
-                android:background="@drawable/circle_background"
+                android:background="@drawable/bg_circle"
                 android:padding="8dp" />
 
             <TextView

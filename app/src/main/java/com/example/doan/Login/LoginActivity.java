@@ -86,12 +86,15 @@ public class LoginActivity extends AppCompatActivity {
                                         if (snapshot.exists()) {
                                             String name = snapshot.child("name").getValue(String.class); // Hoặc "username" nếu bạn đặt khác
                                             String emailValue = user.getEmail();
-
+                                            String phone = snapshot.child("phone").getValue(String.class);
+                                            String dob = snapshot.child("dateBirth").getValue(String.class);
                                             // Lưu vào SharedPreferences
                                             SharedPreferences sharedPreferences = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
                                             SharedPreferences.Editor editor = sharedPreferences.edit();
                                             editor.putString("username", name);
                                             editor.putString("email", emailValue);
+                                            editor.putString("phone", phone);
+                                            editor.putString("dob", dob);
                                             editor.apply();
 
                                             Toast.makeText(this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
