@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doan.Login.LoginActivity;
+import com.example.doan.Profile.MyProfileActivity;
 import com.example.doan.Profile.ProfileOption;
 import com.example.doan.Profile.ProfileOptionAdapter;
 import com.example.doan.R;
@@ -44,12 +45,19 @@ public class ProfileFragment extends Fragment {
         emailTextView = view.findViewById(R.id.emailTextView);
         profileRecyclerView = view.findViewById(R.id.profileRecyclerView);
 
+        // Lấy thông tin người dùng từ SharedPreferences (nếu có)
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", null);
+        String email = sharedPreferences.getString("email", null);
+        String phone = sharedPreferences.getString("phone", null);
+        String dob = sharedPreferences.getString("dob", null);
+
         // Khởi tạo RecyclerView
         profileRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // Tạo danh sách các tùy chọn cho profile
         List<ProfileOption> items = new ArrayList<>();
-        items.add(new ProfileOption(R.drawable.profile, "My Profile"));
+        items.add(new ProfileOption(R.drawable.ic_person, "My Profile"));
         items.add(new ProfileOption(R.drawable.ic_orders, "My Orders"));
         items.add(new ProfileOption(R.drawable.ic_password, "Change Password"));
         items.add(new ProfileOption(R.drawable.ic_logout, "Log Out"));
@@ -69,6 +77,12 @@ public class ProfileFragment extends Fragment {
                 case "My Profile":
                     // Điều hướng đến màn hình profile (có thể thêm logic khác)
                     Toast.makeText(getContext(), "Điều hướng đến My Profile", Toast.LENGTH_SHORT).show();
+                    Intent intent1 = new Intent(getContext(), MyProfileActivity.class);
+                    intent1.putExtra("username", usernameTextView.getText().toString());
+                    intent1.putExtra("email", emailTextView.getText().toString());
+                    intent1.putExtra("phone", phone);
+                    intent1.putExtra("dob", dob);
+                    startActivity(intent1);
                     break;
                 case "My Orders":
                     // Điều hướng đến màn hình đơn hàng
@@ -82,10 +96,7 @@ public class ProfileFragment extends Fragment {
         });
 
         profileRecyclerView.setAdapter(adapter);
-        // Lấy thông tin người dùng từ SharedPreferences (nếu có)
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
-        String username = sharedPreferences.getString("username", null);
-        String email = sharedPreferences.getString("email", null);
+
 
         // Hiển thị thông tin người dùng
         if (username != null && email != null) {

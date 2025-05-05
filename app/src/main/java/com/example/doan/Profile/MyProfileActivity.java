@@ -1,6 +1,8 @@
 package com.example.doan.Profile;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,10 +19,21 @@ public class MyProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_my_profile);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+
+        EditText edtName = findViewById(R.id.edtName);
+        EditText edtEmail = findViewById(R.id.edtEmail);
+        EditText edtPhone = findViewById(R.id.edtPhone);
+        EditText edtbirth = findViewById(R.id.edtbirth);
+
+        Intent intent = getIntent();
+        String Name = intent.getStringExtra("username");
+        String Email = intent.getStringExtra("email");
+        String Phone = intent.getStringExtra("phone");
+        String Birth = intent.getStringExtra("dob");
+
+        edtName.setText(Name);
+        edtEmail.setText(Email);
+        edtPhone.setText(Phone);
+        edtbirth.setText(Birth);
     }
 }
