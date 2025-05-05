@@ -99,6 +99,21 @@ public class ProfileFragment extends Fragment {
 
 
         // Hiển thị thông tin người dùng
+
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadUserInfo(); // gọi lại hàm hiển thị tên/email/ảnh... từ SharedPreferences
+    }
+
+    private void loadUserInfo() {
+        SharedPreferences prefs = requireContext().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+        String username = prefs.getString("username", "Tên người dùng");
+        String email = prefs.getString("email", "Email");
+
         if (username != null && email != null) {
             usernameTextView.setText(username);
             emailTextView.setText(email);
@@ -107,7 +122,7 @@ public class ProfileFragment extends Fragment {
         {
             Toast.makeText(getContext(), "Không tìm thấy thông tin người dùng", Toast.LENGTH_SHORT).show();
         }
-
-        return view;
     }
+
+
 }
