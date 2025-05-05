@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doan.Login.LoginActivity;
+import com.example.doan.Profile.ChangePasswordActivity;
 import com.example.doan.Profile.MyProfileActivity;
 import com.example.doan.Profile.ProfileOption;
 import com.example.doan.Profile.ProfileOptionAdapter;
@@ -91,6 +92,8 @@ public class ProfileFragment extends Fragment {
                 case "Change Password":
                     // Điều hướng đến màn hình thay đổi mật khẩu
                     Toast.makeText(getContext(), "Điều hướng đến Change Password", Toast.LENGTH_SHORT).show();
+                    Intent intent2 = new Intent(getContext(), ChangePasswordActivity.class);
+                    startActivity(intent2);
                     break;
             }
         });
@@ -123,6 +126,4 @@ public class ProfileFragment extends Fragment {
             Toast.makeText(getContext(), "Không tìm thấy thông tin người dùng", Toast.LENGTH_SHORT).show();
         }
     }
-
-
 }
