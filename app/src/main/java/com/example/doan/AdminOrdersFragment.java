@@ -11,12 +11,12 @@ import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrdersFragment extends Fragment {
+public class AdminOrdersFragment extends Fragment {
 
     private ListView orderListView;
     private List<Order> orderList;
     private OrderAdapter orderAdapter;
-    public OrdersFragment(){
+    public AdminOrdersFragment(){
         super(R.layout.activity_admin_orders);
     }
     @Override
