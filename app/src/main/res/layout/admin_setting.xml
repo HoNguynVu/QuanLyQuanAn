@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_white"
+    android:fitsSystemWindows="true">
+
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/topAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:elevation="4dp"
+        app:title="Cài đặt"
+        app:titleTextColor="@color/primary_black"
+        app:navigationIcon="@drawable/ic_back"
+        app:menu="@menu/menu_save_setting" />
+
+    <!-- Nội dung -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:divider="@android:color/darker_gray"
+            android:showDividers="middle"
+            android:dividerPadding="12dp">
+
+            <!-- Họ tên -->
+            <EditText
+                android:id="@+id/edtName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="👤 Họ tên"
+                android:padding="16dp"
+                android:background="@drawable/edittext_log"
+                android:textColorHint="@color/primary_black"
+                android:textColor="@color/primary_black" />
+
+            <!-- Giới tính -->
+            <EditText
+                android:id="@+id/edtGender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="🚻 Giới tính"
+                android:padding="16dp"
+                android:background="@drawable/edittext_log"
+                android:textColorHint="@color/primary_black"
+                android:textColor="@color/primary_black" />
+
+            <!-- Ngày sinh -->
+            <EditText
+                android:id="@+id/edtDob"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="🎂 Ngày sinh"
+                android:padding="16dp"
+                android:background="@drawable/edittext_log"
+                android:textColorHint="@color/primary_black"
+                android:textColor="@color/primary_black" />
+
+            <!-- Khoảng cách -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="16dp" />
+
+            <!-- SĐT -->
+            <EditText
+                android:id="@+id/edtPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="📞 Số điện thoại"
+                android:padding="16dp"
+                android:background="@drawable/edittext_log"
+                android:textColor="@color/primary_black"
+                android:textSize="16sp" />
+
+            <!-- Email -->
+            <EditText
+                android:id="@+id/edtEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="✉️ Email"
+                android:padding="16dp"
+                android:background="@drawable/edittext_log"
+                android:textColor="@color/primary_black"
+                android:textSize="16sp" />
+
+            <!-- Khoảng cách -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="16dp" />
+
+            <!-- Đổi mật khẩu -->
+            <TextView
+                android:id="@+id/txtChangePassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="🔒 Đổi mật khẩu"
+                android:padding="16dp"
+                android:background="@drawable/edittext_log"
+                android:textColor="@color/primary_black"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
