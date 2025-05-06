@@ -18,7 +18,7 @@ import com.denzcoskun.imageslider.interfaces.ItemClickListener;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.doan.Adapter.PopularItemAdapter;
 import com.example.doan.R;
-import com.example.doan.databinding.FragmentHomeBinding;
+import com.example.doan.databinding.FragmentHomeUserBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class HomeFragment extends Fragment {
     private List<String> prices;
     private List<Integer> images;
     private PopularItemAdapter adapter;
-    private FragmentHomeBinding binding;
+    private FragmentHomeUserBinding binding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,7 +64,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        binding = FragmentHomeUserBinding.inflate(inflater, container, false);
 
         addAllTitles();
         addAllPrices();
