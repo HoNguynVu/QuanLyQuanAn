@@ -1,4 +1,4 @@
-package com.example.doan;
+package com.example.doan.AdminFragment;
 
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.doan.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.*;
 
@@ -22,7 +23,7 @@ public class AdminProfileFragment extends Fragment {
     private DatabaseReference userRef;
 
     public AdminProfileFragment() {
-        super(R.layout.fragment_profile);
+        super(com.example.doan.R.layout.fragment_profile);
     }
 
     @Override
@@ -30,11 +31,11 @@ public class AdminProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Ánh xạ view
-        imgAvatar = view.findViewById(R.id.imgAvatar);
-        txtUserName = view.findViewById(R.id.txtUserName);
-        txtPhone = view.findViewById(R.id.txtPhone);
-        txtOrder = view.findViewById(R.id.txtOrder);
-        txtSettings = view.findViewById(R.id.txtSettings);
+        imgAvatar = view.findViewById(com.example.doan.R.id.imgAvatar);
+        txtUserName = view.findViewById(com.example.doan.R.id.txtUserName);
+        txtPhone = view.findViewById(com.example.doan.R.id.txtPhone);
+        txtOrder = view.findViewById(com.example.doan.R.id.txtOrder);
+        txtSettings = view.findViewById(com.example.doan.R.id.txtSettings);
         txtLogout = view.findViewById(R.id.txtLogout);
 
         // Lấy UID người dùng hiện tại
