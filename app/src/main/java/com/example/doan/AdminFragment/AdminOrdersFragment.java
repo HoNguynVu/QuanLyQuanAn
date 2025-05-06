@@ -1,4 +1,4 @@
-package com.example.doan;
+package com.example.doan.AdminFragment;
 
 import android.os.Bundle;
 import android.view.View;
@@ -7,6 +7,10 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.example.doan.DatabaseClass.Order;
+import com.example.doan.Adapter.OrderAdapter;
+import com.example.doan.R;
 
 import java.util.ArrayList;
 import java.util.List;
