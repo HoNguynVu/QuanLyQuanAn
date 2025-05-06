@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,21 +15,19 @@ import android.widget.Toast;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.interfaces.ItemClickListener;
 import com.denzcoskun.imageslider.models.SlideModel;
-import com.example.doan.Adapter.PopularItemAdapter;
+import com.example.doan.Adapter.HomePopularItemAdapter;
 import com.example.doan.R;
-import com.example.doan.databinding.FragmentHomeBinding;
+import com.example.doan.databinding.HomeFragmentBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
-
-    RecyclerView recyclerView;
     List<String> titles;
     List<String> prices;
     List<Integer> images;
-    PopularItemAdapter adapter;
-    private FragmentHomeBinding binding;
+    HomePopularItemAdapter adapter;
+    private HomeFragmentBinding binding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,10 +37,10 @@ public class HomeFragment extends Fragment {
 
     private void addAllTitles() {
         titles = new ArrayList<>();
-        titles.add("Pizza");
-        titles.add("Burger");
-        titles.add("Hotdog");
-        titles.add("Drink");
+        titles.add("Celery Soup");
+        titles.add("Tomato & Potato Soup");
+        titles.add("Dimsum Soup");
+        titles.add("Mushroom Soup");
     }
 
     private void addAllPrices() {
@@ -56,20 +53,20 @@ public class HomeFragment extends Fragment {
 
     private void addAllImages() {
         images = new ArrayList<>();
-        images.add(R.drawable.celery_soup);
-        images.add(R.drawable.dimsum_soup);
-        images.add(R.drawable.kale_soup);
-        images.add(R.drawable.mashroom_soup);
+        images.add(R.drawable.soup_celery);
+        images.add(R.drawable.soup_tomato_potato);
+        images.add(R.drawable.soup_dimsum);
+        images.add(R.drawable.soup_mushroom);
     }
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        binding = HomeFragmentBinding.inflate(inflater, container, false);
 
         addAllTitles();
         addAllPrices();
         addAllImages();
-        adapter = new PopularItemAdapter(requireContext(), titles, prices, images, getActivity());
+        adapter = new HomePopularItemAdapter(requireContext(), titles, prices, images, getActivity());
 
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
