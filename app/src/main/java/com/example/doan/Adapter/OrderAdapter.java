@@ -1,4 +1,4 @@
-package com.example.doan;
+package com.example.doan.Adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -13,6 +13,9 @@ import java.util.List;
 import java.text.DecimalFormat;
 
 import androidx.annotation.NonNull;
+
+import com.example.doan.DatabaseClass.Order;
+import com.example.doan.R;
 
 public class OrderAdapter extends ArrayAdapter<Order> {
 

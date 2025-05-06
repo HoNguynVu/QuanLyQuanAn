@@ -1,4 +1,4 @@
-package com.example.doan;
+package com.example.doan.AdminFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,13 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+<<<<<<<< HEAD:app/src/main/java/com/example/doan/AdminMenuFragment.java
+========
+import com.example.doan.AdminActivity.AdminAddFoodItem;
+import com.example.doan.AdminActivity.FoodByCategory;
+import com.example.doan.R;
+
+>>>>>>>> origin/AdminActivityVu:app/src/main/java/com/example/doan/AdminFragment/AdminMenuFragment.java
 public class AdminMenuFragment extends Fragment {
 
     private CardView cardKhaiVi, cardMonChinh, cardTrangMieng, cardThucUong;
