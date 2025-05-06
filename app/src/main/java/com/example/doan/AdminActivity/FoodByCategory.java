@@ -1,12 +1,9 @@
-package com.example.doan;
+package com.example.doan.AdminActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -23,6 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.doan.DatabaseClass.FoodItem;
+import com.example.doan.R;
 import com.google.firebase.database.*;
 
 import java.util.ArrayList;
@@ -36,7 +35,7 @@ public class FoodByCategory extends Fragment {
     private String selectedCategory;
 
     public FoodByCategory() {
-        super(R.layout.menu_by_category);
+        super(com.example.doan.R.layout.menu_by_category);
     }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,7 +49,7 @@ public class FoodByCategory extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        recyclerView = view.findViewById(R.id.recyclerViewMenu);
+        recyclerView = view.findViewById(com.example.doan.R.id.recyclerViewMenu);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true); // ✅ tăng hiệu năng hiển thị
 
@@ -105,7 +104,7 @@ public class FoodByCategory extends Fragment {
         @NonNull
         @Override
         public MenuViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(context).inflate(R.layout.item_menu, parent, false);
+            View view = LayoutInflater.from(context).inflate(com.example.doan.R.layout.item_menu, parent, false);
 
             return new MenuViewHolder(view);
         }
@@ -122,8 +121,8 @@ public class FoodByCategory extends Fragment {
                     .override(100, 100) // kích thước cố định
                     .centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.DATA)
-                    .placeholder(R.drawable.loading_spinner)
-                    .error(R.drawable.error_image)
+                    .placeholder(com.example.doan.R.drawable.loading_spinner)
+                    .error(com.example.doan.R.drawable.error_image)
                     .into(holder.imgMenu);
 
             holder.btnDelete.setOnClickListener(v -> {
@@ -174,11 +173,11 @@ public class FoodByCategory extends Fragment {
             AppCompatButton btnEdit, btnDelete;
             public MenuViewHolder(@NonNull View itemView) {
                 super(itemView);
-                txtName = itemView.findViewById(R.id.txtName);
-                txtCategory = itemView.findViewById(R.id.txtCategory);
-                txtPrice = itemView.findViewById(R.id.txtPrice);
-                imgMenu = itemView.findViewById(R.id.imgMenu);
-                btnDelete = itemView.findViewById(R.id.btnDelete);
+                txtName = itemView.findViewById(com.example.doan.R.id.txtName);
+                txtCategory = itemView.findViewById(com.example.doan.R.id.txtCategory);
+                txtPrice = itemView.findViewById(com.example.doan.R.id.txtPrice);
+                imgMenu = itemView.findViewById(com.example.doan.R.id.imgMenu);
+                btnDelete = itemView.findViewById(com.example.doan.R.id.btnDelete);
                 btnEdit = itemView.findViewById(R.id.btnEdit);
             }
         }

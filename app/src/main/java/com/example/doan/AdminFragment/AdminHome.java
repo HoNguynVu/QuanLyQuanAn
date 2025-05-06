@@ -1,10 +1,11 @@
-package com.example.doan;
+package com.example.doan.AdminFragment;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.example.doan.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class AdminHome extends AppCompatActivity {

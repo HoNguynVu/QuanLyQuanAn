@@ -1,4 +1,4 @@
-package com.example.doan;
+package com.example.doan.DatabaseClass;
 
 public class FoodItem {
     private String name;
