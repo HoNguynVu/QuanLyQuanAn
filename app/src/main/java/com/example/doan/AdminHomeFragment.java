@@ -7,7 +7,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -21,12 +20,12 @@ import java.text.DecimalFormat;
 
 import java.util.ArrayList;
 
-public class HomeFragment extends Fragment {
+public class AdminHomeFragment extends Fragment {
 
     private TextView txtTotalOrders, txtTodayRevenue, txtMonthlyRevenue;
     private BarChart barChart;
 
-    public HomeFragment(){
+    public AdminHomeFragment(){
         super(R.layout.fragment_home);
     }
     @Override
