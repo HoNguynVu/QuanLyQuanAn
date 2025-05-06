@@ -15,5 +15,5 @@
         android:drawable="@android:drawable/arrow_down_float"
         android:gravity="center_vertical|end"
         android:right="12dp"
-    />
+        />
 </layer-list>

@@ -16,10 +16,16 @@
         android:elevation="4dp"
         app:title="Quản lý quán ăn"
         app:titleTextColor="#000000"
-
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+
+
+
+
+
+
 
     <FrameLayout
         android:id="@+id/fragmentContainer"
