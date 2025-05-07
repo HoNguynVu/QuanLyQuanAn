@@ -91,9 +91,13 @@ public class HomeFragment extends Fragment {
         binding.imageSlider.setItemClickListener(new ItemClickListener() {
             @Override
             public void onItemSelected(int position) {
-                String itemMessage = "Selected image " + (position + 1);
+                String itemMessage = "Bạn đã chọn ảnh " + (position + 1);
                 Toast.makeText(requireContext(), itemMessage, Toast.LENGTH_SHORT).show();
             }
+            public void doubleClick(int position) {
+
+            }
         });
+
     }
 }
