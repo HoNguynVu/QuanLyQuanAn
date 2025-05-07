@@ -15,6 +15,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.doan.AdminFragment.AdminHome;
 import com.example.doan.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
@@ -88,6 +89,8 @@ public class LoginActivity extends AppCompatActivity {
                                             String emailValue = user.getEmail();
                                             String phone = snapshot.child("phone").getValue(String.class);
                                             String dob = snapshot.child("dateBirth").getValue(String.class);
+                                            String role = snapshot.child("role").getValue(String.class);
+                                            // Lưu vào SharedPreferences
                                             // Lưu vào SharedPreferences
                                             SharedPreferences sharedPreferences = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
                                             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -95,10 +98,20 @@ public class LoginActivity extends AppCompatActivity {
                                             editor.putString("email", emailValue);
                                             editor.putString("phone", phone);
                                             editor.putString("dob", dob);
+                                            editor.putString("role", role); // Lưu role vào SharedPreferences
                                             editor.apply();
 
                                             Toast.makeText(this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-                                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                            // Kiểm tra Role và thực hiện các hành động phù hợp
+                                            if ("admin".equals(role)) {
+                                                // Nếu là admin, chuyển đến màn hình admin
+                                                Toast.makeText(this, "Đăng nhập thành công với quyền Admin!", Toast.LENGTH_SHORT).show();
+                                                startActivity(new Intent(LoginActivity.this, AdminHome.class)); // Đổi thành màn hình admin của bạn
+                                            } else {
+                                                // Nếu là người dùng bình thường, chuyển đến màn hình chính
+                                                Toast.makeText(this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+                                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                            }
                                             finish();
                                         } else {
                                             Toast.makeText(this, "Không tìm thấy dữ liệu người dùng!", Toast.LENGTH_SHORT).show();

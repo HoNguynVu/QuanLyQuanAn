@@ -73,7 +73,8 @@ dependencies {
 
     // OkHttp (cho imgur hoặc network)
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
-
+    // Thêm thư viện MPAndroidChart vào dự án
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
     // Unit Test
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
