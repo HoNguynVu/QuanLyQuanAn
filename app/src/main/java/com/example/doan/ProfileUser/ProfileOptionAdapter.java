@@ -1,4 +1,4 @@
-package com.example.doan.Profile;
+package com.example.doan.ProfileUser;
 
 import android.view.LayoutInflater;
 import android.view.View;
