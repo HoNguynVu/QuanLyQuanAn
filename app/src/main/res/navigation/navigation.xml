@@ -7,27 +7,27 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.doan.Fragment.HomeFragment"
+        android:name="com.example.doan.UserFragment.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home_user" />
     <fragment
         android:id="@+id/cartFragment"
-        android:name="com.example.doan.Fragment.CartFragment"
+        android:name="com.example.doan.UserFragment.CartFragment"
         android:label="fragment_cart"
         tools:layout="@layout/fragment_cart" />
     <fragment
         android:id="@+id/notificationFragment"
-        android:name="com.example.doan.Fragment.NotificationFragment"
+        android:name="com.example.doan.UserFragment.NotificationFragment"
         android:label="fragment_notification"
         tools:layout="@layout/fragment_notification" />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.doan.Fragment.ProfileFragment"
+        android:name="com.example.doan.UserFragment.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile_user" />
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.example.doan.Fragment.SearchFragment"
+        android:name="com.example.doan.UserFragment.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" />
 </navigation>

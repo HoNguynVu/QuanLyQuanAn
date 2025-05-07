@@ -1,4 +1,4 @@
-package com.example.doan.Profile;
+package com.example.doan.ProfileUser;
 
 public class ProfileOption {
     private int iconResId;

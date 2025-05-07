@@ -7,7 +7,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.example.doan.ChildFragment.AFragment;
 import com.example.doan.ChildFragment.BFragment;
 import com.example.doan.ChildFragment.FoodListFragment;
-import com.example.doan.Fragment.CartFragment;
+import com.example.doan.UserFragment.CartFragment;
 
 public class MyViewPagerAdapter extends FragmentStateAdapter {
     public MyViewPagerAdapter(@NonNull CartFragment fragmentActivity) {

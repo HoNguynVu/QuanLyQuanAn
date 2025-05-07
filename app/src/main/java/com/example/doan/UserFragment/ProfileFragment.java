@@ -1,4 +1,4 @@
-package com.example.doan.Fragment;
+package com.example.doan.UserFragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,10 +15,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doan.Login.LoginActivity;
-import com.example.doan.Profile.ChangePasswordActivity;
-import com.example.doan.Profile.MyProfileActivity;
-import com.example.doan.Profile.ProfileOption;
-import com.example.doan.Profile.ProfileOptionAdapter;
+import com.example.doan.ProfileUser.ChangePasswordActivity;
+import com.example.doan.ProfileUser.MyProfileActivity;
+import com.example.doan.ProfileUser.ProfileOption;
+import com.example.doan.ProfileUser.ProfileOptionAdapter;
 import com.example.doan.R;
 import com.google.firebase.auth.FirebaseAuth;
 
