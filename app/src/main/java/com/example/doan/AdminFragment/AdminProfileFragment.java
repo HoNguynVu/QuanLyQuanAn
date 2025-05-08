@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.doan.AdminActivity.AdminSetting;
 import com.example.doan.Login.LoginActivity;
 import com.example.doan.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -67,7 +68,10 @@ public class AdminProfileFragment extends Fragment {
                 Toast.makeText(getContext(), "🛍️ Đơn mua được chọn", Toast.LENGTH_SHORT).show());
 
         txtSettings.setOnClickListener(v ->
-                Toast.makeText(getContext(), "⚙️ Cài đặt được chọn", Toast.LENGTH_SHORT).show());
+        {
+            Intent intent = new Intent(requireContext(), AdminSetting.class);
+            startActivity(intent);
+        });
 
         txtLogout.setOnClickListener(v -> {
             new AlertDialog.Builder(requireContext())
