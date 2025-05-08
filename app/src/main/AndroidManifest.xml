@@ -30,8 +30,13 @@
         <activity
             android:name=".Login.MainActivity"
             android:exported="false" />
+        <activity android:name=".AdminActivity.AdminAddFoodItem"/>
+        <activity android:name=".AdminActivity.AdminEditFoodItem"/>
         <activity
             android:name=".AdminFragment.AdminHome"
+            android:exported="false" />
+        <activity
+            android:name=".AdminActivity.AdminSetting"
             android:exported="false" />
         <activity
             android:name=".Login.LoginActivity"

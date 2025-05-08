@@ -3,7 +3,9 @@ package com.example.doan.AdminActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +27,8 @@ import com.google.firebase.database.ValueEventListener;
 
 public class AdminSetting extends AppCompatActivity {
 
-    private EditText edtName, edtGender, edtDob;
+    private EditText edtName, edtGender;
+    private Spinner edtDob;
     private EditText txtPhone, txtEmail;
     private TextView txtChangePassword;
     private FirebaseAuth mAuth;
@@ -53,10 +56,27 @@ public class AdminSetting extends AppCompatActivity {
         txtPhone = findViewById(R.id.edtPhone);
         txtEmail = findViewById(R.id.edtEmail);
         txtChangePassword = findViewById(R.id.txtChangePassword);
+        String[] categories = {"Nam", "Nữ"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this,
+                R.layout.spinner_item,   // 👈 dùng layout custom
+                categories
+        );
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        edtDob.setAdapter(adapter);
+        String dobFromIntent = getIntent().getStringExtra("category");
+        if (dobFromIntent != null) {
+            for (int i = 0; i < categories.length; i++) {
+                if (categories[i].equalsIgnoreCase(dobFromIntent)) {
+                    edtDob.setSelection(i); // chọn đúng loại món
+                    break;
+                }
+            }
+        }
 
         mAuth = FirebaseAuth.getInstance();
         String uid = mAuth.getCurrentUser().getUid();
-        userRef = FirebaseDatabase.getInstance().getReference("users").child(uid);
+        userRef = FirebaseDatabase.getInstance().getReference("Users").child(uid);
 
         txtChangePassword.setOnClickListener(v-> showChangePasswordDialog());
 
@@ -76,7 +96,7 @@ public class AdminSetting extends AppCompatActivity {
 
                     edtName.setText(name != null ? name : "");
                     edtGender.setText(gender != null ? gender : "");
-                    edtDob.setText(dob != null ? dob : "");
+
                     txtPhone.setText(phone != null ? phone : "");
                     txtEmail.setText(email != null ? email : "");
                 }
@@ -91,7 +111,7 @@ public class AdminSetting extends AppCompatActivity {
     private void saveUserData() {
         String name = edtName.getText().toString().trim();
         String gender = edtGender.getText().toString().trim();
-        String dob = edtDob.getText().toString().trim();
+        String dob = edtDob.getSelectedItem().toString().trim();
         String phone = txtPhone.getText().toString().trim();
         String email = txtEmail.getText().toString().trim();
 
