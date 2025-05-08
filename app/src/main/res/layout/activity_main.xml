@@ -21,7 +21,8 @@
         app:itemTextColor="@color/black"
         app:menu="@menu/menu"
         android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView"
