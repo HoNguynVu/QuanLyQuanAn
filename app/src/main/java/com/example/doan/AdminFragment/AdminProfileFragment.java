@@ -1,5 +1,7 @@
 package com.example.doan.AdminFragment;
 
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.doan.AdminActivity.AdminSetting;
+import com.example.doan.Login.LoginActivity;
 import com.example.doan.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.*;
@@ -23,7 +27,7 @@ public class AdminProfileFragment extends Fragment {
     private DatabaseReference userRef;
 
     public AdminProfileFragment() {
-        super(com.example.doan.R.layout.fragment_profile);
+        super(com.example.doan.R.layout.fragment_profile_admin);
     }
 
     @Override
@@ -64,26 +68,29 @@ public class AdminProfileFragment extends Fragment {
                 Toast.makeText(getContext(), "🛍️ Đơn mua được chọn", Toast.LENGTH_SHORT).show());
 
         txtSettings.setOnClickListener(v ->
-                Toast.makeText(getContext(), "⚙️ Cài đặt được chọn", Toast.LENGTH_SHORT).show());
+        {
+            Intent intent = new Intent(requireContext(), AdminSetting.class);
+            startActivity(intent);
+        });
 
         txtLogout.setOnClickListener(v -> {
-//            new AlertDialog.Builder(requireContext())
-//                    .setTitle("Xác nhận đăng xuất")
-//                    .setMessage("Bạn có chắc chắn muốn đăng xuất không?")
-//                    .setPositiveButton("Đăng xuất", (dialog, which) -> {
-//                        // Đăng xuất khỏi Firebase
-//                        FirebaseAuth.getInstance().signOut();
-//
-//                        // Chuyển sang màn hình đăng nhập
-//                        Intent intent = new Intent(requireActivity(), LoginActivity.class);
-//                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                        startActivity(intent);
-//
-//                        // Đóng activity hiện tại
-//                        requireActivity().finish();
-//                    })
-//                    .setNegativeButton("Huỷ", null)
-//                    .show();
+            new AlertDialog.Builder(requireContext())
+                    .setTitle("Xác nhận đăng xuất")
+                    .setMessage("Bạn có chắc chắn muốn đăng xuất không?")
+                    .setPositiveButton("Đăng xuất", (dialog, which) -> {
+                        // Đăng xuất khỏi Firebase
+                        FirebaseAuth.getInstance().signOut();
+
+                        // Chuyển sang màn hình đăng nhập
+                        Intent intent = new Intent(requireActivity(), LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+
+                        // Đóng activity hiện tại
+                        requireActivity().finish();
+                    })
+                    .setNegativeButton("Huỷ", null)
+                    .show();
         });
 
 

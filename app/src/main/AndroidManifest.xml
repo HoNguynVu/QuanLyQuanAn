@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
 
     <application
         android:allowBackup="true"
@@ -15,7 +13,33 @@
         android:theme="@style/Theme.DoAn"
         tools:targetApi="31">
         <activity
+            android:name=".ProfileUser.ChangePasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileUser.MyProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Login.ForgotPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Login.SignUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Login.SplashActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Login.MainActivity"
+            android:exported="false" />
+        <activity android:name=".AdminActivity.AdminAddFoodItem"/>
+        <activity android:name=".AdminActivity.AdminEditFoodItem"/>
+        <activity
             android:name=".AdminFragment.AdminHome"
+            android:exported="false" />
+        <activity
+            android:name=".AdminActivity.AdminSetting"
+            android:exported="false" />
+        <activity
+            android:name=".Login.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,10 +47,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AdminActivity.AdminAddFoodItem"/>
-        <activity android:name=".AdminActivity.AdminEditFoodItem"/>
-        <activity android:name=".AdminActivity.AdminSetting"/>
-
     </application>
 
 </manifest>
