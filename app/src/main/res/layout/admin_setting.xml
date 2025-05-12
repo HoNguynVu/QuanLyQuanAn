@@ -17,7 +17,7 @@
         app:title="Cài đặt"
         app:titleTextColor="@color/primary_black"
         app:navigationIcon="@drawable/ic_back"
-        app:menu="@menu/menu_save_setting" />
+         />
 
     <!-- Nội dung -->
     <ScrollView
@@ -57,13 +57,13 @@
                 android:textColor="@color/primary_black" />
 
             <!-- Ngày sinh -->
-            <EditText
+            <Spinner
                 android:id="@+id/edtDob"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="🎂 Ngày sinh"
                 android:padding="16dp"
-                android:background="@drawable/edittext_log"
+                android:background="@drawable/edit_dob"
                 android:textColorHint="@color/primary_black"
                 android:textColor="@color/primary_black" />
 
@@ -79,6 +79,7 @@
                 android:layout_height="wrap_content"
                 android:text="📞 Số điện thoại"
                 android:padding="16dp"
+                android:inputType="date"
                 android:background="@drawable/edittext_log"
                 android:textColor="@color/primary_black"
                 android:textSize="16sp" />

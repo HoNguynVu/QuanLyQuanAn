@@ -1,6 +1,6 @@
 plugins {
-    id("com.android.application")
-    id("com.google.gms.google-services") // Để bật Firebase
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -13,7 +13,6 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -31,6 +30,14 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
+    viewBinding {
+        enable = true
+    }
+
+    buildFeatures {
+        dataBinding = true
+    }
 }
 
 dependencies {
@@ -39,36 +46,37 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
-    implementation("androidx.activity:activity:1.6.1")
+    implementation("androidx.cardview:cardview:1.0.0")
 
-    // Unit Test
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.ext.junit)
-    androidTestImplementation(libs.espresso.core)
+    // Navigation
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
 
-    // Firebase BoM (bắt buộc chỉ khai báo 1 lần)
+    // Image slideshow
+    implementation(libs.imageslideshow)
+
+    // Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
 
     // Firebase SDKs
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-database")
-    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation("com.google.firebase:firebase-storage")
 
+    // Glide (sử dụng phiên bản mới nhất, không trùng lặp)
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 
-    // Glide để load ảnh
-    implementation("com.github.bumptech.glide:glide:4.15.1")
-    annotationProcessor("com.github.bumptech.glide:compiler:4.15.1")
-    implementation ("androidx.cardview:cardview:1.0.0")
-    implementation("com.github.bumptech.glide:glide:4.15.1")
-    annotationProcessor("com.github.bumptech.glide:compiler:4.15.1")
-    implementation ("androidx.cardview:cardview:1.0.0")
-    implementation ("com.github.bumptech.glide:glide:4.16.0")
-    annotationProcessor ("com.github.bumptech.glide:compiler:4.16.0") // Dùng nếu bạn cần GlideApp
+    // MPAndroidChart
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
-
-    //imur
+    // OkHttp (cho imgur hoặc network)
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
-
+    // Thêm thư viện MPAndroidChart vào dự án
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    // Unit Test
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.ext.junit)
+    androidTestImplementation(libs.espresso.core)
 }
