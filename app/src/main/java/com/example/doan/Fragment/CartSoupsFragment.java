@@ -5,12 +5,15 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
+import com.example.doan.Adapter.CartAdapter;
 import com.example.doan.Adapter.HomePopularItemAdapter;
 import com.example.doan.R;
 import com.example.doan.databinding.CartSoupsFragmentBinding;
@@ -22,7 +25,7 @@ public class CartSoupsFragment extends Fragment {
     List<String> titles;
     List<String> prices;
     List<Integer> images;
-    HomePopularItemAdapter adapter;
+    CartAdapter adapter;
     private CartSoupsFragmentBinding binding;
 
     @Override
@@ -63,12 +66,9 @@ public class CartSoupsFragment extends Fragment {
         addAllTitles();
         addAllPrices();
         addAllImages();
-        adapter = new HomePopularItemAdapter(requireContext(), titles, prices, images, getActivity());
-
+        adapter = new CartAdapter(titles, prices, images);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerView.setAdapter(adapter);
-
-
-        binding.recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         return binding.getRoot();
     }
 }
