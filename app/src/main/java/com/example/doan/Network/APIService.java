@@ -28,10 +28,25 @@ public interface APIService {
             @Field("role") String role
     );
 
-
     @FormUrlEncoded
     @POST("verify_otp.php")
     Call<GenericResponse> verifyOtp(@Field("otp") String otp);
 
+    @FormUrlEncoded
+    @POST("forgot_password.php")
+    Call<GenericResponse> sendResetOtp(@Field("email") String email);
 
+    @FormUrlEncoded
+    @POST("verify_reset_otp.php")
+    Call<GenericResponse> verifyResetOtp(
+            @Field("email") String email,
+            @Field("otp") String otp
+    );
+
+    @FormUrlEncoded
+    @POST("reset_password.php")
+    Call<GenericResponse> resetPassword(
+            @Field("email") String email,
+            @Field("new_password") String newPassword
+    );
 }
