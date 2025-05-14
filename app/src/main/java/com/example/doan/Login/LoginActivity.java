@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +49,22 @@ public class LoginActivity extends AppCompatActivity {
         Button btn_login = findViewById(R.id.btn_login);
         TextView txt_sign_up = findViewById(R.id.txt_sign_up_nagivate);
         TextView txt_forgot_pass = findViewById(R.id.txt_forgot_password_navigate);
+        ImageView ivTogglePassword = findViewById(R.id.iv_toggle_password);
+        final boolean[] isPassVisible = {false};
+        ivTogglePassword.setOnClickListener(v -> {
+            if (isPassVisible[0])
+            {
+                txt_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                ivTogglePassword.setImageResource(R.drawable.ic_eye_closed);
+            }
+            else
+            {
+                txt_password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                ivTogglePassword.setImageResource(R.drawable.ic_eye_open);
+            }
+            txt_password.setSelection(txt_password.getText().length());
+            isPassVisible[0] = !isPassVisible[0];
+        });
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -106,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<LoginResponse> call, Throwable t) {
                     Toast.makeText(LoginActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_LONG).show();
-                    Log.d("loi", t.getMessage());
+                    Log.d("loi", t.getMessage() );
                 }
             });
         });
