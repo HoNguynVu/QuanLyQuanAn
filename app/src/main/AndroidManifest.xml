@@ -47,6 +47,13 @@
             android:name=".Login.OTPVerifyActivity"
             android:exported="false" />
         <activity
+            android:name=".Login.ResetPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Login.VerifyResetOtpActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".Login.LoginActivity"
             android:exported="true">
             <intent-filter>

@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="24dp"
-    android:gravity="center"
-    android:orientation="vertical">
+    android:gravity="center">
 
     <EditText
         android:id="@+id/edt_otp"
@@ -13,18 +13,14 @@
         android:hint="Nhập mã OTP"
         android:inputType="number"
         android:maxLength="6"
-        android:background="@drawable/edittext_log"
         android:padding="12dp"
-        android:layout_marginBottom="20dp"
-        android:textAlignment="center"
-        android:padding="12dp"
-         />
+        android:background="@drawable/edittext_log" />
 
     <Button
         android:id="@+id/btn_verify_otp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Xác minh"
         android:background="@drawable/bg_btn_login"
-        android:text="Xác nhận OTP" />
-
+        android:layout_marginTop="16dp" />
 </LinearLayout>
