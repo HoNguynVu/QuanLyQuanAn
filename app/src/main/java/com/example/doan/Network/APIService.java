@@ -1,5 +1,6 @@
 package com.example.doan.Network;
 
+import com.example.doan.DatabaseClass.GenericResponse;
 import com.example.doan.DatabaseClass.LoginResponse;
 import com.example.doan.DatabaseClass.User;
 import retrofit2.Call;
@@ -15,5 +16,22 @@ public interface APIService {
     @FormUrlEncoded
     @POST("login.php")
     Call<LoginResponse> login(@Field("email") String email, @Field("password") String password);
+
+    @FormUrlEncoded
+    @POST("signup.php")
+    Call<GenericResponse> register(
+            @Field("email") String email,
+            @Field("name") String name,
+            @Field("password") String password,
+            @Field("phone") String phone,
+            @Field("date_birth") String dob,
+            @Field("role") String role
+    );
+
+
+    @FormUrlEncoded
+    @POST("verify_otp.php")
+    Call<GenericResponse> verifyOtp(@Field("otp") String otp);
+
 
 }
