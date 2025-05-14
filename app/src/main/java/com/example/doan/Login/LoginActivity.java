@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.doan.AdminFragment.AdminHome;
 
+import com.example.doan.DatabaseClass.LoginResponse;
 import com.example.doan.DatabaseClass.User;
 import com.example.doan.Network.APIService;
 import com.example.doan.Network.RetrofitClient;
@@ -68,76 +70,46 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                txt_email.setError("Email không hợp lệ!");
-                return;
-            }
+            APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
+            Call<LoginResponse> call = apiService.login(email, password);
+            call.enqueue(new Callback<LoginResponse>() {
+                @Override
+                public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        LoginResponse loginResponse = response.body();
+                        if ("success".equals(loginResponse.status)) {
+                            User u = loginResponse.data;
 
-            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    if (user != null && user.isEmailVerified()) {
-                        String emailValue = user.getEmail();
+                            SharedPreferences sharedPreferences = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("username", u.name);
+                            editor.putString("email", u.email);
+                            editor.putString("phone", u.phone);
+                            editor.putString("dob", u.date_birth);
+                            editor.putString("role", u.role);
+                            editor.apply();
 
-                        // Gọi API từ PHP server để lấy thông tin user
-                        APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
-                        Call<User> call = apiService.getUserInfo(emailValue);
-                        call.enqueue(new Callback<User>() {
-                            @Override
-                            public void onResponse(Call<User> call, Response<User> response) {
-                                if (response.isSuccessful() && response.body() != null) {
-                                    User u = response.body();
-                                    SharedPreferences sharedPreferences = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
-                                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                                    editor.putString("username", u.name);
-                                    editor.putString("email", u.email);
-                                    editor.putString("phone", u.phone);
-                                    editor.putString("dob", u.date_birth);
-                                    editor.putString("role", u.role);
-                                    editor.apply();
-
-                                    Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-
-                                    if ("admin".equalsIgnoreCase(u.role)) {
-                                        startActivity(new Intent(LoginActivity.this, AdminHome.class));
-                                    } else {
-                                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                    }
-                                    finish();
-                                } else {
-                                    Toast.makeText(LoginActivity.this, "Không tìm thấy thông tin người dùng từ máy chủ.", Toast.LENGTH_SHORT).show();
-                                }
+                            if ("admin".equalsIgnoreCase(u.role)) {
+                                startActivity(new Intent(LoginActivity.this, AdminHome.class));
+                            } else {
+                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             }
+                            finish();
+                        } else {
+                            Toast.makeText(LoginActivity.this, loginResponse.message, Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Lỗi phản hồi từ server", Toast.LENGTH_SHORT).show();
+                    }
+                }
 
-                            @Override
-                            public void onFailure(Call<User> call, Throwable t) {
-                                Toast.makeText(LoginActivity.this, "Lỗi kết nối máy chủ: " + t.getMessage(), Toast.LENGTH_LONG).show();
-                            }
-                        });
-                    } else {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                        builder.setMessage("Bạn chưa xác nhận email trong lúc đăng ký. Vui lòng kiểm tra email và xác nhận trước khi đăng nhập.")
-                                .setCancelable(false)
-                                .setPositiveButton("OK", (dialog, id) -> dialog.dismiss());
-                        AlertDialog alert = builder.create();
-                        alert.show();
-                        mAuth.signOut();
-                    }
-                } else {
-                    Exception exception = task.getException();
-                    String message;
-                    if (exception instanceof FirebaseAuthInvalidUserException) {
-                        message = "Tài khoản không tồn tại. Vui lòng kiểm tra lại email!";
-                    } else if (exception instanceof FirebaseAuthInvalidCredentialsException) {
-                        message = "Email hoặc mật khẩu không đúng. Vui lòng thử lại!";
-                    } else if (exception instanceof FirebaseAuthException) {
-                        message = "Lỗi xác thực: " + exception.getLocalizedMessage();
-                    } else {
-                        message = "Đăng nhập thất bại: " + exception.getLocalizedMessage();
-                    }
-                    Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+                @Override
+                public void onFailure(Call<LoginResponse> call, Throwable t) {
+                    Toast.makeText(LoginActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                    Log.d("loi", t.getMessage());
                 }
             });
         });
+
     }
 }
