@@ -2,12 +2,14 @@ package com.example.doan.Login;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -44,6 +46,35 @@ public class SignUpActivity extends AppCompatActivity {
         EditText txt_date_birth = findViewById(R.id.txt_date_birth_sign_up);
         EditText txt_password = findViewById(R.id.txt_password_sign_up);
         EditText txt_confirm_password = findViewById(R.id.txt_confirm_password_sign_up);
+        ImageView ivTogglePassword = findViewById(R.id.iv_toggle_password);
+        ImageView ivToggleConfirmPassword = findViewById(R.id.iv_toggle_confirm_password);
+
+        final boolean[] isPassVisible = {false};
+        final boolean[] isConfirmVisible = {false};
+
+        ivTogglePassword.setOnClickListener(v -> {
+            if (isPassVisible[0]) {
+                txt_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                ivTogglePassword.setImageResource(R.drawable.ic_eye_closed);
+            } else {
+                txt_password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                ivTogglePassword.setImageResource(R.drawable.ic_eye_open);
+            }
+            txt_password.setSelection(txt_password.getText().length());
+            isPassVisible[0] = !isPassVisible[0];
+        });
+
+        ivToggleConfirmPassword.setOnClickListener(v -> {
+            if (isConfirmVisible[0]) {
+                txt_confirm_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                ivToggleConfirmPassword.setImageResource(R.drawable.ic_eye_closed);
+            } else {
+                txt_confirm_password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                ivToggleConfirmPassword.setImageResource(R.drawable.ic_eye_open);
+            }
+            txt_confirm_password.setSelection(txt_confirm_password.getText().length());
+            isConfirmVisible[0] = !isConfirmVisible[0];
+        });
 
         ImageButton btn_back = findViewById(R.id.btn_arrow_back);
         btn_back.setOnClickListener(v -> {
