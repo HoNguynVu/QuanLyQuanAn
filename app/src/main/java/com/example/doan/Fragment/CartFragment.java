@@ -17,7 +17,6 @@ import com.example.doan.Adapter.CartAdapter;
 import com.example.doan.Adapter.HomePopularItemAdapter;
 import com.example.doan.R;
 import com.example.doan.databinding.CartFragmentBinding;
-import com.example.doan.databinding.CartSoupsFragmentBinding;
 
 import java.util.ArrayList;
 import java.util.List;
