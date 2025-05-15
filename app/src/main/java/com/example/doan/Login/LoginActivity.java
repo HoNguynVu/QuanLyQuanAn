@@ -1,5 +1,6 @@
 package com.example.doan.Login;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,6 +9,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,6 +74,11 @@ public class LoginActivity extends AppCompatActivity {
                 txt_email.setError("Email không hợp lệ!");
                 return;
             }
+            ProgressBar progressBar = findViewById(R.id.progressBar);
+            progressBar.setVisibility(View.VISIBLE);
+            View loadingOverlay = findViewById(R.id.loadingOverlay);
+            loadingOverlay.setVisibility(View.VISIBLE);
+
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(task -> {
@@ -101,7 +108,6 @@ public class LoginActivity extends AppCompatActivity {
                                             editor.putString("role", role); // Lưu role vào SharedPreferences
                                             editor.apply();
 
-                                            Toast.makeText(this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
                                             // Kiểm tra Role và thực hiện các hành động phù hợp
                                             if ("admin".equals(role)) {
                                                 // Nếu là admin, chuyển đến màn hình admin
@@ -126,6 +132,8 @@ public class LoginActivity extends AppCompatActivity {
                                 builder.setMessage("Bạn chưa xác nhận email trong lúc đăng ký. Vui lòng kiểm tra email và xác nhận trước khi đăng nhập.")
                                         .setCancelable(false)
                                         .setPositiveButton("OK", (dialog, id) -> dialog.dismiss());
+                                loadingOverlay.setVisibility(View.GONE);
+                                progressBar.setVisibility(View.GONE);
 
                                 AlertDialog alert = builder.create();
                                 alert.show();
