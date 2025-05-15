@@ -5,28 +5,26 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
-import com.example.doan.Adapter.CartAdapter;
 import com.example.doan.Adapter.HomePopularItemAdapter;
 import com.example.doan.R;
-import com.example.doan.databinding.CartSoupsFragmentBinding;
+import com.example.doan.databinding.ShoppingAFragmentBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CartSoupsFragment extends Fragment {
+
+public class ShoppingAFragment extends Fragment {
     List<String> titles;
     List<String> prices;
     List<Integer> images;
-    CartAdapter adapter;
-    private CartSoupsFragmentBinding binding;
+    HomePopularItemAdapter adapter;
+    private ShoppingAFragmentBinding binding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,14 +59,17 @@ public class CartSoupsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = CartSoupsFragmentBinding.inflate(inflater, container, false);
+        binding = ShoppingAFragmentBinding.inflate(inflater, container, false);
 
         addAllTitles();
         addAllPrices();
         addAllImages();
-        adapter = new CartAdapter(titles, prices, images);
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new HomePopularItemAdapter(requireContext(), titles, prices, images, getActivity());
+
         binding.recyclerView.setAdapter(adapter);
+        binding.recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         return binding.getRoot();
     }
+
+
 }

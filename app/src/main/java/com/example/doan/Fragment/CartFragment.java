@@ -3,60 +3,73 @@ package com.example.doan.Fragment;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager2.widget.ViewPager2;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 
-import com.example.doan.Adapter.CartPagerAdapter;
+import com.example.doan.Adapter.CartAdapter;
+import com.example.doan.Adapter.HomePopularItemAdapter;
 import com.example.doan.R;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
+import com.example.doan.databinding.CartFragmentBinding;
+import com.example.doan.databinding.CartSoupsFragmentBinding;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CartFragment extends Fragment {
-    TabLayout tabLayout;
-    ViewPager2 viewPager2;
+    List<String> titles;
+    List<String> prices;
+    List<Integer> images;
+    CartAdapter adapter;
+    private CartFragmentBinding binding;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.cart_fragment, container, false);
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+    }
+
+    private void addAllTitles() {
+        titles = new ArrayList<>();
+        titles.add("Pizza");
+        titles.add("Burger");
+        titles.add("Hotdog");
+        titles.add("Drink");
+    }
+
+    private void addAllPrices() {
+        prices = new ArrayList<>();
+        prices.add("10$");
+        prices.add("10$");
+        prices.add("10$");
+        prices.add("10$");
+    }
+
+    private void addAllImages() {
+        images = new ArrayList<>();
+        images.add(R.drawable.soup_celery);
+        images.add(R.drawable.soup_dimsum);
+        images.add(R.drawable.kale_soup);
+        images.add(R.drawable.soup_mushroom);
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        binding = CartFragmentBinding.inflate(inflater, container, false);
 
-        tabLayout = view.findViewById(R.id.menu_container);
-        viewPager2 = view.findViewById(R.id.view_pager);
-
-        CartPagerAdapter myViewPagerAdapter = new CartPagerAdapter(this);
-        viewPager2.setAdapter(myViewPagerAdapter);
-        new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> {
-            View tabView = LayoutInflater.from(getContext()).inflate(R.layout.cart_tablayout, null);
-            ImageView tabIcon = tabView.findViewById(R.id.tabIcon);
-            TextView tabText = tabView.findViewById(R.id.tabText);
-            switch (position) {
-                case 1:
-                    tabText.setText("A");
-                    tabIcon.setImageResource(R.drawable.ic_a);
-                    break;
-                case 2:
-                    tabText.setText("Drinks");
-                    tabIcon.setImageResource(R.drawable.ic_b);
-                    break;
-                default:
-                    tabText.setText("Soups");
-                    tabIcon.setImageResource(R.drawable.ic_soups);
-            }
-
-            tab.setCustomView(tabView);
-        }).attach();
+        addAllTitles();
+        addAllPrices();
+        addAllImages();
+        adapter = new CartAdapter(titles, prices, images);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.recyclerView.setAdapter(adapter);
+        return binding.getRoot();
     }
-
 }
