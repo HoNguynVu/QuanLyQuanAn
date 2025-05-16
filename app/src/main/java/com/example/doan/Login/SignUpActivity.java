@@ -2,28 +2,33 @@ package com.example.doan.Login;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.doan.Database.User;
+import com.example.doan.Network.APIService;
+import com.example.doan.Network.RetrofitClient;
+import com.example.doan.DatabaseClass.GenericResponse;
 import com.example.doan.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -41,13 +46,34 @@ public class SignUpActivity extends AppCompatActivity {
         EditText txt_date_birth = findViewById(R.id.txt_date_birth_sign_up);
         EditText txt_password = findViewById(R.id.txt_password_sign_up);
         EditText txt_confirm_password = findViewById(R.id.txt_confirm_password_sign_up);
-        txt_email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    txt_email.setSelection(0);
-                }
+        ImageView ivTogglePassword = findViewById(R.id.iv_toggle_password);
+        ImageView ivToggleConfirmPassword = findViewById(R.id.iv_toggle_confirm_password);
+
+        final boolean[] isPassVisible = {false};
+        final boolean[] isConfirmVisible = {false};
+
+        ivTogglePassword.setOnClickListener(v -> {
+            if (isPassVisible[0]) {
+                txt_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                ivTogglePassword.setImageResource(R.drawable.ic_eye_closed);
+            } else {
+                txt_password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                ivTogglePassword.setImageResource(R.drawable.ic_eye_open);
             }
+            txt_password.setSelection(txt_password.getText().length());
+            isPassVisible[0] = !isPassVisible[0];
+        });
+
+        ivToggleConfirmPassword.setOnClickListener(v -> {
+            if (isConfirmVisible[0]) {
+                txt_confirm_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                ivToggleConfirmPassword.setImageResource(R.drawable.ic_eye_closed);
+            } else {
+                txt_confirm_password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                ivToggleConfirmPassword.setImageResource(R.drawable.ic_eye_open);
+            }
+            txt_confirm_password.setSelection(txt_confirm_password.getText().length());
+            isConfirmVisible[0] = !isConfirmVisible[0];
         });
 
         ImageButton btn_back = findViewById(R.id.btn_arrow_back);
@@ -77,69 +103,59 @@ public class SignUpActivity extends AppCompatActivity {
                 txt_confirm_password.setError("Mật khẩu xác nhận không khớp");
                 return;
             }
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy", Locale.getDefault());
-            sdf.setLenient(false); // không chấp nhận ngày không hợp lệ
+            SimpleDateFormat inputFormat = new SimpleDateFormat("dd/MM/yy", Locale.getDefault());
+            SimpleDateFormat mysqlFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
             try {
-                Date parsedDate = sdf.parse(dateBirth); // thử parse ngày
+                Date parsedDate = inputFormat.parse(dateBirth);
+                dateBirth = mysqlFormat.format(parsedDate); // ✅ Gán lại dateBirth theo định dạng MySQL
             } catch (ParseException e) {
-                txt_date_birth.setError("Ngày sinh không đúng định dạng dd/MM/yy");
+                txt_date_birth.setError("Ngày sinh không hợp lệ (dd/MM/yy)");
                 return;
             }
+
 
             if (password.length() < 9 || !password.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{9,}$")) {
                 txt_password.setError("Mật khẩu phải có ít nhất 9 ký tự, bao gồm chữ và số");
                 return;
             }
-            FirebaseAuth mAuth = FirebaseAuth.getInstance();
-            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Users");
 
-            mAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            FirebaseUser firebaseUser = mAuth.getCurrentUser();
+            APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
+            Call<GenericResponse> call = apiService.register(email, name, password, phone, dateBirth, "User");
 
-                            // Gửi email xác nhận
-                            firebaseUser.sendEmailVerification()
-                                    .addOnSuccessListener(unused -> {
-                                        // Lưu thông tin user vào Database
-                                        String uid = firebaseUser.getUid();
-                                        User user = new User(email, name, phone, dateBirth, password);
+            call.enqueue(new Callback<GenericResponse>() {
+                @Override
+                public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
+                    Log.d("RESPONSE_BODY", new Gson().toJson(response.body()));
 
-                                        mDatabase.child(uid).setValue(user)
-                                                .addOnSuccessListener(dataSnapshot -> {
-                                                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                                                    builder.setMessage("Chúng tôi đã gửi yêu cầu xác nhận email đến email của bạn. Vui lòng kiểm tra email để xác thực email của bạn.")
-                                                            .setCancelable(false)
-                                                            .setPositiveButton("OK", (dialog, id) -> {
-                                                                // Đóng dialog khi người dùng nhấn OK
-                                                                dialog.dismiss();
-
-                                                                // Đăng xuất người dùng sau khi gửi email xác nhận
-                                                                mAuth.signOut();
-
-                                                                // Chuyển về màn hình Login
-                                                                Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
-                                                                startActivity(intent);
-                                                                finish();  // Đảm bảo màn hình SignUp không còn trên stack
-                                                            });
-
-                                                    AlertDialog alert = builder.create();
-                                                    alert.show();
-                                                })
-                                                .addOnFailureListener(e -> {
-                                                    Toast.makeText(this, "Lỗi lưu thông tin: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                                });
-                                    })
-                                    .addOnFailureListener(e -> {
-                                        Toast.makeText(this, "Không thể gửi email xác nhận: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                    });
+                    if (response.isSuccessful() && response.body() != null) {
+                        GenericResponse res = response.body();
+                        if ("otp_sent".equals(res.status)) {
+                            Toast.makeText(SignUpActivity.this, "OTP đã gửi, kiểm tra email!", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(SignUpActivity.this, OTPVerifyActivity.class);
+                            startActivity(intent);
+                        } else if ("error".equals(res.status) && res.message.toLowerCase().contains("đã tồn tại")) {
+                            Toast.makeText(SignUpActivity.this, res.message, Toast.LENGTH_SHORT).show();
+                            if (res.message.toLowerCase().contains("email")) {
+                                txt_email.setError("Email đã được đăng ký");
+                            }
+                            if (res.message.toLowerCase().contains("sđt") || res.message.toLowerCase().contains("số điện thoại")) {
+                                txt_phone.setError("SĐT đã được đăng ký");
+                            }
                         } else {
-                            Toast.makeText(this, "Đăng ký thất bại: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignUpActivity.this, res.message, Toast.LENGTH_SHORT).show();
                         }
-                    });
+                    } else {
+                        Toast.makeText(SignUpActivity.this, "Lỗi phản hồi từ máy chủ", Toast.LENGTH_SHORT).show();
+                    }
+                }
 
+                @Override
+                public void onFailure(Call<GenericResponse> call, Throwable t) {
+                    Toast.makeText(SignUpActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d("TAGzs", t.getMessage());
+                }
+            });
         });
-
     }
 }

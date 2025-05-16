@@ -2,6 +2,7 @@ package com.example.doan.Login;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
@@ -9,61 +10,81 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.doan.DatabaseClass.GenericResponse;
+import com.example.doan.Network.APIService;
+import com.example.doan.Network.RetrofitClient;
 import com.example.doan.R;
-import com.google.firebase.auth.FirebaseAuth;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
+
+    EditText txtEmail;
+    Button btnSendOtp;
+    ImageButton btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_forgot_password);
-        EditText txt_email = findViewById(R.id.txt_email_forgot_password);
-        Button btn_lg = findViewById(R.id.btn_fgpass);
 
-        ImageButton btn_back = findViewById(R.id.btn_arrow_back_FG);
-        btn_back.setOnClickListener(v -> {
-            Intent intent = new Intent(ForgotPasswordActivity.this, LoginActivity.class);
-            startActivity(intent);
+        txtEmail = findViewById(R.id.txt_email_forgot_password);
+        btnSendOtp = findViewById(R.id.btn_fgpass);
+        btnBack = findViewById(R.id.btn_arrow_back_FG);
+
+        btnBack.setOnClickListener(v -> {
+            startActivity(new Intent(ForgotPasswordActivity.this, LoginActivity.class));
             finish();
         });
-        btn_lg.setOnClickListener(v -> {
-            String email = txt_email.getText().toString().trim();
+
+        btnSendOtp.setOnClickListener(v -> {
+            String email = txtEmail.getText().toString().trim();
 
             if (email.isEmpty()) {
-                txt_email.setError("Vui lòng nhập email đã đăng ký");
+                txtEmail.setError("Vui lòng nhập email đã đăng ký");
                 return;
             }
 
             if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                Toast.makeText(this, "Email không hợp lệ", Toast.LENGTH_SHORT).show();
+                txtEmail.setError("Email không hợp lệ");
                 return;
             }
 
-            // Gửi yêu cầu thay đổi mật khẩu qua email
-            FirebaseAuth.getInstance().sendPasswordResetEmail(email)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                            builder.setMessage("Đã gửi yêu cầu thay đổi mật khẩu đến email của bạn . Vui lòng truy cập email của bạn để thay đổi mật khẩu!")
-                                    .setCancelable(false)
-                                    .setPositiveButton("OK", (dialog, id) -> {
-                                        dialog.dismiss();
-                                    });
+            APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
+            Call<GenericResponse> call = apiService.sendResetOtp(email);
 
-                            AlertDialog alert = builder.create();
-                            alert.show();
+            call.enqueue(new Callback<GenericResponse>() {
+                @Override
+                public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        GenericResponse res = response.body();
+                        if ("otp_sent".equals(res.status)) {
+                            Toast.makeText(ForgotPasswordActivity.this, "Mã OTP đã được gửi!", Toast.LENGTH_SHORT).show();
+
+                            // Chuyển sang màn hình nhập OTP
+                            Intent intent = new Intent(ForgotPasswordActivity.this, VerifyResetOtpActivity.class);
+                            intent.putExtra("email", email);
+                            startActivity(intent);
                             finish();
                         } else {
-                            // Nếu có lỗi xảy ra
-                            Toast.makeText(this, "Có lỗi xảy ra. Vui lòng thử lại.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ForgotPasswordActivity.this, res.message, Toast.LENGTH_SHORT).show();
                         }
-                    });
-        });
+                    } else {
+                        Toast.makeText(ForgotPasswordActivity.this, "Lỗi phản hồi từ máy chủ", Toast.LENGTH_SHORT).show();
 
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<GenericResponse> call, Throwable t) {
+                    Toast.makeText(ForgotPasswordActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
     }
 }
