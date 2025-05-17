@@ -41,7 +41,7 @@ public class CartFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = CartFragmentBinding.inflate(inflater, container, false);
 
-        adapter = new CartAdapter(cartList);
+        adapter = new CartAdapter(cartList, requireContext());
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerView.setAdapter(adapter);
         return binding.getRoot();

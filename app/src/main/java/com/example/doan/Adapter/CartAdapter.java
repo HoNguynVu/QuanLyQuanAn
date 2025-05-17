@@ -1,5 +1,7 @@
 package com.example.doan.Adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,18 +11,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doan.Item;
 import com.example.doan.databinding.CartItemBinding;
+import com.example.doan.detailsActivity;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder> {
     private List<Item> cartList;
+    private final Context requireContext;
+    private OnClickListener itemClickListener;
+
     private final int[] itemQuantities;
 
-    public CartAdapter(List<Item> cartList) {
+    public CartAdapter(List<Item> cartList, Context requireContext) {
         this.cartList = cartList;
 
         itemQuantities = new int[cartList.size()];
+        this.requireContext = requireContext;
         Arrays.fill(itemQuantities, 1);
     }
 
@@ -52,14 +59,32 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         public CartViewHolder(CartItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+
+            binding.getRoot().setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        if(itemClickListener != null)
+                            itemClickListener.onItemClick(position);
+                    }
+
+                    Intent intent = new Intent(requireContext, detailsActivity.class);
+                    intent.putExtra("MenuItemName", cartList.get(position).getItemName());
+                    intent.putExtra("MenuItemPrice", cartList.get(position).getItemPrice());
+                    intent.putExtra("MenuItemImage", cartList.get(position).getItemImage());
+                    requireContext.startActivity(intent);
+                }
+            });
         }
 
         public void bind(int position) {
-
             binding.tvName.setText(cartList.get(position).getItemName());
             binding.tvPrice.setText(cartList.get(position).getItemPrice());
             binding.imageView.setImageResource(cartList.get(position).getItemImage());
             binding.cartItemQuantity.setText(String.valueOf(itemQuantities[position]));
+
             binding.btnMinus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -104,4 +129,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             notifyItemRangeChanged(position, cartList.size());
         }
     }
+
+    public interface OnClickListener {
+        void onItemClick(int position);
+    }
+
+
 }

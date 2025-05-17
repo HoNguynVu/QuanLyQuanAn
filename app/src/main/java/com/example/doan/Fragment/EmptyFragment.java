@@ -61,7 +61,7 @@ public class EmptyFragment extends Fragment {
             }
         });
 
-        adapter = new CartAdapter(cartList);
+        adapter = new CartAdapter(cartList, requireContext());
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerView.setAdapter(adapter);
 
