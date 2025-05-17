@@ -5,21 +5,24 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.doan.Network.APIService;
+import com.example.doan.Network.RetrofitClient;
 import com.example.doan.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.HashMap;
-import java.util.Map;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MyProfileActivity extends AppCompatActivity {
+
+    private EditText edtName, edtEmail, edtPhone, edtbirth;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,58 +30,73 @@ public class MyProfileActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_my_profile);
 
-        EditText edtName = findViewById(R.id.edtName);
-        EditText edtEmail = findViewById(R.id.edtEmail);
-        EditText edtPhone = findViewById(R.id.edtPhone);
-        EditText edtbirth = findViewById(R.id.edtbirth);
+        initViews();
+        loadIntentData();
+        setupListeners();
+    }
 
+    private void initViews() {
+        edtName = findViewById(R.id.edtName);
+        edtEmail = findViewById(R.id.edtEmail);
+        edtPhone = findViewById(R.id.edtPhone);
+        edtbirth = findViewById(R.id.edtbirth);
+
+        sharedPreferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
+    }
+
+    private void loadIntentData() {
         Intent intent = getIntent();
-        String Name = intent.getStringExtra("username");
-        String Email = intent.getStringExtra("email");
-        String Phone = intent.getStringExtra("phone");
-        String Birth = intent.getStringExtra("dob");
+        edtName.setText(intent.getStringExtra("username"));
+        edtEmail.setText(intent.getStringExtra("email"));
+        edtPhone.setText(intent.getStringExtra("phone"));
+        edtbirth.setText(intent.getStringExtra("dob"));
+    }
 
-        edtName.setText(Name);
-        edtEmail.setText(Email);
-        edtPhone.setText(Phone);
-        edtbirth.setText(Birth);
-
+    private void setupListeners() {
         Button btnSave = findViewById(R.id.btnSave);
-        btnSave.setOnClickListener(view -> {
-            // Lấy dữ liệu người dùng nhập
-            String newName = edtName.getText().toString().trim();
-            String newPhone = edtPhone.getText().toString().trim();
-            String newDob = edtbirth.getText().toString().trim();
-            // Cập nhật SharedPreferences
-            SharedPreferences sharedPreferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("username", newName);
-            editor.putString("phone", newPhone);
-            editor.putString("dob", newDob);
-            editor.apply();
+        btnSave.setOnClickListener(view -> updateUser());
 
-            // Cập nhật Firebase
-            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-            if (currentUser != null) {
-                String userId = currentUser.getUid();
-                DatabaseReference database = FirebaseDatabase.getInstance().getReference("Users");
+        ImageView imgBack = findViewById(R.id.imgBack);
+        imgBack.setOnClickListener(view -> finish());
+    }
 
-                Map<String, Object> updates = new HashMap<>();
-                updates.put("name", newName);
-                updates.put("phone", newPhone);
-                updates.put("dateBirth", newDob);
+    private void updateUser() {
+        String newName = edtName.getText().toString().trim();
+        String newPhone = edtPhone.getText().toString().trim();
+        String newDob = edtbirth.getText().toString().trim();
+        String email = sharedPreferences.getString("email", null);
 
-                database.child(userId).updateChildren(updates)
-                        .addOnSuccessListener(unused -> {
-                            Toast.makeText(this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
-                            finish();
-                        })
-                        .addOnFailureListener(e -> {
-                            Toast.makeText(this, "Lỗi cập nhật Firebase: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        });
-            } else {
-                Toast.makeText(this, "Không tìm thấy người dùng!", Toast.LENGTH_SHORT).show();
+        if (email == null || email.isEmpty()) {
+            Toast.makeText(this, "Không tìm thấy email người dùng!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
+        Call<String> call = apiService.updateUser(email, newName, newPhone, newDob);
+
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.isSuccessful() && "success".equalsIgnoreCase(response.body().trim())) {
+                    // Lưu lại SharedPreferences
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("username", newName);
+                    editor.putString("phone", newPhone);
+                    editor.putString("dob", newDob);
+                    editor.apply();
+
+                    Toast.makeText(MyProfileActivity.this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
+                    setResult(RESULT_OK);  // để ProfileFragment biết reload
+                    finish();
+                } else {
+                    Toast.makeText(MyProfileActivity.this, "Cập nhật thất bại!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(MyProfileActivity.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-    };
+    }
 }
