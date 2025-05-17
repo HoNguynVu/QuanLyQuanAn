@@ -10,6 +10,15 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal">
 
+        <!-- Nút back -->
+        <ImageView
+            android:id="@+id/imgBack"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_chevron_left"
+            android:contentDescription="Back"
+            android:layout_gravity="start"
+            android:layout_marginBottom="16dp" />
         <!-- Avatar -->
         <ImageView
             android:id="@+id/imgAvatar"
