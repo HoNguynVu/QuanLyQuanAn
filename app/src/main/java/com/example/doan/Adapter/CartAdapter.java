@@ -7,23 +7,20 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.doan.Item;
 import com.example.doan.databinding.CartItemBinding;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder> {
-    private final List<String> cartItems;
-    private final List<String> cartItemPrice;
-    private final List<Integer> cartImage;
+    private List<Item> cartList;
     private final int[] itemQuantities;
 
-    public CartAdapter(List<String> cartItems, List<String> cartItemPrice, List<Integer> cartImage) {
-        this.cartItems = cartItems;
-        this.cartItemPrice = cartItemPrice;
-        this.cartImage = cartImage;
+    public CartAdapter(List<Item> cartList) {
+        this.cartList = cartList;
 
-        itemQuantities = new int[cartItems.size()];
+        itemQuantities = new int[cartList.size()];
         Arrays.fill(itemQuantities, 1);
     }
 
@@ -41,7 +38,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
     @Override
     public int getItemCount() {
-        return cartItems.size();
+        return cartList.size();
     }
 
     public class CartViewHolder extends RecyclerView.ViewHolder {
@@ -53,9 +50,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         }
 
         public void bind(int position) {
-            binding.tvName.setText(cartItems.get(position));
-            binding.tvPrice.setText(cartItemPrice.get(position));
-            binding.imageView.setImageResource(cartImage.get(position));
+
+            binding.tvName.setText(cartList.get(position).getItemName());
+            binding.tvPrice.setText(cartList.get(position).getItemPrice());
+            binding.imageView.setImageResource(cartList.get(position).getItemImage());
             binding.cartItemQuantity.setText(String.valueOf(itemQuantities[position]));
             binding.btnMinus.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -96,11 +94,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
 
         private void deleteItem(int position) {
-            cartItems.remove(position);
-            cartImage.remove(position);
-            cartItemPrice.remove(position);
+            cartList.remove(position);
             notifyItemRemoved(position);
-            notifyItemRangeChanged(position, cartItems.size());
+            notifyItemRangeChanged(position, cartList.size());
         }
     }
 }
