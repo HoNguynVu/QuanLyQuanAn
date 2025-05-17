@@ -24,6 +24,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         Arrays.fill(itemQuantities, 1);
     }
 
+    public void setFilteredList(List<Item> filteredList) {
+        this.cartList = filteredList;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public CartViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

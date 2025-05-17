@@ -29,7 +29,12 @@ public class EmptyFragment extends Fragment {
     private FragmentEmptyBinding binding;
     private CartAdapter adapter;
 
-    List<Item> cartList;
+    List<Item> cartList = List.of(
+            new Item("Pizza", "10$", R.drawable.soup_celery),
+            new Item("Burger", "10$", R.drawable.soup_dimsum),
+            new Item("Hotdog", "10$", R.drawable.kale_soup),
+            new Item("Drink", "10$", R.drawable.soup_mushroom)
+    );
     List<Item> filteredList;
 
     @Override
@@ -43,18 +48,7 @@ public class EmptyFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentEmptyBinding.inflate(inflater, container, false);
 
-        //adapter = new CartAdapter(cartList);
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.recyclerView.setAdapter(adapter);
-
-        //setupSearchView();
-
-        return binding.getRoot();
-    }
-
-    private void setupSearchView() {
         binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -62,25 +56,31 @@ public class EmptyFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                filterMenuItems(newText);
+                filteredMenu(newText);
                 return true;
             }
         });
+
+        adapter = new CartAdapter(cartList);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.recyclerView.setAdapter(adapter);
+
+        return binding.getRoot();
     }
 
-    private void filterMenuItems(String query) {
+    private void filteredMenu(String newText) {
         filteredList = new ArrayList<>();
-
-        for(Item item : cartList){
-            if(item.getItemName().toLowerCase().contains(query.toLowerCase())) {
+        for (Item item : cartList) {
+            if (item.getItemName().toLowerCase().contains(newText.toLowerCase())) {
                 filteredList.add(item);
             }
         }
 
-/*        if(filteredList.isEmpty()){
-            Toast.makeText(requireContext(), "No items found", Toast.LENGTH_SHORT).show();
+        if(filteredList.isEmpty()) {
+            Toast.makeText(getContext(), "No Data Found", Toast.LENGTH_SHORT).show();
         } else {
             adapter.setFilteredList(filteredList);
-        }*/
+        }
     }
+
 }
