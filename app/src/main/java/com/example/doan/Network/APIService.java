@@ -126,8 +126,9 @@ public interface APIService {
             @Field("newPassword") String newPassword
     );
 
-    @GET("get_orders_by_user.php")
-    Call<List<Order>> getOrdersByUser(@Query("email") String email);
+    @FormUrlEncoded
+    @POST("get_orders_by_user.php")
+    Call<List<Order>> getOrdersByUser(@Field("email") String email);
 
     @FormUrlEncoded
     @POST("update_user.php")
