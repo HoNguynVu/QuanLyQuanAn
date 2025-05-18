@@ -35,40 +35,42 @@ public class VerifyResetOtpActivity extends AppCompatActivity {
 
         email = getIntent().getStringExtra("email");
 
-        btnVerify.setOnClickListener(v -> {
-            String otp = edtOtp.getText().toString().trim();
+        btnVerify.setOnClickListener(v -> verifyOtp());
+    }
+    public void verifyOtp()
+    {
+        String otp = edtOtp.getText().toString().trim();
 
-            if (otp.isEmpty()) {
-                edtOtp.setError("Vui lòng nhập mã OTP");
-                return;
+        if (otp.isEmpty()) {
+            edtOtp.setError("Vui lòng nhập mã OTP");
+            return;
+        }
+
+        APIService api = RetrofitClient.getRetrofitInstance().create(APIService.class);
+        Call<GenericResponse> call = api.verifyResetOtp(email, otp);
+
+        call.enqueue(new Callback<GenericResponse>() {
+            @Override
+            public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    GenericResponse res = response.body();
+                    Toast.makeText(VerifyResetOtpActivity.this, res.message, Toast.LENGTH_SHORT).show();
+
+                    if ("success".equals(res.status)) {
+                        Intent intent = new Intent(VerifyResetOtpActivity.this, ResetPasswordActivity.class);
+                        intent.putExtra("email", email);
+                        startActivity(intent);
+                        finish();
+                    }
+                } else {
+                    Toast.makeText(VerifyResetOtpActivity.this, "Lỗi xác minh", Toast.LENGTH_SHORT).show();
+                }
             }
 
-            APIService api = RetrofitClient.getRetrofitInstance().create(APIService.class);
-            Call<GenericResponse> call = api.verifyResetOtp(email, otp);
-
-            call.enqueue(new Callback<GenericResponse>() {
-                @Override
-                public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        GenericResponse res = response.body();
-                        Toast.makeText(VerifyResetOtpActivity.this, res.message, Toast.LENGTH_SHORT).show();
-
-                        if ("success".equals(res.status)) {
-                            Intent intent = new Intent(VerifyResetOtpActivity.this, ResetPasswordActivity.class);
-                            intent.putExtra("email", email);
-                            startActivity(intent);
-                            finish();
-                        }
-                    } else {
-                        Toast.makeText(VerifyResetOtpActivity.this, "Lỗi xác minh", Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<GenericResponse> call, Throwable t) {
-                    Toast.makeText(VerifyResetOtpActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
+            @Override
+            public void onFailure(Call<GenericResponse> call, Throwable t) {
+                Toast.makeText(VerifyResetOtpActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         });
     }
 }

@@ -42,49 +42,52 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             finish();
         });
 
-        btnSendOtp.setOnClickListener(v -> {
-            String email = txtEmail.getText().toString().trim();
+        btnSendOtp.setOnClickListener(v ->sendResetOtp());
+    }
 
-            if (email.isEmpty()) {
-                txtEmail.setError("Vui lòng nhập email đã đăng ký");
-                return;
-            }
+    public void sendResetOtp()
+    {
+        String email = txtEmail.getText().toString().trim();
 
-            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                txtEmail.setError("Email không hợp lệ");
-                return;
-            }
+        if (email.isEmpty()) {
+            txtEmail.setError("Vui lòng nhập email đã đăng ký");
+            return;
+        }
 
-            APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
-            Call<GenericResponse> call = apiService.sendResetOtp(email);
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            txtEmail.setError("Email không hợp lệ");
+            return;
+        }
 
-            call.enqueue(new Callback<GenericResponse>() {
-                @Override
-                public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        GenericResponse res = response.body();
-                        if ("otp_sent".equals(res.status)) {
-                            Toast.makeText(ForgotPasswordActivity.this, "Mã OTP đã được gửi!", Toast.LENGTH_SHORT).show();
+        APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
+        Call<GenericResponse> call = apiService.sendResetOtp(email);
 
-                            // Chuyển sang màn hình nhập OTP
-                            Intent intent = new Intent(ForgotPasswordActivity.this, VerifyResetOtpActivity.class);
-                            intent.putExtra("email", email);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            Toast.makeText(ForgotPasswordActivity.this, res.message, Toast.LENGTH_SHORT).show();
-                        }
+        call.enqueue(new Callback<GenericResponse>() {
+            @Override
+            public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    GenericResponse res = response.body();
+                    if ("otp_sent".equals(res.status)) {
+                        Toast.makeText(ForgotPasswordActivity.this, "Mã OTP đã được gửi!", Toast.LENGTH_SHORT).show();
+
+                        // Chuyển sang màn hình nhập OTP
+                        Intent intent = new Intent(ForgotPasswordActivity.this, VerifyResetOtpActivity.class);
+                        intent.putExtra("email", email);
+                        startActivity(intent);
+                        finish();
                     } else {
-                        Toast.makeText(ForgotPasswordActivity.this, "Lỗi phản hồi từ máy chủ", Toast.LENGTH_SHORT).show();
-
+                        Toast.makeText(ForgotPasswordActivity.this, res.message, Toast.LENGTH_SHORT).show();
                     }
-                }
+                } else {
+                    Toast.makeText(ForgotPasswordActivity.this, "Lỗi phản hồi từ máy chủ", Toast.LENGTH_SHORT).show();
 
-                @Override
-                public void onFailure(Call<GenericResponse> call, Throwable t) {
-                    Toast.makeText(ForgotPasswordActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-            });
+            }
+
+            @Override
+            public void onFailure(Call<GenericResponse> call, Throwable t) {
+                Toast.makeText(ForgotPasswordActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         });
     }
 }

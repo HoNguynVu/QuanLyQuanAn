@@ -60,7 +60,8 @@ public class AdminMenuFragment extends Fragment {
         cardThucUong.setOnClickListener(v -> openCategory("Thức uống"));
     }
 
-    private void openCategory(String categoryName) {
+    private void openCategory(String categoryName) //thay the fragment hien tai bang 1 activity moi
+    {
         if (getActivity() != null) { // an toàn
             FoodByCategory fragment = new FoodByCategory();
             Bundle bundle = new Bundle();
