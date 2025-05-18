@@ -79,4 +79,13 @@ public interface APIService {
             @Field("phone") String phone,
             @Field("dob") String dob
     );
+
+    @FormUrlEncoded
+    @POST("change_password.php")
+    Call<String> changePassword(
+            @Field("email") String email,
+            @Field("currentPassword") String currentPassword,
+            @Field("newPassword") String newPassword
+    );
+
 }
