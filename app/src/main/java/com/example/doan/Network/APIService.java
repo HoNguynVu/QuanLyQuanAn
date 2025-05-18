@@ -118,5 +118,23 @@ public interface APIService {
             @Field("image_url") String imageUrl
     );
 
+    @FormUrlEncoded
+    @POST("change_password.php")
+    Call<String> changePassword(
+            @Field("email") String email,
+            @Field("currentPassword") String currentPassword,
+            @Field("newPassword") String newPassword
+    );
 
+    @GET("get_orders_by_user.php")
+    Call<List<Order>> getOrdersByUser(@Query("email") String email);
+
+    @FormUrlEncoded
+    @POST("update_user.php")
+    Call<String> updateUser(
+            @Field("email") String email,
+            @Field("name") String name,
+            @Field("phone") String phone,
+            @Field("dob") String dob
+    );
 }
