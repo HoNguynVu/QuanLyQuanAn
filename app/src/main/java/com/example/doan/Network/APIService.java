@@ -94,4 +94,8 @@ public interface APIService {
     Call<List<Order>> getOrdersByUser(
             @Field("email") String email
     );
+
+    @GET("get_foods.php")
+    Call<FoodListResponse> getFoodsByCategory(@Query("category") String category);
+
 }
