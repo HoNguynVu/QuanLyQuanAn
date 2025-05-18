@@ -8,6 +8,7 @@ import com.example.doan.DatabaseClass.Order;
 import com.example.doan.DatabaseClass.OrderItem;
 import com.example.doan.DatabaseClass.StatisticsResponse;
 import com.example.doan.DatabaseClass.StatusResponse;
+import com.example.doan.DatabaseClass.UploadResponse;
 import com.example.doan.DatabaseClass.User;
 
 import java.util.List;
@@ -76,30 +77,6 @@ public interface APIService {
             @Field("new_password") String newPassword
     );
 
-    @FormUrlEncoded
-    @POST("update_user.php")
-    Call<String> updateUser(
-            @Field("email") String email,
-            @Field("name") String name,
-            @Field("phone") String phone,
-            @Field("dob") String dob
-    );
-
-    @FormUrlEncoded
-    @POST("change_password.php")
-    Call<String> changePassword(
-            @Field("email") String email,
-            @Field("currentPassword") String currentPassword,
-            @Field("newPassword") String newPassword
-    );
-
-
-    @FormUrlEncoded
-    @POST("get_orders_by_user.php")
-    Call<List<Order>> getOrdersByUser(
-            @Field("email") String email
-    );
-
     @GET("get_foods.php")
     Call<FoodListResponse> getFoodsByCategory(@Query("category") String category);
 
@@ -110,6 +87,36 @@ public interface APIService {
     @FormUrlEncoded
     @POST("get_foods_by_id.php")
     Call<FoodItem> getFoodByID(@Field("food_id") String foodId);
+
+
+    @FormUrlEncoded
+    @POST("delete_food.php")
+    Call<GenericResponse> deleteFood(@Field("id") int id);
+
+    @FormUrlEncoded
+    @POST("add_food.php")
+    Call<GenericResponse> addFood(
+            @Field("name") String name,
+            @Field("price") double price,
+            @Field("category") String category,
+            @Field("image_url") String imageUrl
+    );
+
+    @FormUrlEncoded
+    @POST("upload_image.php")
+    Call<UploadResponse> uploadImage(
+            @Field("image") String base64Image
+    );
+
+    @FormUrlEncoded
+    @POST("update_food.php")
+    Call<GenericResponse> updateFood(
+            @Field("id") int id,
+            @Field("name") String name,
+            @Field("price") double price,
+            @Field("category") String category,
+            @Field("image_url") String imageUrl
+    );
 
 
 }
