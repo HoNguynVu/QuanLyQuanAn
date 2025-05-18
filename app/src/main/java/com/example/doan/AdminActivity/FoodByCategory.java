@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.DatabaseClass.FoodListResponse;
+import com.example.doan.DatabaseClass.GenericResponse;
 import com.example.doan.Network.APIService;
 import com.example.doan.Network.RetrofitClient;
 import com.example.doan.R;
@@ -53,7 +55,11 @@ public class FoodByCategory extends Fragment {
             selectedCategory = getArguments().getString("category", "");
         }
     }
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadMenuFromServer();  // Hàm bạn viết để reload danh sách
+    }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -132,13 +138,40 @@ public class FoodByCategory extends Fragment {
                 intent.putExtra("category", item.getCategory());
                 intent.putExtra("price", item.getPrice());
                 intent.putExtra("imageUrl", item.getImageUrl());
-                intent.putExtra("key", item.getKey());
+                intent.putExtra("id", item.getId());
                 context.startActivity(intent);
             });
 
             holder.btnDelete.setOnClickListener(v -> {
-                Toast.makeText(context, "Chức năng xoá đang được cập nhật.", Toast.LENGTH_SHORT).show();
+                new AlertDialog.Builder(context)
+                        .setTitle("Xác nhận xoá")
+                        .setMessage("Bạn có chắc chắn muốn xoá \"" + item.getName() + "\"?")
+                        .setPositiveButton("Xoá", (dialog, which) -> {
+                            APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
+                            Call<GenericResponse> call = apiService.deleteFood(item.getId());
+
+                            call.enqueue(new Callback<GenericResponse>() {
+                                @Override
+                                public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
+                                    if (response.isSuccessful() && response.body() != null && "success".equals(response.body().status)) {
+                                        itemList.remove(holder.getAdapterPosition());
+                                        notifyItemRemoved(holder.getAdapterPosition());
+                                        Toast.makeText(context, "Xoá thành công", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(context, "Xoá thất bại: " + response.body().message, Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<GenericResponse> call, Throwable t) {
+                                    Toast.makeText(context, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        })
+                        .setNegativeButton("Huỷ", null)
+                        .show();
             });
+
         }
 
         @Override

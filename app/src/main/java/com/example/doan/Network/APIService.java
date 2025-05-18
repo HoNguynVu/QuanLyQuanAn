@@ -7,6 +7,7 @@ import com.example.doan.DatabaseClass.LoginResponse;
 import com.example.doan.DatabaseClass.Order;
 import com.example.doan.DatabaseClass.StatisticsResponse;
 import com.example.doan.DatabaseClass.StatusResponse;
+import com.example.doan.DatabaseClass.UploadResponse;
 import com.example.doan.DatabaseClass.User;
 import java.util.List;
 
@@ -75,5 +76,35 @@ public interface APIService {
 
     @GET("get_foods.php")
     Call<FoodListResponse> getFoodsByCategory(@Query("category") String category);
+
+    @FormUrlEncoded
+    @POST("delete_food.php")
+    Call<GenericResponse> deleteFood(@Field("id") int id);
+
+    @FormUrlEncoded
+    @POST("add_food.php")
+    Call<GenericResponse> addFood(
+            @Field("name") String name,
+            @Field("price") double price,
+            @Field("category") String category,
+            @Field("image_url") String imageUrl
+    );
+
+    @FormUrlEncoded
+    @POST("upload_image.php")
+    Call<UploadResponse> uploadImage(
+            @Field("image") String base64Image
+    );
+
+    @FormUrlEncoded
+    @POST("update_food.php")
+    Call<GenericResponse> updateFood(
+            @Field("id") int id,
+            @Field("name") String name,
+            @Field("price") double price,
+            @Field("category") String category,
+            @Field("image_url") String imageUrl
+    );
+
 
 }

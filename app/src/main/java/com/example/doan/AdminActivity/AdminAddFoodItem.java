@@ -1,5 +1,6 @@
 package com.example.doan.AdminActivity;
 
+// Các import thư viện cần thiết
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,14 +10,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.*;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -25,11 +21,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.example.doan.DatabaseClass.FoodItem;
+import com.example.doan.DatabaseClass.GenericResponse;
+import com.example.doan.Network.APIService;
+import com.example.doan.Network.RetrofitClient;
 import com.example.doan.R;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.example.doan.AdminActivity.ImageUploadCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,73 +33,87 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import okhttp3.*;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AdminAddFoodItem extends AppCompatActivity {
-    private static final int REQUEST_PERMISSION_CODE = 101;
-    private static final String IMGUR_CLIENT_ID = "8fefa7405406b7b";
 
-    private ActivityResultLauncher<Intent> imagePickerLauncher;
+    private static final int REQUEST_PERMISSION_CODE = 101;
+    private static final String UPLOAD_URL = "http://192.168.98.113/restaurantapi/upload_image.php";
+
+    // Khai báo các thành phần giao diện
     private EditText edtName, edtPrice;
     private Spinner spinnerCategory;
-
     private ImageView imgPreview;
     private Button btnChooseImage, btnSubmit;
     private ProgressBar progressBar;
     private Uri imageUri;
+
+    private ActivityResultLauncher<Intent> imagePickerLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_add_menu_item);
 
+        // Gọi các hàm khởi tạo
+        initViews();
+        setupSpinner();
+        setupImagePicker();
+        setListeners();
+    }
+
+    // Ánh xạ view từ layout
+    private void initViews() {
         edtName = findViewById(R.id.edtName);
         edtPrice = findViewById(R.id.edtPrice);
-        spinnerCategory=findViewById(R.id.spinnerCategory);
+        spinnerCategory = findViewById(R.id.spinnerCategory);
         imgPreview = findViewById(R.id.imgPreview);
         btnChooseImage = findViewById(R.id.btnChooseImage);
         btnSubmit = findViewById(R.id.btnSubmit);
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
+    }
 
-        // Tạo danh sách các loại món
+    // Cấu hình spinner hiển thị loại món
+    private void setupSpinner() {
         String[] categories = {"Khai vị", "Món chính", "Tráng miệng", "Thức uống"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this,
-                R.layout.spinner_item,   // 👈 dùng layout custom
-                categories
-        );
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, categories);
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         spinnerCategory.setAdapter(adapter);
+    }
 
-        btnChooseImage.setOnClickListener(v -> checkPermissionAndChooseImage());
-        btnSubmit.setOnClickListener(v -> uploadFoodItem());
-
+    // Cấu hình chọn ảnh từ thư viện
+    private void setupImagePicker() {
         imagePickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                        imageUri = result.getData().getData(); //Lấy ra đường dẫn Uri của ảnh được chọn
+                        imageUri = result.getData().getData();
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
-                            imgPreview.setImageBitmap(bitmap); //Load ảnh vào ImageView imgPreview để người dùng xem trước
+                            imgPreview.setImageBitmap(bitmap);
                         } catch (IOException e) {
-                            e.printStackTrace();
+                            Toast.makeText(this, "Không thể hiển thị ảnh", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
 
-    private void checkPermissionAndChooseImage() //Quyền đọc ảnh
-    {
+    // Gán các sự kiện click cho nút
+    private void setListeners() {
+        btnChooseImage.setOnClickListener(v -> checkPermissionAndChooseImage());
+        btnSubmit.setOnClickListener(v -> uploadFoodItem());
+    }
+
+    // Kiểm tra quyền truy cập ảnh
+    private void checkPermissionAndChooseImage() {
         String permission = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU ?
-                Manifest.permission.READ_MEDIA_IMAGES : Manifest.permission.READ_EXTERNAL_STORAGE; //Android 13+ : Android 12-
+                Manifest.permission.READ_MEDIA_IMAGES :
+                Manifest.permission.READ_EXTERNAL_STORAGE;
 
         if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{permission}, REQUEST_PERMISSION_CODE);
@@ -112,126 +122,126 @@ public class AdminAddFoodItem extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) //xin quyền đọc ảnh, giống contact provider
-    {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_PERMISSION_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                chooseImage();
-            } else {
-                Toast.makeText(this, "Bạn cần cấp quyền để chọn ảnh", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    private void chooseImage() //Mở thư viện ảnh
-    {
-        Intent intent = new Intent();
+    // Mở giao diện chọn ảnh
+    private void chooseImage() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
         imagePickerLauncher.launch(Intent.createChooser(intent, "Chọn ảnh"));
     }
 
-    private void uploadFoodItem() //check và upload
-    {
+    // Xử lý kết quả yêu cầu quyền
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_PERMISSION_CODE && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            chooseImage();
+        } else {
+            Toast.makeText(this, "Cần cấp quyền để chọn ảnh", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // Xử lý khi người dùng nhấn nút "Thêm món"
+    private void uploadFoodItem() {
         String name = edtName.getText().toString().trim();
-        String category = spinnerCategory.getSelectedItem().toString().trim();
+        String category = spinnerCategory.getSelectedItem().toString();
         String priceStr = edtPrice.getText().toString().trim();
 
-        if (name.isEmpty() || category.isEmpty() || priceStr.isEmpty() || imageUri == null) {
+        // Kiểm tra dữ liệu nhập
+        if (name.isEmpty() || priceStr.isEmpty() || imageUri == null) {
             Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        int price;
+        double price;
         try {
-            price = Integer.parseInt(priceStr);
+            price = Double.parseDouble(priceStr);
         } catch (NumberFormatException e) {
             Toast.makeText(this, "Giá không hợp lệ", Toast.LENGTH_SHORT).show();
             return;
         }
 
         progressBar.setVisibility(View.VISIBLE);
-        //gọi  upload ảnh lên imur
-        uploadImageToImgur(imageUri, imageUrl -> {
-            FoodItem item = new FoodItem(name, price, category, imageUrl, true);
-            DatabaseReference menuRef = FirebaseDatabase.getInstance().getReference("menu"); //thêm menu vào firebase
-            String key = menuRef.push().getKey();
-            if (key != null) {
-                menuRef.child(key).setValue(item).addOnCompleteListener(task -> {
-                    progressBar.setVisibility(View.GONE);
-                    Toast.makeText(this, "Đã thêm món", Toast.LENGTH_SHORT).show();
-                    finish();
+
+        // Upload ảnh trước → gọi API thêm món
+        uploadImageToLocalServer(imageUri, new ImageUploadCallback() {
+            @Override
+            public void onSuccess(String imageUrl) {
+                APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
+                apiService.addFood(name, price, category, imageUrl).enqueue(new Callback<GenericResponse>() {
+                    @Override
+                    public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
+                        progressBar.setVisibility(View.GONE);
+                        if (response.isSuccessful() && response.body() != null && "success".equalsIgnoreCase(response.body().status)) {
+                            Toast.makeText(AdminAddFoodItem.this, "Thêm món thành công!", Toast.LENGTH_SHORT).show();
+                            finish();
+                        } else {
+                            Toast.makeText(AdminAddFoodItem.this, "Không thể thêm món", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<GenericResponse> call, Throwable t) {
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(AdminAddFoodItem.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 });
+            }
+
+            @Override
+            public void onFailure(String error) {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(AdminAddFoodItem.this, "Lỗi upload ảnh: " + error, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void uploadImageToImgur(Uri uri, OnSuccessListener<String> onSuccess) {
+    // Gửi ảnh dạng base64 lên server PHP, trả về đường dẫn ảnh
+    private void uploadImageToLocalServer(Uri uri, ImageUploadCallback callback) {
         new Thread(() -> {
             try {
-                // B1: Đọc ảnh từ URI mà người dùng đã chọn
-                Bitmap originalBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                bitmap = Bitmap.createScaledBitmap(bitmap, 800, 800, true);
 
-                // B2: Resize ảnh về kích thước tối ưu để upload (800x800)
-                Bitmap resizedBitmap = Bitmap.createScaledBitmap(originalBitmap, 800, 800, true);
-
-                // B3: Nén ảnh lại với chất lượng 70% để giảm dung lượng
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 70, outputStream);
-
-                // B4: Chuyển ảnh sang định dạng base64 để gửi đi bằng HTTP
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 70, outputStream);
                 byte[] imageBytes = outputStream.toByteArray();
                 String base64Image = Base64.encodeToString(imageBytes, Base64.NO_WRAP);
 
-                // B5: Tạo request gửi ảnh base64 đến Imgur bằng OkHttp
                 OkHttpClient client = new OkHttpClient();
+
                 RequestBody body = new FormBody.Builder()
                         .add("image", base64Image)
                         .build();
 
                 Request request = new Request.Builder()
-                        .url("https://api.imgur.com/3/image")
-                        .header("Authorization", "Client-ID " + IMGUR_CLIENT_ID)
+                        .url(UPLOAD_URL)
                         .post(body)
                         .build();
 
-                runOnUiThread(() -> progressBar.setProgress(10));
-
-                // B6: Gửi request bất đồng bộ và xử lý kết quả trả về từ Imgur
-                client.newCall(request).enqueue(new Callback() {
+                client.newCall(request).enqueue(new okhttp3.Callback() {
                     @Override
-                    public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                        runOnUiThread(() -> {
-                            progressBar.setVisibility(View.GONE);
-                            Toast.makeText(getApplicationContext(), "Upload ảnh thất bại", Toast.LENGTH_SHORT).show();
-                        });
+                    public void onFailure(@NonNull okhttp3.Call call, @NonNull IOException e) {
+                        runOnUiThread(() -> callback.onFailure(e.getMessage()));
                     }
 
                     @Override
-                    public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                        if (response.isSuccessful()) {
-                            try {
-                                // B7: Trích xuất đường dẫn ảnh từ JSON trả về của Imgur
-                                JSONObject json = new JSONObject(response.body().string());
-                                String imageUrl = json.getJSONObject("data").getString("link");
-
-                                // B8: Gọi callback sau khi upload thành công
-                                runOnUiThread(() -> onSuccess.onSuccess(imageUrl));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                    public void onResponse(@NonNull okhttp3.Call call, @NonNull okhttp3.Response response) throws IOException {
+                        String responseBody = response.body() != null ? response.body().string() : "";
+                        try {
+                            JSONObject json = new JSONObject(responseBody);
+                            if (json.getBoolean("success")) {
+                                String imageUrl = json.getString("url");
+                                runOnUiThread(() -> callback.onSuccess(imageUrl));
+                            } else {
+                                runOnUiThread(() -> callback.onFailure("Upload ảnh thất bại"));
                             }
-                        } else {
-                            runOnUiThread(() -> {
-                                progressBar.setVisibility(View.GONE);
-                                Toast.makeText(getApplicationContext(), "Upload ảnh lỗi", Toast.LENGTH_SHORT).show();
-                            });
+                        } catch (JSONException e) {
+                            runOnUiThread(() -> callback.onFailure("Lỗi JSON"));
                         }
                     }
                 });
             } catch (IOException e) {
-                e.printStackTrace();
+                runOnUiThread(() -> callback.onFailure("Lỗi xử lý ảnh"));
             }
         }).start();
     }
