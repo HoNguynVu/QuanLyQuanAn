@@ -27,6 +27,12 @@
             android:name=".ProfileUser.MyProfileActivity"
             android:exported="false" />
         <activity
+            android:name=".ProfileUser.MyOrdersActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileUser.DetailOrderActivity"
+            android:exported="false" />
+        <activity
             android:name=".Login.ForgotPasswordActivity"
             android:exported="false" />
         <activity
