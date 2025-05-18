@@ -17,7 +17,7 @@ public class FoodItem {
     private int price;
 
     @SerializedName("available")
-    private boolean available;
+    private int available;
 
     @SerializedName("image_url")
     private String imageUrl;
@@ -30,7 +30,7 @@ public class FoodItem {
 
     public FoodItem() {}
 
-    public FoodItem(String name, String category, int price, boolean available,
+    public FoodItem(String name, String category, int price, int available,
                 String imageUrl, String description, float ratingAvg) {
         this.name = name;
         this.category = category;
@@ -69,10 +69,10 @@ public class FoodItem {
         this.price = price;
     }
 
-    public boolean isAvailable() {
+    public int isAvailable() {
         return available;
     }
-    public void setAvailable(boolean available) {
+    public void setAvailable(int available) {
         this.available = available;
     }
 

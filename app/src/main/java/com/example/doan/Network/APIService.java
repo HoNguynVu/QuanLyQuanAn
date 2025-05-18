@@ -103,9 +103,13 @@ public interface APIService {
     @GET("get_foods.php")
     Call<FoodListResponse> getFoodsByCategory(@Query("category") String category);
 
-    @GET("get_order_items.php")
-    Call<List<OrderItem>> getOrderItems(@Query("order_id") String orderId);
+    @FormUrlEncoded
+    @POST("get_order_items.php")
+    Call<List<OrderItem>> getOrderItems(@Field("order_id") String orderId);
 
-    @GET("food/{id}")
-    Call<FoodItem> getFoodByID(@Path("id") String id);
+    @FormUrlEncoded
+    @POST("get_foods_by_id.php")
+    Call<FoodItem> getFoodByID(@Field("food_id") String foodId);
+
+
 }
