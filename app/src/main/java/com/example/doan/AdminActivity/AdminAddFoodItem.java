@@ -156,7 +156,7 @@ public class AdminAddFoodItem extends AppCompatActivity {
         //gọi  upload ảnh lên imur
         uploadImageToImgur(imageUri, imageUrl -> {
             // name, category, price, available, imageUrl, description, ratingAvg
-            FoodItem item = new FoodItem(name, category, price, true, imageUrl, "", 0.0f);
+            FoodItem item = new FoodItem(name, category, price, 1, imageUrl, "", 0.0f);
 
 
             DatabaseReference menuRef = FirebaseDatabase.getInstance().getReference("menu"); //thêm menu vào firebase

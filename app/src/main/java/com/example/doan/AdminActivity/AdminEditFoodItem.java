@@ -177,7 +177,7 @@ public class AdminEditFoodItem extends AppCompatActivity {
     }
 
     private void saveToFirebase(String name, String category, int price, String imageUrl) {
-        FoodItem item = new FoodItem(name, category, price, true, imageUrl, "", 0.0f);
+        FoodItem item = new FoodItem(name, category, price, 1, imageUrl, "", 0.0f);
 
     }
 
