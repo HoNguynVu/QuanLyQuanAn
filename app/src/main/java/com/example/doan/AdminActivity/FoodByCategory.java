@@ -132,7 +132,6 @@ public class FoodByCategory extends Fragment {
                 intent.putExtra("category", item.getCategory());
                 intent.putExtra("price", item.getPrice());
                 intent.putExtra("imageUrl", item.getImageUrl());
-                intent.putExtra("key", item.getKey());
                 context.startActivity(intent);
             });
 

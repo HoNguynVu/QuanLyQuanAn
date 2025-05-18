@@ -1,11 +1,13 @@
 package com.example.doan.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.doan.DatabaseClass.Order;
+import com.example.doan.ProfileUser.DetailOrderActivity;
 import com.example.doan.R;
 
 import java.text.DecimalFormat;
@@ -54,7 +57,16 @@ public class Orders_User_Adapter extends ArrayAdapter<Order> {
             txtStatus.setText("Trạng thái: " + order.getStatus());
         }
 
-
+        Button btnViewDetail = convertView.findViewById(R.id.btnDetail);
+        btnViewDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Truyền dữ liệu sang màn hình chi tiết
+                Intent intent = new Intent(context, DetailOrderActivity.class);
+                intent.putExtra("order_id", order.getOrderId());
+                context.startActivity(intent);
+            }
+        });
         return convertView;
     }
 }

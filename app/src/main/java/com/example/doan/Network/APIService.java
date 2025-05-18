@@ -1,9 +1,11 @@
 package com.example.doan.Network;
 
+import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.DatabaseClass.FoodListResponse;
 import com.example.doan.DatabaseClass.GenericResponse;
 import com.example.doan.DatabaseClass.LoginResponse;
 import com.example.doan.DatabaseClass.Order;
+import com.example.doan.DatabaseClass.OrderItem;
 import com.example.doan.DatabaseClass.StatisticsResponse;
 import com.example.doan.DatabaseClass.StatusResponse;
 import com.example.doan.DatabaseClass.User;
@@ -15,6 +17,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface APIService {
@@ -100,4 +103,9 @@ public interface APIService {
     @GET("get_foods.php")
     Call<FoodListResponse> getFoodsByCategory(@Query("category") String category);
 
+    @GET("get_order_items.php")
+    Call<List<OrderItem>> getOrderItems(@Query("order_id") String orderId);
+
+    @GET("food/{id}")
+    Call<FoodItem> getFoodByID(@Path("id") String id);
 }
