@@ -27,7 +27,8 @@ public class ResetPasswordActivity extends AppCompatActivity {
     String email;
     ImageView ivTogglePassword;
     ImageView ivToggleConfirmPassword;
-
+    final boolean[] showNew = {false};
+    final boolean[] showConfirm = {false};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,8 +40,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
         btnReset = findViewById(R.id.btn_reset_password);
         ivTogglePassword = findViewById(R.id.iv_toggle_new_pass);
         ivToggleConfirmPassword = findViewById(R.id.iv_toggle_confirm_pass);
-        final boolean[] showNew = {false};
-        final boolean[] showConfirm = {false};
+
 
         ivTogglePassword.setOnClickListener(v ->
         {
@@ -75,49 +75,52 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
         email = getIntent().getStringExtra("email");
 
-        btnReset.setOnClickListener(v -> {
-            String pass = edtNewPassword.getText().toString().trim();
-            String confirm = edtConfirmPassword.getText().toString().trim();
+        btnReset.setOnClickListener(v -> resetPassword());
+    }
 
-            if (pass.isEmpty() || confirm.isEmpty()) {
-                Toast.makeText(this, "Vui lòng nhập đầy đủ", Toast.LENGTH_SHORT).show();
-                return;
-            }
+    public void resetPassword()
+    {
+        String pass = edtNewPassword.getText().toString().trim();
+        String confirm = edtConfirmPassword.getText().toString().trim();
 
-            if (!pass.equals(confirm)) {
-                edtConfirmPassword.setError("Mật khẩu không khớp");
-                return;
-            }
+        if (pass.isEmpty() || confirm.isEmpty()) {
+            Toast.makeText(this, "Vui lòng nhập đầy đủ", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-            if (pass.length() < 9 || !pass.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{9,}$")) {
-                edtNewPassword.setError("Mật khẩu phải có ít nhất 9 ký tự, bao gồm chữ và số");
-                return;
-            }
+        if (!pass.equals(confirm)) {
+            edtConfirmPassword.setError("Mật khẩu không khớp");
+            return;
+        }
 
-            APIService api = RetrofitClient.getRetrofitInstance().create(APIService.class);
-            Call<GenericResponse> call = api.resetPassword(email, pass);
+        if (pass.length() < 9 || !pass.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{9,}$")) {
+            edtNewPassword.setError("Mật khẩu phải có ít nhất 9 ký tự, bao gồm chữ và số");
+            return;
+        }
 
-            call.enqueue(new Callback<GenericResponse>() {
-                @Override
-                public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        GenericResponse res = response.body();
-                        Toast.makeText(ResetPasswordActivity.this, res.message, Toast.LENGTH_SHORT).show();
+        APIService api = RetrofitClient.getRetrofitInstance().create(APIService.class);
+        Call<GenericResponse> call = api.resetPassword(email, pass);
 
-                        if ("success".equals(res.status)) {
-                            startActivity(new Intent(ResetPasswordActivity.this, LoginActivity.class));
-                            finish();
-                        }
-                    } else {
-                        Toast.makeText(ResetPasswordActivity.this, "Lỗi từ máy chủ", Toast.LENGTH_SHORT).show();
+        call.enqueue(new Callback<GenericResponse>() {
+            @Override
+            public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    GenericResponse res = response.body();
+                    Toast.makeText(ResetPasswordActivity.this, res.message, Toast.LENGTH_SHORT).show();
+
+                    if ("success".equals(res.status)) {
+                        startActivity(new Intent(ResetPasswordActivity.this, LoginActivity.class));
+                        finish();
                     }
+                } else {
+                    Toast.makeText(ResetPasswordActivity.this, "Lỗi từ máy chủ", Toast.LENGTH_SHORT).show();
                 }
+            }
 
-                @Override
-                public void onFailure(Call<GenericResponse> call, Throwable t) {
-                    Toast.makeText(ResetPasswordActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
+            @Override
+            public void onFailure(Call<GenericResponse> call, Throwable t) {
+                Toast.makeText(ResetPasswordActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         });
     }
 }

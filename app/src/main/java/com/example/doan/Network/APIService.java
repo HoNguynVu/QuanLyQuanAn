@@ -1,12 +1,13 @@
 package com.example.doan.Network;
 
+import com.example.doan.DatabaseClass.FoodItem;
+import com.example.doan.DatabaseClass.FoodListResponse;
 import com.example.doan.DatabaseClass.GenericResponse;
 import com.example.doan.DatabaseClass.LoginResponse;
 import com.example.doan.DatabaseClass.Order;
 import com.example.doan.DatabaseClass.StatisticsResponse;
 import com.example.doan.DatabaseClass.StatusResponse;
 import com.example.doan.DatabaseClass.User;
-
 import java.util.List;
 
 import retrofit2.Call;
@@ -14,6 +15,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface APIService {
     @FormUrlEncoded
@@ -70,4 +72,8 @@ public interface APIService {
             @Field("email") String email,
             @Field("new_password") String newPassword
     );
+
+    @GET("get_foods.php")
+    Call<FoodListResponse> getFoodsByCategory(@Query("category") String category);
+
 }
