@@ -52,27 +52,27 @@ public class MyOrdersActivity extends AppCompatActivity {
         fetchOrdersFromServer(email);
 
     }
-    private void fetchOrdersFromServer(String email) {
-        APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
-        Call<List<Order>> call = apiService.getOrdersByUser(email);
+        private void fetchOrdersFromServer(String email) {
+            APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
+            Call<List<Order>> call = apiService.getOrdersByUser(email);
 
-        call.enqueue(new Callback<List<Order>>() {
-            @Override
-            public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    orderList.clear();
-                    orderList.addAll(response.body());
-                    adapter.notifyDataSetChanged();
-                } else {
-                    Toast.makeText(MyOrdersActivity.this, "Không có dữ liệu đơn hàng", Toast.LENGTH_SHORT).show();
+            call.enqueue(new Callback<List<Order>>() {
+                @Override
+                public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        orderList.clear();
+                        orderList.addAll(response.body());
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(MyOrdersActivity.this, "Không có dữ liệu đơn hàng", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<List<Order>> call, Throwable t) {
-                Toast.makeText(MyOrdersActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+                @Override
+                public void onFailure(Call<List<Order>> call, Throwable t) {
+                    Toast.makeText(MyOrdersActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
 }
