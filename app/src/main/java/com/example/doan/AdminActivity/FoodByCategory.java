@@ -3,6 +3,7 @@ package com.example.doan.AdminActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,11 +22,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.doan.DatabaseClass.FoodItem;
+import com.example.doan.DatabaseClass.FoodListResponse;
+import com.example.doan.DatabaseClass.GenericResponse;
+import com.example.doan.Network.APIService;
+import com.example.doan.Network.RetrofitClient;
 import com.example.doan.R;
-import com.google.firebase.database.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FoodByCategory extends Fragment {
 
@@ -35,61 +43,59 @@ public class FoodByCategory extends Fragment {
     private String selectedCategory;
 
     public FoodByCategory() {
-        super(com.example.doan.R.layout.menu_by_category);
+        super(R.layout.menu_by_category);
     }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true); // Cho phép fragment tạo menu riêng
+        setHasOptionsMenu(true);
 
         if (getArguments() != null) {
-            selectedCategory = getArguments().getString("category", ""); // lấy loại món từ Bundle
+            selectedCategory = getArguments().getString("category", "");
         }
     }
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadMenuFromServer();  // Hàm bạn viết để reload danh sách
+    }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        recyclerView = view.findViewById(com.example.doan.R.id.recyclerViewMenu);
+        super.onViewCreated(view, savedInstanceState);
+        recyclerView = view.findViewById(R.id.recyclerViewMenu);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setHasFixedSize(true); // ✅ tăng hiệu năng hiển thị
+        recyclerView.setHasFixedSize(true);
 
         menuAdapter = new MenuAdapter(getContext(), itemList);
         recyclerView.setAdapter(menuAdapter);
 
-        loadMenuFromFirebase();
-
+        loadMenuFromServer();
     }
 
-    private void loadMenuFromFirebase() {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("menu");
+    private void loadMenuFromServer() {
+        APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
+        Call<FoodListResponse> call = apiService.getFoodsByCategory(selectedCategory);
 
-        ref.addValueEventListener(new ValueEventListener() {
+        call.enqueue(new Callback<FoodListResponse>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                itemList.clear();
-                menuAdapter.notifyDataSetChanged();
+            public void onResponse(Call<FoodListResponse> call, Response<FoodListResponse> response) {
+                if (response.isSuccessful() && response.body() != null && "success".equals(response.body().status)) {
+                    itemList.clear();
 
-                for (DataSnapshot snap : snapshot.getChildren()) {
-                    FoodItem item = snap.getValue(FoodItem.class);
-                    if (item != null && item.getCategory().equalsIgnoreCase(selectedCategory)) {
-                        item.setKey(snap.getKey()); // Lưu lại key Firebase của món
-                        itemList.add(item);
-                        menuAdapter.notifyItemInserted(itemList.size() - 1);
-
-                        // ✅ preload ảnh nếu cần
-                        Glide.with(requireContext())
-                                .load(item.getImageUrl())
-                                .diskCacheStrategy(DiskCacheStrategy.DATA)
-                                .preload();
-                    }
+                    itemList.addAll(response.body().data);
+                    menuAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(getContext(), "Không có dữ liệu", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getContext(), "Lỗi tải menu", Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<FoodListResponse> call, Throwable t) {
+                Toast.makeText(getContext(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
     public static class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder> {
@@ -104,8 +110,7 @@ public class FoodByCategory extends Fragment {
         @NonNull
         @Override
         public MenuViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(context).inflate(com.example.doan.R.layout.item_menu, parent, false);
-
+            View view = LayoutInflater.from(context).inflate(R.layout.item_menu, parent, false);
             return new MenuViewHolder(view);
         }
 
@@ -118,38 +123,14 @@ public class FoodByCategory extends Fragment {
 
             Glide.with(context)
                     .load(item.getImageUrl())
-                    .override(100, 100) // kích thước cố định
+                    .override(100, 100)
                     .centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.DATA)
-                    .placeholder(com.example.doan.R.drawable.loading_spinner)
-                    .error(com.example.doan.R.drawable.error_image)
+                    .placeholder(R.drawable.loading_spinner)
+                    .error(R.drawable.error_image)
                     .into(holder.imgMenu);
+            Log.d("ImageURL", "URL: " + item.getImageUrl());
 
-            holder.btnDelete.setOnClickListener(v -> {
-                new AlertDialog.Builder(context)
-                        .setTitle("Xác nhận xoá")
-                        .setMessage("Bạn có chắc chắn muốn xoá món \"" + item.getName() + "\" không?")
-                        .setPositiveButton("Xoá", (dialog, which) -> {
-                            if (item.getKey() != null) {
-                                FirebaseDatabase.getInstance()
-                                        .getReference("menu")
-                                        .child(item.getKey())
-                                        .removeValue()
-                                        .addOnSuccessListener(aVoid -> {
-                                            int position1 = holder.getAdapterPosition();
-                                            if (position1 != RecyclerView.NO_POSITION) {
-
-                                                Toast.makeText(context, "Đã xoá món", Toast.LENGTH_SHORT).show();
-                                            }
-                                        })
-                                        .addOnFailureListener(e -> {
-                                            Toast.makeText(context, "Lỗi khi xoá: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                        });
-                            }
-                        })
-                        .setNegativeButton("Huỷ", null)
-                        .show();
-            });
 
             holder.btnEdit.setOnClickListener(v -> {
                 Intent intent = new Intent(context, AdminEditFoodItem.class);
@@ -157,9 +138,40 @@ public class FoodByCategory extends Fragment {
                 intent.putExtra("category", item.getCategory());
                 intent.putExtra("price", item.getPrice());
                 intent.putExtra("imageUrl", item.getImageUrl());
-                intent.putExtra("key", item.getKey());
+                intent.putExtra("id", item.getId());
                 context.startActivity(intent);
             });
+
+            holder.btnDelete.setOnClickListener(v -> {
+                new AlertDialog.Builder(context)
+                        .setTitle("Xác nhận xoá")
+                        .setMessage("Bạn có chắc chắn muốn xoá \"" + item.getName() + "\"?")
+                        .setPositiveButton("Xoá", (dialog, which) -> {
+                            APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
+                            Call<GenericResponse> call = apiService.deleteFood(item.getId());
+
+                            call.enqueue(new Callback<GenericResponse>() {
+                                @Override
+                                public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
+                                    if (response.isSuccessful() && response.body() != null && "success".equals(response.body().status)) {
+                                        itemList.remove(holder.getAdapterPosition());
+                                        notifyItemRemoved(holder.getAdapterPosition());
+                                        Toast.makeText(context, "Xoá thành công", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(context, "Xoá thất bại: " + response.body().message, Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<GenericResponse> call, Throwable t) {
+                                    Toast.makeText(context, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        })
+                        .setNegativeButton("Huỷ", null)
+                        .show();
+            });
+
         }
 
         @Override
@@ -171,13 +183,14 @@ public class FoodByCategory extends Fragment {
             TextView txtName, txtCategory, txtPrice;
             ImageView imgMenu;
             AppCompatButton btnEdit, btnDelete;
+
             public MenuViewHolder(@NonNull View itemView) {
                 super(itemView);
-                txtName = itemView.findViewById(com.example.doan.R.id.txtName);
-                txtCategory = itemView.findViewById(com.example.doan.R.id.txtCategory);
-                txtPrice = itemView.findViewById(com.example.doan.R.id.txtPrice);
-                imgMenu = itemView.findViewById(com.example.doan.R.id.imgMenu);
-                btnDelete = itemView.findViewById(com.example.doan.R.id.btnDelete);
+                txtName = itemView.findViewById(R.id.txtName);
+                txtCategory = itemView.findViewById(R.id.txtCategory);
+                txtPrice = itemView.findViewById(R.id.txtPrice);
+                imgMenu = itemView.findViewById(R.id.imgMenu);
+                btnDelete = itemView.findViewById(R.id.btnDelete);
                 btnEdit = itemView.findViewById(R.id.btnEdit);
             }
         }

@@ -1,10 +1,14 @@
 package com.example.doan.DatabaseClass;
 
+import com.google.gson.annotations.SerializedName;
+
 public class FoodItem {
+    private int id;
     private String name;
     private int price;
     private String category;
-    private String imageUrl;
+
+    private String image_url;
     private boolean available;
 
     // ✅ Firebase key để xoá
@@ -16,11 +20,14 @@ public class FoodItem {
         this.name = name;
         this.price = price;
         this.category = category;
-        this.imageUrl = imageUrl;
+        this.image_url = imageUrl;
         this.available = available;
     }
 
     // ✅ Getter và Setter
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
@@ -30,8 +37,8 @@ public class FoodItem {
     public String getCategory() { return category; }
     public void setCategory(String category) { this.category = category; }
 
-    public String getImageUrl() { return imageUrl; }
-    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+    public String getImageUrl() { return image_url; }
+    public void setImageUrl(String imageUrl) { this.image_url = imageUrl; }
 
     public boolean isAvailable() { return available; }
     public void setAvailable(boolean available) { this.available = available; }
