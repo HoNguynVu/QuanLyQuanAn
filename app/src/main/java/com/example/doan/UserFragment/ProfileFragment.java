@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doan.Login.LoginActivity;
 import com.example.doan.ProfileUser.ChangePasswordActivity;
+import com.example.doan.ProfileUser.MyOrdersActivity;
 import com.example.doan.ProfileUser.MyProfileActivity;
 import com.example.doan.ProfileUser.ProfileOption;
 import com.example.doan.ProfileUser.ProfileOptionAdapter;
@@ -91,7 +94,7 @@ public class ProfileFragment extends Fragment {
                     intentProfile.putExtra("email", sharedPreferences.getString("email", ""));
                     intentProfile.putExtra("phone", sharedPreferences.getString("phone", ""));
                     intentProfile.putExtra("dob", sharedPreferences.getString("dob", ""));
-                    startActivityForResult(intentProfile, REQUEST_EDIT_PROFILE);
+                    editProfileLauncher.launch(intentProfile);
                     break;
 
                 case "Change Password":
@@ -100,7 +103,8 @@ public class ProfileFragment extends Fragment {
 
                 case "My Orders":
                     Toast.makeText(getContext(), "Điều hướng đến My Orders", Toast.LENGTH_SHORT).show();
-                    // TODO: Chuyển sang màn hình đơn hàng nếu có
+                    Intent intentOrders = new Intent(getContext(), MyOrdersActivity.class);
+                    startActivity(intentOrders);
                     break;
             }
         });
@@ -114,11 +118,12 @@ public class ProfileFragment extends Fragment {
         loadUserInfo();  // luôn reload để đảm bảo hiển thị đúng SharedPreferences
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_EDIT_PROFILE && resultCode == Activity.RESULT_OK) {
-            loadUserInfo();  // reload khi có cập nhật từ MyProfileActivity
-        }
-    }
+    private ActivityResultLauncher<Intent> editProfileLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    loadUserInfo();
+                }
+            }
+    );
 }

@@ -88,4 +88,10 @@ public interface APIService {
             @Field("newPassword") String newPassword
     );
 
+
+    @FormUrlEncoded
+    @POST("get_orders_by_user.php")
+    Call<List<Order>> getOrdersByUser(
+            @Field("email") String email
+    );
 }
