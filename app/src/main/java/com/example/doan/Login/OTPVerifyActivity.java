@@ -30,37 +30,39 @@ public class OTPVerifyActivity extends AppCompatActivity {
         edtOtp = findViewById(R.id.edt_otp);
         btnVerify = findViewById(R.id.btn_verify_otp);
 
-        btnVerify.setOnClickListener(v -> {
-            String otp = edtOtp.getText().toString().trim();
+        btnVerify.setOnClickListener(v -> verifyOtp());
+    }
+    public void verifyOtp()
+    {
+        String otp = edtOtp.getText().toString().trim();
 
-            if (otp.isEmpty()) {
-                Toast.makeText(this, "Vui lòng nhập mã OTP", Toast.LENGTH_SHORT).show();
-                return;
+        if (otp.isEmpty()) {
+            Toast.makeText(this, "Vui lòng nhập mã OTP", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        APIService api = RetrofitClient.getRetrofitInstance().create(APIService.class);
+        Call<GenericResponse> call = api.verifyOtp(otp);
+
+        call.enqueue(new Callback<GenericResponse>() {
+            @Override
+            public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    GenericResponse res = response.body();
+                    Toast.makeText(OTPVerifyActivity.this, res.message, Toast.LENGTH_SHORT).show();
+                    if ("success".equals(res.status)) {
+                        startActivity(new Intent(OTPVerifyActivity.this, LoginActivity.class));
+                        finish();
+                    }
+                } else {
+                    Toast.makeText(OTPVerifyActivity.this, "Lỗi phản hồi từ máy chủ", Toast.LENGTH_SHORT).show();
+                }
             }
 
-            APIService api = RetrofitClient.getRetrofitInstance().create(APIService.class);
-            Call<GenericResponse> call = api.verifyOtp(otp);
-
-            call.enqueue(new Callback<GenericResponse>() {
-                @Override
-                public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        GenericResponse res = response.body();
-                        Toast.makeText(OTPVerifyActivity.this, res.message, Toast.LENGTH_SHORT).show();
-                        if ("success".equals(res.status)) {
-                            startActivity(new Intent(OTPVerifyActivity.this, LoginActivity.class));
-                            finish();
-                        }
-                    } else {
-                        Toast.makeText(OTPVerifyActivity.this, "Lỗi phản hồi từ máy chủ", Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<GenericResponse> call, Throwable t) {
-                    Toast.makeText(OTPVerifyActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
+            @Override
+            public void onFailure(Call<GenericResponse> call, Throwable t) {
+                Toast.makeText(OTPVerifyActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         });
     }
 }
