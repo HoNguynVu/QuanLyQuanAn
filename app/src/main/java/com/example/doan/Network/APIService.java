@@ -70,4 +70,27 @@ public interface APIService {
             @Field("email") String email,
             @Field("new_password") String newPassword
     );
+
+    @FormUrlEncoded
+    @POST("get_admin_info.php")
+    Call<User> getAdminInfo(@Field("email") String email);
+
+    @FormUrlEncoded
+    @POST("update_admin_info.php")
+    Call<GenericResponse> updateAdminInfo(
+            @Field("email") String email,
+            @Field("name") String name,
+            @Field("phone") String phone,
+            @Field("date_birth") String dob
+    );
+
+    @FormUrlEncoded
+    @POST("change_password.php")
+    Call<GenericResponse> changePassword(
+            @Field("email") String email,
+            @Field("old_password") String oldPassword,
+            @Field("new_password") String newPassword
+    );
+
+
 }

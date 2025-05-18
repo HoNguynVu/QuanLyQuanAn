@@ -37,7 +37,6 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
 
     private EditText txt_email, txt_password;
-    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +65,6 @@ public class LoginActivity extends AppCompatActivity {
             isPassVisible[0] = !isPassVisible[0];
         });
 
-        mAuth = FirebaseAuth.getInstance();
 
         txt_sign_up.setOnClickListener(view -> {
             Intent intent = new Intent(this, SignUpActivity.class);

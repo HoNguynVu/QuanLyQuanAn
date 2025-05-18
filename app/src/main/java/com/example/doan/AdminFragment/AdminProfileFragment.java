@@ -1,98 +1,111 @@
 package com.example.doan.AdminFragment;
 
-import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doan.AdminActivity.AdminSetting;
 import com.example.doan.Login.LoginActivity;
+import com.example.doan.ProfileUser.MyProfileActivity;
+import com.example.doan.ProfileUser.ProfileOption;
+import com.example.doan.ProfileUser.ProfileOptionAdapter;
 import com.example.doan.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AdminProfileFragment extends Fragment {
 
-    private ImageView imgAvatar;
-    private TextView txtUserName, txtPhone;
-    private TextView txtOrder, txtSettings, txtLogout;
-
-    private DatabaseReference userRef;
+    private TextView txtUsername, txtEmail;
+    private RecyclerView ProfileRecyclerView;
+    private ProfileOptionAdapter adapter;
 
     public AdminProfileFragment() {
-        super(com.example.doan.R.layout.fragment_profile_admin);
+        // Required empty public constructor
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        // Ánh xạ view
-        imgAvatar = view.findViewById(com.example.doan.R.id.imgAvatar);
-        txtUserName = view.findViewById(com.example.doan.R.id.txtUserName);
-        txtPhone = view.findViewById(com.example.doan.R.id.txtPhone);
-        txtOrder = view.findViewById(com.example.doan.R.id.txtOrder);
-        txtSettings = view.findViewById(com.example.doan.R.id.txtSettings);
-        txtLogout = view.findViewById(R.id.txtLogout);
-
-        // Lấy UID người dùng hiện tại
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        userRef = FirebaseDatabase.getInstance().getReference("users").child(uid);
-
-        // Lắng nghe thay đổi dữ liệu người dùng
-        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String name = snapshot.child("name").getValue(String.class);
-                String phone = snapshot.child("phone").getValue(String.class);
-
-                txtUserName.setText(name != null ? name : "Chưa có tên");
-                txtPhone.setText("SĐT: " + (phone != null ? phone : "Chưa có SĐT"));
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_profile_admin, container, false);
+        
+        txtUsername = view.findViewById(R.id.usernameTextView);
+        txtEmail = view.findViewById(R.id.emailTextView);
+        ProfileRecyclerView = view.findViewById(R.id.profileRecyclerView);
+        
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", null);
+        String email = sharedPreferences.getString("email", null);
+        String phone = sharedPreferences.getString("phone", null);
+        String dob = sharedPreferences.getString("dob", null);
+        
+        ProfileRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        
+        List<ProfileOption> items = new ArrayList<>();
+        items.add(new ProfileOption(R.drawable.ic_person, "My Profile"));
+        items.add(new ProfileOption(R.drawable.ic_settings, "Settings"));
+        items.add(new ProfileOption(R.drawable.ic_logout, "Log Out"));
+        
+        adapter = new ProfileOptionAdapter(items, option-> {
+            switch (option.getTitle()) {
+                case "Log Out":
+                    Toast.makeText(getContext(), "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
+                    AdminProfileFragment.this.getActivity().finish();
+                    Intent intent = new Intent(getContext(), LoginActivity.class);
+                    startActivity(intent);
+                    break;
+                case "My Profile":
+                    Toast.makeText(getContext(), "Điều hướng đến My Profile", Toast.LENGTH_SHORT).show();
+                    Intent intent1 = new Intent(getContext(), MyProfileActivity.class);
+                    intent1.putExtra("username", txtUsername.getText().toString());
+                    intent1.putExtra("email", txtEmail.getText().toString());
+                    intent1.putExtra("phone", phone);
+                    intent1.putExtra("dob", dob);
+                    startActivity(intent1);
+                    break;
+                case "Settings":
+                    Toast.makeText(getContext(), "Điều hướng đến Settings", Toast.LENGTH_SHORT).show();
+                    AdminProfileFragment.this.getActivity().finish();
+                    Intent intent2 = new Intent(getContext(), AdminSetting.class);
+                    startActivity(intent2);
+                    break;
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getContext(), "Lỗi tải hồ sơ: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
         });
-
-        // Các sự kiện click
-        txtOrder.setOnClickListener(v ->
-                Toast.makeText(getContext(), "🛍️ Đơn mua được chọn", Toast.LENGTH_SHORT).show());
-
-        txtSettings.setOnClickListener(v ->
-        {
-            Intent intent = new Intent(requireContext(), AdminSetting.class);
-            startActivity(intent);
-        });
-
-        txtLogout.setOnClickListener(v -> {
-            new AlertDialog.Builder(requireContext())
-                    .setTitle("Xác nhận đăng xuất")
-                    .setMessage("Bạn có chắc chắn muốn đăng xuất không?")
-                    .setPositiveButton("Đăng xuất", (dialog, which) -> {
-                        // Đăng xuất khỏi Firebase
-                        FirebaseAuth.getInstance().signOut();
-
-                        // Chuyển sang màn hình đăng nhập
-                        Intent intent = new Intent(requireActivity(), LoginActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-
-                        // Đóng activity hiện tại
-                        requireActivity().finish();
-                    })
-                    .setNegativeButton("Huỷ", null)
-                    .show();
-        });
-
-
+        ProfileRecyclerView.setAdapter(adapter);
+        return view;
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadUserInfo();
+    }
+
+    private void loadUserInfo() {
+        SharedPreferences prefs = requireContext().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+        String username = prefs.getString("username", "Tên người dùng");
+        String email = prefs.getString("email", "Email");
+
+        if (username != null && email != null) {
+            txtUsername.setText(username);
+            txtEmail.setText(email);
+        }
+        else
+        {
+            Toast.makeText(getContext(), "Không tìm thấy thông tin người dùng", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }

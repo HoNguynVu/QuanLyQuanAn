@@ -1,7 +1,8 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_white"
+    android:background="#F5F5F5"
     android:padding="16dp">
 
     <LinearLayout
@@ -9,100 +10,61 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Header -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingBottom="16dp">
-
-            <ImageView
-                android:id="@+id/imgAvatar"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_avatar_default"
-                android:background="@drawable/circle_background"
-                android:padding="2dp" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_marginStart="12dp">
-
-                <TextView
-                    android:id="@+id/txtUserName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Tên người dùng"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/primary_black" />
-
-                <TextView
-                    android:id="@+id/txtPhone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="SĐT: 0123 456 789"
-                    android:textColor="@color/secondary_gray" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <!-- Divider -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/divider" />
-
-        <!-- Menu items -->
+        <!-- Header Admin -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="12dp">
+            android:gravity="center"
+            android:padding="24dp"
+            android:background="@drawable/bg_header_admin">
 
-            <!-- Đơn mua -->
+            <ImageView
+                android:id="@+id/avatarImageView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_person"
+                android:scaleType="centerCrop"
+                android:background="@drawable/bg_circle"
+                android:padding="8dp" />
+
             <TextView
-                android:id="@+id/txtOrder"
-                android:layout_width="match_parent"
+                android:id="@+id/usernameTextView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="🛍️ Đơn mua"
-                android:padding="16dp"
-                android:background="@drawable/edittext_log"
-                android:textColor="@color/primary_black"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground" />
+                android:text="Admin Name"
+                android:textColor="@color/white"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:layout_marginTop="8dp" />
 
-
-            <!-- Cài đặt -->
             <TextView
-                android:id="@+id/txtSettings"
-                android:layout_width="match_parent"
+                android:id="@+id/emailTextView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="⚙️ Cài đặt"
-                android:padding="16dp"
-                android:background="@drawable/edittext_log"
-                android:textColor="@color/primary_black"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"/>
-
-            <!-- Đăng xuất -->
-            <TextView
-                android:id="@+id/txtLogout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="🚪 Đăng xuất"
-                android:padding="16dp"
-                android:background="@drawable/edittext_log"
-                android:textColor="@color/primary_black"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"/>
+                android:text="admin@example.com"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:layout_marginTop="4dp" />
         </LinearLayout>
+
+        <!-- Admin Control Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Account Overview"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp"
+            android:textColor="@android:color/black" />
+
+        <!-- RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/profileRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:orientation="vertical"/>
     </LinearLayout>
 </ScrollView>
