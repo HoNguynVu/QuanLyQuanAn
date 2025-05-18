@@ -68,7 +68,7 @@ public class AdminSetting extends AppCompatActivity {
         if (dobFromIntent != null) {
             for (int i = 0; i < categories.length; i++) {
                 if (categories[i].equalsIgnoreCase(dobFromIntent)) {
-                    edtDob.setSelection(i); // chọn đúng loại món
+                    edtDob.setSelection(i);
                     break;
                 }
             }
