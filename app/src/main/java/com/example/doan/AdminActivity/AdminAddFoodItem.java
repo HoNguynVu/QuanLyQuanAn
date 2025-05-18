@@ -155,7 +155,10 @@ public class AdminAddFoodItem extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         //gọi  upload ảnh lên imur
         uploadImageToImgur(imageUri, imageUrl -> {
-            FoodItem item = new FoodItem(name, price, category, imageUrl, true);
+            // name, category, price, available, imageUrl, description, ratingAvg
+            FoodItem item = new FoodItem(name, category, price, true, imageUrl, "", 0.0f);
+
+
             DatabaseReference menuRef = FirebaseDatabase.getInstance().getReference("menu"); //thêm menu vào firebase
             String key = menuRef.push().getKey();
             if (key != null) {

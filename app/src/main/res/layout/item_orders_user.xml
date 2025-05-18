@@ -1,39 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_margin="8dp"
     android:layout_height="wrap_content"
-    android:elevation="4dp"
-    android:padding="12dp">
+    android:layout_margin="8dp"
+    android:elevation="6dp"
+    android:radius="12dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:padding="16dp">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_edit_text_log"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/txtOrderId_user"
-            android:text="Mã đơn:"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mã đơn hàng:"
+            android:textAppearance="?android:textAppearanceMedium"
             android:textStyle="bold"
+            android:textColor="@color/black"
             android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_marginBottom="8dp" />
 
         <TextView
             android:id="@+id/txtAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="Tổng tiền:"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textColor="#FF5722"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:layout_marginBottom="8dp" />
+
         <TextView
             android:id="@+id/txtDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="Ngày tạo:"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textColor="#616161"
+            android:layout_marginBottom="8dp" />
+
         <TextView
             android:id="@+id/txtStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="Trạng thái:"
+            android:textColor="#4CAF50"
+            android:textStyle="italic" />
+        <!-- Nút đi đến chi tiết hóa đơn -->
+        <Button
+            android:id="@+id/btnDetail"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
+            android:layout_height="wrap_content"
+            android:text="Xem chi tiết"
+            android:backgroundTint="@color/black"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:layout_gravity="end"
+            android:elevation="4dp" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

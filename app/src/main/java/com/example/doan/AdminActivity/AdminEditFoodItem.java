@@ -177,13 +177,8 @@ public class AdminEditFoodItem extends AppCompatActivity {
     }
 
     private void saveToFirebase(String name, String category, int price, String imageUrl) {
-        FoodItem updatedItem = new FoodItem(name, price, category, imageUrl, true);
-        FirebaseDatabase.getInstance().getReference("menu").child(key).setValue(updatedItem)
-                .addOnCompleteListener(task -> {
-                    progressBar.setVisibility(View.GONE);
-                    Toast.makeText(this, "Đã cập nhật món", Toast.LENGTH_SHORT).show();
-                    finish();
-                });
+        FoodItem item = new FoodItem(name, category, price, true, imageUrl, "", 0.0f);
+
     }
 
     private void uploadImageToImgur(Uri uri, OnSuccessListener<String> onSuccess) {
