@@ -9,13 +9,13 @@
     tools:context=".detailsActivity">
 
     <ImageButton
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:src="@drawable/ic_back"
-        android:background="@android:color/transparent"
-        android:layout_marginTop="8dp"
+        android:id="@+id/btnBack"
+        android:layout_width="50dp"
+        android:layout_height="47dp"
         android:layout_marginStart="8dp"
-        />
+        android:layout_marginTop="16dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_back" />
 
     <TextView
         android:id="@+id/detailsFoodName"

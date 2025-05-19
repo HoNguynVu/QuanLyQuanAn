@@ -37,5 +37,6 @@ public class detailsActivity extends AppCompatActivity {
 
         binding.detailsFoodName.setText(foodName);
         binding.detailsFoodImage.setImageResource(foodImage);
+        binding.btnBack.setOnClickListener(v -> finish());
     }
 }
