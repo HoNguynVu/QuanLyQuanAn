@@ -78,7 +78,6 @@ public class AdminProfileFragment extends Fragment {
                     break;
                 case "Settings":
                     Toast.makeText(getContext(), "Điều hướng đến Settings", Toast.LENGTH_SHORT).show();
-                    AdminProfileFragment.this.getActivity().finish();
                     Intent intent2 = new Intent(getContext(), AdminSetting.class);
                     startActivity(intent2);
                     break;

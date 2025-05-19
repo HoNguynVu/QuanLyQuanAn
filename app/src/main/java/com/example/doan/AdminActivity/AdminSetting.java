@@ -1,11 +1,11 @@
 package com.example.doan.AdminActivity;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,11 +13,18 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.doan.DatabaseClass.CurrentUser;
 import com.example.doan.DatabaseClass.GenericResponse;
 import com.example.doan.DatabaseClass.User;
+import com.example.doan.DatabaseClass.UserResponse;
 import com.example.doan.Network.APIService;
 import com.example.doan.Network.RetrofitClient;
 import com.example.doan.R;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,11 +32,12 @@ import retrofit2.Response;
 
 public class AdminSetting extends AppCompatActivity {
 
-    private EditText edtName, edtPhone, edtEmail;
-    private Spinner spinnerGender;
+    private EditText edtName, edtPhone, edtEmail, edtDob;
     private TextView txtChangePassword;
-
     private String currentEmail;
+
+    private final SimpleDateFormat displayFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+    private final SimpleDateFormat serverFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +45,7 @@ public class AdminSetting extends AppCompatActivity {
         setContentView(R.layout.admin_setting);
 
         Toolbar toolbar = findViewById(R.id.topAppBar);
-        toolbar.setNavigationOnClickListener(v -> finish());
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
         toolbar.inflateMenu(R.menu.menu_save_setting);
         toolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.action_save) {
@@ -50,50 +58,66 @@ public class AdminSetting extends AppCompatActivity {
         edtName = findViewById(R.id.edtName);
         edtPhone = findViewById(R.id.edtPhone);
         edtEmail = findViewById(R.id.edtEmail);
-        spinnerGender = findViewById(R.id.edtDob);
+        edtDob = findViewById(R.id.edtDob);
         txtChangePassword = findViewById(R.id.txtChangePassword);
 
-        // Giới tính (dùng spinner)
-        String[] genders = {"Nam", "Nữ"};
-        ArrayAdapter<String> genderAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, genders);
-        genderAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        spinnerGender.setAdapter(genderAdapter);
+        // DatePicker cho ngày sinh
+        edtDob.setOnClickListener(v -> showDatePickerDialog());
 
-        currentEmail = getIntent().getStringExtra("email");
+        currentEmail = CurrentUser.getInstance().getEmail();
         if (currentEmail == null) {
             Toast.makeText(this, "Không có email người dùng", Toast.LENGTH_SHORT).show();
             finish();
         }
 
         loadUserData();
-
         txtChangePassword.setOnClickListener(v -> showChangePasswordDialog());
+    }
+
+    private void showDatePickerDialog() {
+        Calendar calendar = Calendar.getInstance();
+
+        DatePickerDialog dialog = new DatePickerDialog(this, (view, year, month, dayOfMonth) -> {
+            Calendar selected = Calendar.getInstance();
+            selected.set(year, month, dayOfMonth);
+            edtDob.setText(displayFormat.format(selected.getTime()));
+        },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH));
+
+        dialog.show();
     }
 
     private void loadUserData() {
         APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
-        apiService.getAdminInfo(currentEmail).enqueue(new Callback<User>() {
+        apiService.getAdminInfo(currentEmail).enqueue(new Callback<UserResponse>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                User user = response.body();
-                if (user != null && user.email != null) {
-                    edtName.setText(user.name);
-                    edtPhone.setText(user.phone);
-                    edtEmail.setText(user.email);
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    User user = response.body().user;
+                    if (user != null && user.email != null) {
+                        edtName.setText(user.name);
+                        edtPhone.setText(user.phone);
+                        edtEmail.setText(user.email);
 
-                    // Giới tính
-                    if (user.date_birth != null && user.date_birth.equalsIgnoreCase("Nữ")) {
-                        spinnerGender.setSelection(1);
+                        if (user.date_birth != null && !user.date_birth.isEmpty()) {
+                            try {
+                                edtDob.setText(displayFormat.format(serverFormat.parse(user.date_birth)));
+                            } catch (ParseException e) {
+                                edtDob.setText("");
+                            }
+                        }
                     } else {
-                        spinnerGender.setSelection(0);
+                        Toast.makeText(AdminSetting.this, "Không tìm thấy thông tin người dùng", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(AdminSetting.this, "Không tìm thấy thông tin người dùng", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AdminSetting.this, "Phản hồi không hợp lệ", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(Call<UserResponse> call, Throwable t) {
                 Toast.makeText(AdminSetting.this, "Lỗi kết nối server", Toast.LENGTH_SHORT).show();
             }
         });
@@ -102,10 +126,18 @@ public class AdminSetting extends AppCompatActivity {
     private void saveUserData() {
         String name = edtName.getText().toString().trim();
         String phone = edtPhone.getText().toString().trim();
-        String dob = spinnerGender.getSelectedItem().toString();
+        String dob = edtDob.getText().toString().trim();
+
+        String dobToSend;
+        try {
+            dobToSend = serverFormat.format(displayFormat.parse(dob));
+        } catch (ParseException e) {
+            Toast.makeText(this, "Ngày sinh không hợp lệ", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
-        apiService.updateAdminInfo(currentEmail, name, phone, dob).enqueue(new Callback<GenericResponse>() {
+        apiService.updateAdminInfo(currentEmail, name, phone, dobToSend).enqueue(new Callback<GenericResponse>() {
             @Override
             public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -146,7 +178,6 @@ public class AdminSetting extends AppCompatActivity {
                         return;
                     }
 
-                    // Gọi API đổi mật khẩu có xác thực
                     APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
                     apiService.changePassword(currentEmail, oldPass, newPass).enqueue(new Callback<GenericResponse>() {
                         @Override
@@ -160,11 +191,17 @@ public class AdminSetting extends AppCompatActivity {
 
                         @Override
                         public void onFailure(Call<GenericResponse> call, Throwable t) {
-                            Toast.makeText(AdminSetting.this, "Lỗi kết nối server", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AdminSetting.this, "Lỗi server", Toast.LENGTH_SHORT).show();
                         }
                     });
                 })
                 .setNegativeButton("Huỷ", null)
                 .show();
     }
+    @Override
+    public void onBackPressed() {
+        // Quay lại fragment trước (AdminProfileFragment)
+        super.onBackPressed(); // tự động quay lại Fragment trước
+    }
+
 }
