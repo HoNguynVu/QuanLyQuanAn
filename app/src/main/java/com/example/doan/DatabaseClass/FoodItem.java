@@ -3,46 +3,101 @@ package com.example.doan.DatabaseClass;
 import com.google.gson.annotations.SerializedName;
 
 public class FoodItem {
-    private int id;
+
+    @SerializedName("id")
+    private String id;
+
+    @SerializedName("name")
     private String name;
-    private double price;
+
+    @SerializedName("category")
     private String category;
 
-    private String image_url;
+    @SerializedName("price")
+    private double price;
+
+    @SerializedName("available")
     private int available;
 
-    // ✅ Firebase key để xoá
-    private String key;
+    @SerializedName("image_url")
+    private String image_url;
+
+    @SerializedName("description")
+    private String description;
+
+    @SerializedName("rating_avg")
+    private float ratingAvg;
 
     public FoodItem() {}
 
-    public FoodItem(String name, double price, String category, String imageUrl, int available) {
+
+    public FoodItem(String name, String category, double price, int available,
+                String imageUrl, String description, float ratingAvg) {
         this.name = name;
-        this.price = price;
         this.category = category;
+        this.price = price;
+        this.available = available;
         this.image_url = imageUrl;
+        this.description = description;
+        this.ratingAvg = ratingAvg;
+    }
+
+    // Chỉ có getter cho id vì id tự sinh từ MySQL
+    public String getId() {
+        return id;
+    }
+
+    // Các getter và setter khác
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public int isAvailable() {
+        return available;
+    }
+    public void setAvailable(int available) {
         this.available = available;
     }
 
-    // ✅ Getter và Setter
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public String getImageUrl() {
+        return image_url;
+    }
+    public void setImageUrl(String imageUrl) {
+        this.image_url = imageUrl;
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-    public double getPrice() { return price; }
-    public void setPrice(int price) { this.price = price; }
 
-    public String getCategory() { return category; }
-    public void setCategory(String category) { this.category = category; }
-
-    public String getImageUrl() { return image_url; }
-    public void setImageUrl(String imageUrl) { this.image_url = imageUrl; }
-
-    public int getAvailable() { return available; }
-    public void setAvailable(int available) { this.available = available; }
-
-    public String getKey() { return key; }
-    public void setKey(String key) { this.key = key; }
+    public float getRatingAvg() {
+        return ratingAvg;
+    }
+    public void setRatingAvg(float ratingAvg) {
+        this.ratingAvg = ratingAvg;
+    }
 }
+
+

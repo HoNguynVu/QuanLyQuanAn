@@ -48,14 +48,12 @@ public class OrderAdapter extends ArrayAdapter<Order> {
         }
 
         TextView tvId = convertView.findViewById(R.id.tvOrderId);
-        TextView tvCustomer = convertView.findViewById(R.id.tvCustomerName);
         TextView tvTime = convertView.findViewById(R.id.tvOrderTime);
         TextView tvAmount = convertView.findViewById(R.id.tvTotalAmount);
         TextView tvStatus = convertView.findViewById(R.id.tvStatus);
         Button btnUpdate = convertView.findViewById(R.id.btnUpdateStatus);
 
         tvId.setText("Mã đơn: " + order.getOrderId());
-        tvCustomer.setText("Tên khách: " + order.getCustomerName());
         tvTime.setText("Thời gian: " + order.getCreatedAt());
         tvAmount.setText("Tổng tiền: " + formatCurrency(order.getFinalAmount()) + " VND");
         tvStatus.setText("Trạng thái: " + order.getStatus());

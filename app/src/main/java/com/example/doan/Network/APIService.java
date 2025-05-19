@@ -5,10 +5,12 @@ import com.example.doan.DatabaseClass.FoodListResponse;
 import com.example.doan.DatabaseClass.GenericResponse;
 import com.example.doan.DatabaseClass.LoginResponse;
 import com.example.doan.DatabaseClass.Order;
+import com.example.doan.DatabaseClass.OrderItem;
 import com.example.doan.DatabaseClass.StatisticsResponse;
 import com.example.doan.DatabaseClass.StatusResponse;
 import com.example.doan.DatabaseClass.UploadResponse;
 import com.example.doan.DatabaseClass.User;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -16,6 +18,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface APIService {
@@ -78,6 +81,15 @@ public interface APIService {
     Call<FoodListResponse> getFoodsByCategory(@Query("category") String category);
 
     @FormUrlEncoded
+    @POST("get_order_items.php")
+    Call<List<OrderItem>> getOrderItems(@Field("order_id") String orderId);
+
+    @FormUrlEncoded
+    @POST("get_foods_by_id.php")
+    Call<FoodItem> getFoodByID(@Field("food_id") String foodId);
+
+
+    @FormUrlEncoded
     @POST("delete_food.php")
     Call<GenericResponse> deleteFood(@Field("id") int id);
 
@@ -108,5 +120,24 @@ public interface APIService {
             @Field("available") int available
     );
 
+    @FormUrlEncoded
+    @POST("change_password.php")
+    Call<String> changePassword(
+            @Field("email") String email,
+            @Field("currentPassword") String currentPassword,
+            @Field("newPassword") String newPassword
+    );
 
+    @FormUrlEncoded
+    @POST("get_orders_by_user.php")
+    Call<List<Order>> getOrdersByUser(@Field("email") String email);
+
+    @FormUrlEncoded
+    @POST("update_user.php")
+    Call<String> updateUser(
+            @Field("email") String email,
+            @Field("name") String name,
+            @Field("phone") String phone,
+            @Field("dob") String dob
+    );
 }
