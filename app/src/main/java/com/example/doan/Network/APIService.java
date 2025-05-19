@@ -6,6 +6,7 @@ import com.example.doan.DatabaseClass.GenericResponse;
 import com.example.doan.DatabaseClass.LoginResponse;
 import com.example.doan.DatabaseClass.Order;
 import com.example.doan.DatabaseClass.OrderItem;
+import com.example.doan.DatabaseClass.Review;
 import com.example.doan.DatabaseClass.StatisticsResponse;
 import com.example.doan.DatabaseClass.StatusResponse;
 import com.example.doan.DatabaseClass.UploadResponse;
@@ -71,7 +72,7 @@ public interface APIService {
     );
 
     @FormUrlEncoded
-    @POST("reset_password.php")
+    @POST("reset_password.php") 
     Call<GenericResponse> resetPassword(
             @Field("email") String email,
             @Field("new_password") String newPassword
@@ -138,4 +139,7 @@ public interface APIService {
             @Field("phone") String phone,
             @Field("dob") String dob
     );
+
+    @GET("reviews")
+    Call<List<Review>> getReviewsByFoodId(@Query("food_id") String foodId);
 }
