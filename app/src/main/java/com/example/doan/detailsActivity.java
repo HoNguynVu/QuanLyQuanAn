@@ -1,7 +1,10 @@
 package com.example.doan;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +16,9 @@ import com.example.doan.databinding.ActivityDetailsBinding;
 
 public class detailsActivity extends AppCompatActivity {
     ActivityDetailsBinding binding;
+    public detailsActivity() {
+        // Constructor mặc định
+    }
 
     public detailsActivity(ActivityDetailsBinding binding) {
         this.binding = binding;
@@ -21,8 +27,9 @@ public class detailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         binding = ActivityDetailsBinding.inflate(getLayoutInflater());
-        setContentView(R.layout.activity_details);
+        setContentView(binding.getRoot());
 
         Intent intent = getIntent();
         String foodName = intent.getStringExtra("MenuItemName");

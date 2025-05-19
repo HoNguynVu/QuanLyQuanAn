@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.example.doan.Adapter.ShoppingPagerAdapter;
@@ -23,9 +22,6 @@ import com.example.doan.R;
 import com.example.doan.databinding.ShoppingFragmentBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ShoppingFragment extends Fragment {
     private ShoppingFragmentBinding binding;
@@ -41,7 +37,7 @@ public class ShoppingFragment extends Fragment {
             if (hasFocus) {
                 Log.d(TAG, "vao duoc");
                 FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragmentContainerView, new EmptyFragment());
+                transaction.replace(R.id.fragmentContainerView, new SearchFragment());
                 transaction.addToBackStack(null);
                 transaction.commit();
             }

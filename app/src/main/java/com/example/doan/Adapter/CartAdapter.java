@@ -1,7 +1,11 @@
 package com.example.doan.Adapter;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Context;
 import android.content.Intent;
+import android.nfc.Tag;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +23,6 @@ import java.util.List;
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder> {
     private List<Item> cartList;
     private final Context requireContext;
-    private OnClickListener itemClickListener;
 
     private final int[] itemQuantities;
 
@@ -40,7 +43,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     @Override
     public CartViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         var binding = CartItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-        return new CartViewHolder(binding);
+        return new CartViewHolder(binding, requireContext);
     }
 
     @Override
@@ -55,28 +58,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
     public class CartViewHolder extends RecyclerView.ViewHolder {
         private final CartItemBinding binding;
+        private final Context requireContext;
 
-        public CartViewHolder(CartItemBinding binding) {
+        public CartViewHolder(CartItemBinding binding, Context requireContext) {
             super(binding.getRoot());
             this.binding = binding;
-
-            binding.getRoot().setOnClickListener(new View.OnClickListener(){
-
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        if(itemClickListener != null)
-                            itemClickListener.onItemClick(position);
-                    }
-
-                    Intent intent = new Intent(requireContext, detailsActivity.class);
-                    intent.putExtra("MenuItemName", cartList.get(position).getItemName());
-                    intent.putExtra("MenuItemPrice", cartList.get(position).getItemPrice());
-                    intent.putExtra("MenuItemImage", cartList.get(position).getItemImage());
-                    requireContext.startActivity(intent);
-                }
-            });
+            this.requireContext = requireContext;
         }
 
         public void bind(int position) {
@@ -84,6 +71,23 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             binding.tvPrice.setText(cartList.get(position).getItemPrice());
             binding.imageView.setImageResource(cartList.get(position).getItemImage());
             binding.cartItemQuantity.setText(String.valueOf(itemQuantities[position]));
+
+            binding.getRoot().setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        Log.d(TAG, "Context class: " + requireContext.getClass().getName());
+                        Intent intent = new Intent(requireContext, detailsActivity.class);
+                        intent.putExtra("MenuItemName", cartList.get(position).getItemName());
+                        intent.putExtra("MenuItemPrice", cartList.get(position).getItemPrice());
+                        intent.putExtra("MenuItemImage", cartList.get(position).getItemImage());
+                        requireContext.startActivity(intent);
+                    }
+
+                }
+            });
 
             binding.btnMinus.setOnClickListener(new View.OnClickListener() {
                 @Override

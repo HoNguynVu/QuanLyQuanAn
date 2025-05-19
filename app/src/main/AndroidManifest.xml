@@ -16,9 +16,6 @@
             android:name=".detailsActivity"
             android:exported="false" />
         <activity
-            android:name=".Dishes_View"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
