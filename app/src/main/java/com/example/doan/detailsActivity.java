@@ -16,6 +16,7 @@ import com.example.doan.databinding.ActivityDetailsBinding;
 
 public class detailsActivity extends AppCompatActivity {
     ActivityDetailsBinding binding;
+    int quantity = 1;
     public detailsActivity() {
         // Constructor mặc định
     }
@@ -40,5 +41,27 @@ public class detailsActivity extends AppCompatActivity {
         binding.detailsFoodPrice.setText(foodPrice);
         binding.detailsFoodImage.setImageResource(foodImage);
         binding.btnBack.setOnClickListener(v -> finish());
+        binding.total.setText(foodPrice);
+
+        quantity = Integer.parseInt(binding.quantity.getText().toString());
+        assert foodPrice != null;
+        int price = Integer.parseInt(foodPrice.substring(0, foodPrice.length() - 1));
+
+        binding.btnMinus.setOnClickListener(v -> {
+            if(quantity > 1) {
+                quantity--;
+                binding.quantity.setText(String.valueOf(quantity));
+                String total = String.valueOf(quantity * price) + "$";
+                binding.total.setText(total);
+            }
+        });
+
+        binding.btnPlus.setOnClickListener(v -> {
+            quantity++;
+            binding.quantity.setText(String.valueOf(quantity));
+            String total = String.valueOf(quantity * price) + "$";
+            binding.total.setText(total);
+        });
+
     }
 }

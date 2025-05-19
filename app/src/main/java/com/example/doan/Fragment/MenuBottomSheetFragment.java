@@ -4,11 +4,13 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.example.doan.Adapter.CartAdapter;
 import com.example.doan.Item;
@@ -39,9 +41,11 @@ public class MenuBottomSheetFragment extends BottomSheetDialogFragment {
         binding = FragmentMenuBottomSheetBinding.inflate(inflater, container, false);
 
         CartAdapter adapter = new CartAdapter(cartList, requireContext());
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(binding.menuRecyclerView.getContext(), LinearLayout.VERTICAL);
         binding.menuRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.menuRecyclerView.setAdapter(adapter);
-
+        binding.menuRecyclerView.addItemDecoration(dividerItemDecoration);
         return binding.getRoot();
     }
 }
