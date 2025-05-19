@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
@@ -80,6 +81,15 @@ public class HomeFragment extends Fragment {
         binding.cartFragment.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), CartActivity.class);
             startActivity(intent);
+        });
+
+        binding.searchView.setOnQueryTextFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragmentContainerView, new SearchFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
         });
         return binding.getRoot();
     }

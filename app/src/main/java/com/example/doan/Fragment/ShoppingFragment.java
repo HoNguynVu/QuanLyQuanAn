@@ -35,14 +35,10 @@ public class ShoppingFragment extends Fragment {
         binding = ShoppingFragmentBinding.inflate(inflater, container, false);
         binding.searchView.setOnQueryTextFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
-                Log.d(TAG, "vao duoc");
                 FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragmentContainerView, new SearchFragment());
                 transaction.addToBackStack(null);
                 transaction.commit();
-            }
-            else {
-                Log.d(TAG, "ko vao duoc");
             }
         });
         return binding.getRoot();

@@ -46,7 +46,8 @@ public class CartActivity extends AppCompatActivity {
 
 
         binding.recyclerView.addItemDecoration(dividerItemDecoration);
-        binding.recyclerView.addItemDecoration(new SpaceItemDecoration(10));
+        //binding.recyclerView.addItemDecoration(new SpaceItemDecoration(10));
+        binding.btnBack.setOnClickListener(v -> finish());
     }
 
 
