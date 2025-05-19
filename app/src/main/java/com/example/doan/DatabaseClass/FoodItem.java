@@ -5,18 +5,18 @@ import com.google.gson.annotations.SerializedName;
 public class FoodItem {
     private int id;
     private String name;
-    private int price;
+    private double price;
     private String category;
 
     private String image_url;
-    private boolean available;
+    private int available;
 
     // ✅ Firebase key để xoá
     private String key;
 
     public FoodItem() {}
 
-    public FoodItem(String name, int price, String category, String imageUrl, boolean available) {
+    public FoodItem(String name, double price, String category, String imageUrl, int available) {
         this.name = name;
         this.price = price;
         this.category = category;
@@ -31,7 +31,7 @@ public class FoodItem {
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
-    public int getPrice() { return price; }
+    public double getPrice() { return price; }
     public void setPrice(int price) { this.price = price; }
 
     public String getCategory() { return category; }
@@ -40,8 +40,8 @@ public class FoodItem {
     public String getImageUrl() { return image_url; }
     public void setImageUrl(String imageUrl) { this.image_url = imageUrl; }
 
-    public boolean isAvailable() { return available; }
-    public void setAvailable(boolean available) { this.available = available; }
+    public int getAvailable() { return available; }
+    public void setAvailable(int available) { this.available = available; }
 
     public String getKey() { return key; }
     public void setKey(String key) { this.key = key; }
