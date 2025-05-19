@@ -140,6 +140,6 @@ public interface APIService {
             @Field("dob") String dob
     );
 
-    @GET("reviews")
+    @GET("get_reviews_by_food_id.php")
     Call<List<Review>> getReviewsByFoodId(@Query("food_id") String foodId);
 }
