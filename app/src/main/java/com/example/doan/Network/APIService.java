@@ -87,7 +87,8 @@ public interface APIService {
             @Field("name") String name,
             @Field("price") double price,
             @Field("category") String category,
-            @Field("image_url") String imageUrl
+            @Field("image_url") String imageUrl,
+            @Field("available") int available
     );
 
     @FormUrlEncoded
@@ -103,7 +104,8 @@ public interface APIService {
             @Field("name") String name,
             @Field("price") double price,
             @Field("category") String category,
-            @Field("image_url") String imageUrl
+            @Field("image_url") String imageUrl,
+            @Field("available") int available
     );
 
 
