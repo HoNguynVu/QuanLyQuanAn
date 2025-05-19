@@ -9,6 +9,7 @@ import com.example.doan.DatabaseClass.StatisticsResponse;
 import com.example.doan.DatabaseClass.StatusResponse;
 import com.example.doan.DatabaseClass.UploadResponse;
 import com.example.doan.DatabaseClass.User;
+import com.example.doan.DatabaseClass.UserResponse;
 
 import java.util.List;
 
@@ -111,7 +112,7 @@ public interface APIService {
 
     @FormUrlEncoded
     @POST("get_admin_info.php")
-    Call<User> getAdminInfo(@Field("email") String email);
+    Call<UserResponse> getAdminInfo(@Field("email") String email);
 
     @FormUrlEncoded
     @POST("update_admin_info.php")

@@ -16,8 +16,7 @@
         android:elevation="4dp"
         app:title="Cài đặt"
         app:titleTextColor="@color/primary_black"
-        app:navigationIcon="@drawable/ic_back"
-         />
+        app:navigationIcon="@drawable/ic_back" />
 
     <!-- Nội dung -->
     <ScrollView
@@ -45,25 +44,15 @@
                 android:textColorHint="@color/primary_black"
                 android:textColor="@color/primary_black" />
 
-            <!-- Giới tính -->
-            <EditText
-                android:id="@+id/edtGender"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="🚻 Giới tính"
-                android:padding="16dp"
-                android:background="@drawable/edittext_log"
-                android:textColorHint="@color/primary_black"
-                android:textColor="@color/primary_black" />
-
             <!-- Ngày sinh -->
-            <Spinner
+            <EditText
                 android:id="@+id/edtDob"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="🎂 Ngày sinh"
                 android:padding="16dp"
-                android:background="@drawable/edit_dob"
+                android:background="@drawable/edittext_log"
+                android:inputType="date"
                 android:textColorHint="@color/primary_black"
                 android:textColor="@color/primary_black" />
 
@@ -77,10 +66,10 @@
                 android:id="@+id/edtPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="📞 Số điện thoại"
+                android:hint="📞 Số điện thoại"
                 android:padding="16dp"
-                android:inputType="date"
                 android:background="@drawable/edittext_log"
+                android:inputType="phone"
                 android:textColor="@color/primary_black"
                 android:textSize="16sp" />
 
@@ -89,9 +78,10 @@
                 android:id="@+id/edtEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="✉️ Email"
+                android:hint="✉️ Email"
                 android:padding="16dp"
                 android:background="@drawable/edittext_log"
+                android:inputType="textEmailAddress"
                 android:textColor="@color/primary_black"
                 android:textSize="16sp" />
 
