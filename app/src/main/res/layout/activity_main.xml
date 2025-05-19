@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    android:paddingTop="20dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     tools:context=".MainActivity">
@@ -15,13 +14,11 @@
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/explore_your_favorite_food"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:textStyle="bold"
         android:textSize="24sp"
         />
-
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

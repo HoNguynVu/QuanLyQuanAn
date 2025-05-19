@@ -10,14 +10,6 @@
     <!-- TODO: Update blank fragment layout -->
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Shopping"
-        android:layout_marginTop="8dp"
-        android:layout_gravity="center"
-        />
-
     <SearchView
         android:id="@+id/searchView"
         android:layout_width="match_parent"
@@ -32,7 +24,17 @@
         android:layout_marginBottom="30dp"
         android:searchIcon="@drawable/ic_search" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Menu"
+        android:textStyle="bold"
+        android:textSize="50sp"
+        android:layout_gravity="center"
+        />
+
     <com.google.android.material.tabs.TabLayout
+        android:layout_marginTop="16dp"
         android:id="@+id/menu_container"
         android:layout_width="match_parent"
         app:tabMode="scrollable"

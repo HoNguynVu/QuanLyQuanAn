@@ -70,6 +70,10 @@ public class HomeFragment extends Fragment {
 
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        binding.viewall.setOnClickListener(v -> {
+            MenuBottomSheetFragment bottomSheetDialog = new MenuBottomSheetFragment();
+            bottomSheetDialog.show(getParentFragmentManager(), "Test");
+        });
         return binding.getRoot();
     }
 
