@@ -1,6 +1,7 @@
 package com.example.doan.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
 import com.example.doan.DatabaseClass.FoodItem;
+import com.example.doan.ProfileUser.DetailFoodActivity;
 import com.example.doan.ProfileUser.OrderItemWithFood;
 import com.example.doan.R;
 
@@ -52,7 +54,15 @@ public class OrderItemAdapter extends ArrayAdapter<OrderItemWithFood> {
                 .load(food.getImageUrl())
                 .placeholder(R.drawable.ic_launcher_background)  // ảnh mặc định nếu chưa load được
                 .into(imgFood);
-
+        convertView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, DetailFoodActivity.class);
+            intent.putExtra("id", food.getId());
+            intent.putExtra("name", food.getName());
+            intent.putExtra("price", food.getPrice());
+            intent.putExtra("imageUrl", food.getImageUrl());
+            intent.putExtra("description", food.getDescription());
+            context.startActivity(intent);
+        });
         return convertView;
     }
 }
