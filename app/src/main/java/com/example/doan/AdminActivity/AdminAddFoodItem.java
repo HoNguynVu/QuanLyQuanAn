@@ -45,10 +45,10 @@ public class AdminAddFoodItem extends AppCompatActivity {
     private static final String UPLOAD_URL = "http://192.168.98.113/restaurantapi/upload_image.php";
 
     // Khai báo các thành phần giao diện
-    private EditText edtName, edtPrice;
+    private EditText edtName, edtPrice, edtAmount;
     private Spinner spinnerCategory;
     private ImageView imgPreview;
-    private Button btnChooseImage, btnSubmit;
+    private Button btnChooseImage, btnSubmit, btnCancel;
     private ProgressBar progressBar;
     private Uri imageUri;
 
@@ -70,10 +70,12 @@ public class AdminAddFoodItem extends AppCompatActivity {
     private void initViews() {
         edtName = findViewById(R.id.edtName);
         edtPrice = findViewById(R.id.edtPrice);
+        edtAmount = findViewById(R.id.edtAmount);
         spinnerCategory = findViewById(R.id.spinnerCategory);
         imgPreview = findViewById(R.id.imgPreview);
         btnChooseImage = findViewById(R.id.btnChooseImage);
         btnSubmit = findViewById(R.id.btnSubmit);
+        btnCancel = findViewById(R.id.btnCancel);
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
     }
@@ -107,6 +109,7 @@ public class AdminAddFoodItem extends AppCompatActivity {
     private void setListeners() {
         btnChooseImage.setOnClickListener(v -> checkPermissionAndChooseImage());
         btnSubmit.setOnClickListener(v -> uploadFoodItem());
+        btnCancel.setOnClickListener(v -> finish());
     }
 
     // Kiểm tra quyền truy cập ảnh
@@ -145,7 +148,7 @@ public class AdminAddFoodItem extends AppCompatActivity {
         String name = edtName.getText().toString().trim();
         String category = spinnerCategory.getSelectedItem().toString();
         String priceStr = edtPrice.getText().toString().trim();
-
+        String availableStr = edtAmount.getText().toString().trim();
         // Kiểm tra dữ liệu nhập
         if (name.isEmpty() || priceStr.isEmpty() || imageUri == null) {
             Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
@@ -160,6 +163,13 @@ public class AdminAddFoodItem extends AppCompatActivity {
             return;
         }
 
+        int avail;
+        try {
+            avail = Integer.parseInt(availableStr);
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Số lượng không hợp lệ", Toast.LENGTH_SHORT).show();
+            return;}
+
         progressBar.setVisibility(View.VISIBLE);
 
         // Upload ảnh trước → gọi API thêm món
@@ -167,7 +177,7 @@ public class AdminAddFoodItem extends AppCompatActivity {
             @Override
             public void onSuccess(String imageUrl) {
                 APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
-                apiService.addFood(name, price, category, imageUrl).enqueue(new Callback<GenericResponse>() {
+                apiService.addFood(name, price, category, imageUrl, avail).enqueue(new Callback<GenericResponse>() {
                     @Override
                     public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
                         progressBar.setVisibility(View.GONE);

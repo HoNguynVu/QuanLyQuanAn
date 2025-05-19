@@ -14,13 +14,13 @@ public class FoodItem {
     private String category;
 
     @SerializedName("price")
-    private int price;
+    private double price;
 
     @SerializedName("available")
     private int available;
 
     @SerializedName("image_url")
-    private String imageUrl;
+    private String image_url;
 
     @SerializedName("description")
     private String description;
@@ -30,13 +30,14 @@ public class FoodItem {
 
     public FoodItem() {}
 
-    public FoodItem(String name, String category, int price, int available,
+
+    public FoodItem(String name, String category, double price, int available,
                 String imageUrl, String description, float ratingAvg) {
         this.name = name;
         this.category = category;
         this.price = price;
         this.available = available;
-        this.imageUrl = imageUrl;
+        this.image_url = imageUrl;
         this.description = description;
         this.ratingAvg = ratingAvg;
     }
@@ -62,7 +63,7 @@ public class FoodItem {
         this.category = category;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
     public void setPrice(int price) {
@@ -77,10 +78,10 @@ public class FoodItem {
     }
 
     public String getImageUrl() {
-        return imageUrl;
+        return image_url;
     }
     public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+        this.image_url = imageUrl;
     }
 
     public String getDescription() {
@@ -90,6 +91,7 @@ public class FoodItem {
         this.description = description;
     }
 
+
     public float getRatingAvg() {
         return ratingAvg;
     }
@@ -97,3 +99,5 @@ public class FoodItem {
         this.ratingAvg = ratingAvg;
     }
 }
+
+
