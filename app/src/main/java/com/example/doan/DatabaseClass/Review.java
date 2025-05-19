@@ -3,7 +3,7 @@ package com.example.doan.DatabaseClass;
 import com.google.gson.annotations.SerializedName;
 
 public class Review {
-    @SerializedName("id")
+    @SerializedName("review_id")
     private String id;
 
     @SerializedName("user_id")
@@ -17,6 +17,9 @@ public class Review {
 
     @SerializedName("rating")
     private float rating;
+
+    @SerializedName("review_date")
+    private String reviewDate;  // Có thể để String hoặc Date tùy xử lý
 
     public Review() {}
 
@@ -38,5 +41,9 @@ public class Review {
 
     public float getRating() {
         return rating;
+    }
+
+    public String getReviewDate() {
+        return reviewDate;
     }
 }
