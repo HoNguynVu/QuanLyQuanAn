@@ -1,19 +1,27 @@
 package com.example.doan.ProfileUser;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.doan.Network.APIService;
+import com.example.doan.Network.RetrofitClient;
 import com.example.doan.R;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ChangePasswordActivity extends AppCompatActivity {
     private EditText edtCurrentPassword, edtNewPassword, edtConfirmPassword;
@@ -30,6 +38,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
         btnChangePassword = findViewById(R.id.btnChangePassword);
 
         btnChangePassword.setOnClickListener(v -> handleChangePassword());
+        ImageView imgBack = findViewById(R.id.imgBack1);
+        imgBack.setOnClickListener(view -> finish());
     }
 
     private void handleChangePassword() {
@@ -52,27 +62,42 @@ public class ChangePasswordActivity extends AppCompatActivity {
             return;
         }
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user == null || user.getEmail() == null) {
-            Toast.makeText(this, "Không tìm thấy người dùng", Toast.LENGTH_SHORT).show();
+        // Lấy email từ SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
+        String email = sharedPreferences.getString("email", "");
+        if (email.isEmpty()) {
+            Toast.makeText(this, "Không tìm thấy email người dùng", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Xác thực lại trước khi đổi mật khẩu
-        AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), currentPassword);
-        user.reauthenticate(credential)
-                .addOnSuccessListener(authResult -> {
-                    user.updatePassword(newPassword)
-                            .addOnSuccessListener(unused -> {
-                                Toast.makeText(this, "Đổi mật khẩu thành công", Toast.LENGTH_SHORT).show();
-                                finish(); // Quay lại màn trước
-                            })
-                            .addOnFailureListener(e -> {
-                                Toast.makeText(this, "Lỗi cập nhật mật khẩu: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            });
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Mật khẩu hiện tại không đúng", Toast.LENGTH_SHORT).show();
-                });
+        APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
+        Call<String> call = apiService.changePassword(email, currentPassword, newPassword);
+
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    String result = response.body().trim();
+                    if (result.equals("success")) {
+                        Toast.makeText(ChangePasswordActivity.this, "Đổi mật khẩu thành công", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else if (result.equals("wrong_password")) {
+                        Toast.makeText(ChangePasswordActivity.this, "Mật khẩu hiện tại không đúng", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(ChangePasswordActivity.this, "Đổi mật khẩu thất bại", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(ChangePasswordActivity.this, "Lỗi server: " + response.code(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(ChangePasswordActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
+
+
 }
