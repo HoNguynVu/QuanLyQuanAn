@@ -33,9 +33,11 @@ public class detailsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String foodName = intent.getStringExtra("MenuItemName");
+        String foodPrice = intent.getStringExtra("MenuItemPrice");
         int foodImage = intent.getIntExtra("MenuItemImage", 0);
 
         binding.detailsFoodName.setText(foodName);
+        binding.detailsFoodPrice.setText(foodPrice);
         binding.detailsFoodImage.setImageResource(foodImage);
         binding.btnBack.setOnClickListener(v -> finish());
     }

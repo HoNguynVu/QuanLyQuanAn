@@ -70,7 +70,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             binding.tvName.setText(cartList.get(position).getItemName());
             binding.tvPrice.setText(cartList.get(position).getItemPrice());
             binding.imageView.setImageResource(cartList.get(position).getItemImage());
-            binding.cartItemQuantity.setText(String.valueOf(itemQuantities[position]));
 
             binding.getRoot().setOnClickListener(new View.OnClickListener(){
 
@@ -89,53 +88,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                 }
             });
 
-            binding.btnMinus.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    decreaseQuantity(getAdapterPosition());
-                }
-            });
 
-            binding.btnAdd.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    increaseQuantity(getAdapterPosition());
-                }
-            });
-
-            binding.trash.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(getAdapterPosition() != RecyclerView.NO_POSITION)
-                        deleteItem(getAdapterPosition());
-                }
-            });
-        }
-
-        private void decreaseQuantity(int position) {
-            if (itemQuantities[position] > 1) {
-                itemQuantities[position]--;
-                binding.cartItemQuantity.setText(String.valueOf(itemQuantities[position]));
-            }
-        }
-
-        private void increaseQuantity(int position) {
-            if (itemQuantities[position] < 10) {
-                itemQuantities[position]++;
-                binding.cartItemQuantity.setText(String.valueOf(itemQuantities[position]));
-            }
         }
 
 
-        private void deleteItem(int position) {
-            cartList.remove(position);
-            notifyItemRemoved(position);
-            notifyItemRangeChanged(position, cartList.size());
-        }
-    }
 
-    public interface OnClickListener {
-        void onItemClick(int position);
     }
 
 

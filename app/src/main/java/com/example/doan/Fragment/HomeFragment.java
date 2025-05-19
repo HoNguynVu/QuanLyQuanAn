@@ -1,5 +1,6 @@
 package com.example.doan.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.interfaces.ItemClickListener;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.doan.Adapter.HomePopularItemAdapter;
+import com.example.doan.CartActivity;
 import com.example.doan.R;
 import com.example.doan.databinding.HomeFragmentBinding;
 
@@ -73,6 +75,11 @@ public class HomeFragment extends Fragment {
         binding.viewall.setOnClickListener(v -> {
             MenuBottomSheetFragment bottomSheetDialog = new MenuBottomSheetFragment();
             bottomSheetDialog.show(getParentFragmentManager(), "Test");
+        });
+
+        binding.cartFragment.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), CartActivity.class);
+            startActivity(intent);
         });
         return binding.getRoot();
     }
