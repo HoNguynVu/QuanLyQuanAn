@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 public class FoodItem {
 
     @SerializedName("id")
-    private String id;
+    private int id;
 
     @SerializedName("name")
     private String name;
@@ -31,8 +31,7 @@ public class FoodItem {
     public FoodItem() {}
 
 
-    public FoodItem(String name, String category, double price, int available,
-                String imageUrl, String description, float ratingAvg) {
+    public FoodItem(String name, String category, double price, String imageUrl, int available, String description, float ratingAvg) {
         this.name = name;
         this.category = category;
         this.price = price;
@@ -43,7 +42,7 @@ public class FoodItem {
     }
 
     // Chỉ có getter cho id vì id tự sinh từ MySQL
-    public String getId() {
+    public int getId() {
         return id;
     }
 
@@ -70,7 +69,7 @@ public class FoodItem {
         this.price = price;
     }
 
-    public int isAvailable() {
+    public int getAvailable() {
         return available;
     }
     public void setAvailable(int available) {
