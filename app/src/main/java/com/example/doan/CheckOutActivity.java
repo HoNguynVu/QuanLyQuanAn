@@ -40,5 +40,9 @@ public class CheckOutActivity extends AppCompatActivity {
 
         binding.btnBack.setOnClickListener(v -> finish());
 
+        String price = CartManager.getInstance().getTotalOrder() + "$";
+        binding.price.setText(price);
+        binding.fee.setText("0$");
+        binding.totalOrder.setText(price);
     }
 }
