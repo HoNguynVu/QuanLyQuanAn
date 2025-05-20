@@ -42,10 +42,10 @@ import retrofit2.Response;
 public class AdminAddFoodItem extends AppCompatActivity {
 
     private static final int REQUEST_PERMISSION_CODE = 101;
-    private static final String UPLOAD_URL = "http://192.168.98.113/restaurantapi/upload_image.php";
+    private static final String UPLOAD_URL = "http://192.168.1.47/restaurantapi/upload_image.php";
 
     // Khai báo các thành phần giao diện
-    private EditText edtName, edtPrice, edtAmount;
+    private EditText edtName, edtPrice, edtAmount, edtDescription;
     private Spinner spinnerCategory;
     private ImageView imgPreview;
     private Button btnChooseImage, btnSubmit, btnCancel;
@@ -71,6 +71,7 @@ public class AdminAddFoodItem extends AppCompatActivity {
         edtName = findViewById(R.id.edtName);
         edtPrice = findViewById(R.id.edtPrice);
         edtAmount = findViewById(R.id.edtAmount);
+        edtDescription = findViewById(R.id.edtDescription);
         spinnerCategory = findViewById(R.id.spinnerCategory);
         imgPreview = findViewById(R.id.imgPreview);
         btnChooseImage = findViewById(R.id.btnChooseImage);
@@ -149,8 +150,10 @@ public class AdminAddFoodItem extends AppCompatActivity {
         String category = spinnerCategory.getSelectedItem().toString();
         String priceStr = edtPrice.getText().toString().trim();
         String availableStr = edtAmount.getText().toString().trim();
+        String description = edtDescription.getText().toString().trim();
+
         // Kiểm tra dữ liệu nhập
-        if (name.isEmpty() || priceStr.isEmpty() || imageUri == null) {
+        if (name.isEmpty() || priceStr.isEmpty() || imageUri == null || availableStr.isEmpty() || description.isEmpty()) {
             Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -177,9 +180,10 @@ public class AdminAddFoodItem extends AppCompatActivity {
             @Override
             public void onSuccess(String imageUrl) {
                 APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
-                apiService.addFood(name, price, category, imageUrl, avail).enqueue(new Callback<GenericResponse>() {
+                apiService.addFood(name, price, category, imageUrl, avail, description).enqueue(new Callback<GenericResponse>() {
                     @Override
                     public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
+
                         progressBar.setVisibility(View.GONE);
                         if (response.isSuccessful() && response.body() != null && "success".equalsIgnoreCase(response.body().status)) {
                             Toast.makeText(AdminAddFoodItem.this, "Thêm món thành công!", Toast.LENGTH_SHORT).show();
@@ -192,7 +196,10 @@ public class AdminAddFoodItem extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<GenericResponse> call, Throwable t) {
                         progressBar.setVisibility(View.GONE);
+                        Log.d("loi", t.getMessage());
                         Toast.makeText(AdminAddFoodItem.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+
+
                     }
                 });
             }
