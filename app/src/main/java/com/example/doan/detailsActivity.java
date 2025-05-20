@@ -5,6 +5,7 @@ import static android.content.ContentValues.TAG;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -63,5 +64,9 @@ public class detailsActivity extends AppCompatActivity {
             binding.total.setText(total);
         });
 
+        binding.btnOrder.setOnClickListener(v -> {
+            CartManager.getInstance().addItem(new Item(foodName, foodPrice, foodImage));
+            Toast.makeText(this, "Đã thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+        });
     }
 }

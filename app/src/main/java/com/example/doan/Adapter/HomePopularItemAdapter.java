@@ -1,75 +1,85 @@
 package com.example.doan.Adapter;
 
+import static android.content.ContentValues.TAG;
+
+
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.doan.R;
+import com.example.doan.Item;
+import com.example.doan.databinding.HomePopularItemBinding;
+import com.example.doan.detailsActivity;
 
 import java.util.List;
 
 public class HomePopularItemAdapter extends RecyclerView.Adapter<HomePopularItemAdapter.myViewHolder> {
-
-    List<String> title;
-    List<String> price;
-    List<Integer> image;
-    LayoutInflater inflater;
+    private HomePopularItemBinding binding;
+    private final Context requireContext;
+    static List<Item> itemList;
     Activity activity;
 
-    public HomePopularItemAdapter(Context context, List<String> title, List<String> price, List<Integer> image, Activity activity) {
-        this.title = title;
-        this.price = price;
-        this.image = image;
-        this.activity = activity;
-        this.inflater = LayoutInflater.from(context);
+    public HomePopularItemAdapter(Context requireContext, List<Item> itemList) {
+        this.itemList = itemList;
+        this.requireContext = requireContext;
     }
 
     @NonNull
     @Override
     public myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.home_popular_item, parent, false);
-        return new myViewHolder(view);
+        var binding = HomePopularItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        return new myViewHolder(binding, requireContext);
     }
 
     @Override
     public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
-        holder.title.setText(title.get(position));
-        holder.price.setText(price.get(position));
-        holder.imageView.setImageResource(image.get(position));
-        holder.button.setOnClickListener(v ->  {
-            Toast.makeText(v.getContext(), "clicked!", Toast.LENGTH_SHORT).show();
-        });
+        holder.bind(position);
     }
 
     @Override
     public int getItemCount() {
-        return title.size();
+        return itemList.size();
     }
 
     public static class myViewHolder extends RecyclerView.ViewHolder {
-        TextView title;
-        TextView price;
-        ImageView imageView;
-        LinearLayout linearLayout;
-        Button button;
+        private final HomePopularItemBinding binding;
+        private final Context requireContext;
 
-        public myViewHolder(@NonNull View itemView) {
-            super(itemView);
-            this.title = itemView.findViewById(R.id.tv_name);
-            this.price = itemView.findViewById(R.id.tv_price);
-            this.imageView = itemView.findViewById(R.id.imageView);
-            this.linearLayout = itemView.findViewById(R.id.linearLayout);
-            this.button = itemView.findViewById(R.id.btn_add);
+        public myViewHolder(HomePopularItemBinding binding, Context requireContext) {
+            super(binding.getRoot());
+            this.binding = binding;
+            this.requireContext = requireContext;
         }
+
+        public void bind(int position) {
+            binding.tvName.setText(itemList.get(position).getItemName());
+            binding.tvPrice.setText(itemList.get(position).getItemPrice());
+            binding.imageView.setImageResource(itemList.get(position).getItemImage());
+
+            binding.getRoot().setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        Log.d(TAG, "Context class: " + requireContext.getClass().getName());
+                        Intent intent = new Intent(requireContext, detailsActivity.class);
+                        intent.putExtra("MenuItemName", itemList.get(position).getItemName());
+                        intent.putExtra("MenuItemPrice", itemList.get(position).getItemPrice());
+                        intent.putExtra("MenuItemImage", itemList.get(position).getItemImage());
+                        requireContext.startActivity(intent);
+                    }
+
+                }
+            });
+        }
+
     }
 }

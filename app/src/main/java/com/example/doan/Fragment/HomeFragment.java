@@ -19,6 +19,7 @@ import com.denzcoskun.imageslider.interfaces.ItemClickListener;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.doan.Adapter.HomePopularItemAdapter;
 import com.example.doan.CartActivity;
+import com.example.doan.Item;
 import com.example.doan.R;
 import com.example.doan.databinding.HomeFragmentBinding;
 
@@ -38,38 +39,19 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    private void addAllTitles() {
-        titles = new ArrayList<>();
-        titles.add("Celery Soup");
-        titles.add("Tomato & Potato Soup");
-        titles.add("Dimsum Soup");
-        titles.add("Mushroom Soup");
-    }
+    List<Item> itemList = List.of(
+            new Item("Pizza", "10$", R.drawable.soup_celery),
+            new Item("Burger", "10$", R.drawable.soup_dimsum),
+            new Item("Hotdog", "10$", R.drawable.kale_soup),
+            new Item("Drink", "10$", R.drawable.soup_mushroom)
+    );
 
-    private void addAllPrices() {
-        prices = new ArrayList<>();
-        prices.add("10$");
-        prices.add("10$");
-        prices.add("10$");
-        prices.add("10$");
-    }
-
-    private void addAllImages() {
-        images = new ArrayList<>();
-        images.add(R.drawable.soup_celery);
-        images.add(R.drawable.soup_tomato_potato);
-        images.add(R.drawable.soup_dimsum);
-        images.add(R.drawable.soup_mushroom);
-    }
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = HomeFragmentBinding.inflate(inflater, container, false);
 
-        addAllTitles();
-        addAllPrices();
-        addAllImages();
-        adapter = new HomePopularItemAdapter(requireContext(), titles, prices, images, getActivity());
+        adapter = new HomePopularItemAdapter(requireContext(), itemList);
 
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));

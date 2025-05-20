@@ -21,21 +21,20 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder> {
-    private List<Item> cartList;
+    private static List<Item> cartList;
     private final Context requireContext;
 
     private final int[] itemQuantities;
 
     public CartAdapter(List<Item> cartList, Context requireContext) {
         this.cartList = cartList;
-
         itemQuantities = new int[cartList.size()];
         this.requireContext = requireContext;
         Arrays.fill(itemQuantities, 1);
     }
 
     public void setFilteredList(List<Item> filteredList) {
-        this.cartList = filteredList;
+        cartList = filteredList;
         notifyDataSetChanged();
     }
 
@@ -56,7 +55,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         return cartList.size();
     }
 
-    public class CartViewHolder extends RecyclerView.ViewHolder {
+    public static class CartViewHolder extends RecyclerView.ViewHolder {
         private final CartItemBinding binding;
         private final Context requireContext;
 
@@ -77,7 +76,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
-                        Log.d(TAG, "Context class: " + requireContext.getClass().getName());
                         Intent intent = new Intent(requireContext, detailsActivity.class);
                         intent.putExtra("MenuItemName", cartList.get(position).getItemName());
                         intent.putExtra("MenuItemPrice", cartList.get(position).getItemPrice());

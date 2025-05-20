@@ -23,12 +23,7 @@ import com.example.doan.databinding.ActivityCartBinding;
 import java.util.List;
 
 public class CartActivity extends AppCompatActivity {
-    List<Item> cartList = List.of(
-            new Item("Pizza", "10$", R.drawable.soup_celery),
-            new Item("Burger", "10$", R.drawable.soup_dimsum),
-            new Item("Hotdog", "10$", R.drawable.kale_soup),
-            new Item("Drink", "10$", R.drawable.soup_mushroom)
-    );
+    List<Item> cartList = CartManager.getInstance().getCartItems();
     CartAdapter adapter;
     private ActivityCartBinding binding;
     @Override
