@@ -17,7 +17,7 @@ import com.example.doan.databinding.ActivityDetailsBinding;
 
 public class detailsActivity extends AppCompatActivity {
     ActivityDetailsBinding binding;
-    int quantity = 1;
+    int quantity;
     public detailsActivity() {
         // Constructor mặc định
     }
@@ -36,23 +36,30 @@ public class detailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String foodName = intent.getStringExtra("MenuItemName");
         String foodPrice = intent.getStringExtra("MenuItemPrice");
+        String foodQuantity = intent.getStringExtra("MenuItemQuantity");
         int foodImage = intent.getIntExtra("MenuItemImage", 0);
+
+        assert foodPrice != null;
+        int price = Integer.parseInt(foodPrice.substring(0, foodPrice.length() - 1));
+        assert foodQuantity != null;
+        quantity = Integer.parseInt(foodQuantity);
+        Log.d(TAG, "quantity: " + quantity);
+        String Total = (price * quantity) + "$";
 
         binding.detailsFoodName.setText(foodName);
         binding.detailsFoodPrice.setText(foodPrice);
         binding.detailsFoodImage.setImageResource(foodImage);
+        binding.quantity.setText(foodQuantity);
         binding.btnBack.setOnClickListener(v -> finish());
-        binding.total.setText(foodPrice);
+        binding.total.setText(Total);
 
-        quantity = Integer.parseInt(binding.quantity.getText().toString());
-        assert foodPrice != null;
-        int price = Integer.parseInt(foodPrice.substring(0, foodPrice.length() - 1));
 
         binding.btnMinus.setOnClickListener(v -> {
             if(quantity > 1) {
                 quantity--;
+
                 binding.quantity.setText(String.valueOf(quantity));
-                String total = String.valueOf(quantity * price) + "$";
+                String total = quantity * price + "$";
                 binding.total.setText(total);
             }
         });
@@ -60,12 +67,12 @@ public class detailsActivity extends AppCompatActivity {
         binding.btnPlus.setOnClickListener(v -> {
             quantity++;
             binding.quantity.setText(String.valueOf(quantity));
-            String total = String.valueOf(quantity * price) + "$";
+            String total = quantity * price + "$";
             binding.total.setText(total);
         });
 
         binding.btnOrder.setOnClickListener(v -> {
-            CartManager.getInstance().addItem(new Item(foodName, foodPrice, foodImage));
+            CartManager.getInstance().addItem(new Item(foodName, foodPrice, foodImage, String.valueOf(quantity)));
             Toast.makeText(this, "Đã thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
         });
     }

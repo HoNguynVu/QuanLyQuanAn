@@ -4,10 +4,12 @@ public class Item {
     private final String itemName;
     private final String itemPrice;
     private final Integer itemImage;
-    public Item(String itemName, String itemPrice, Integer itemImage) {
+    private String itemQuantity;
+    public Item(String itemName, String itemPrice, Integer itemImage, String itemQuantity) {
         this.itemName = itemName;
         this.itemPrice = itemPrice;
         this.itemImage = itemImage;
+        this.itemQuantity = itemQuantity;
     }
 
     public String getItemName() {
@@ -20,5 +22,14 @@ public class Item {
 
     public Integer getItemImage() {
         return itemImage;
+    }
+
+    public String getItemQuantity() {
+        return itemQuantity;
+    }
+
+    public String setItemQuantity(String newQuantity) {
+        itemQuantity = newQuantity;
+        return itemQuantity;
     }
 }

@@ -2,6 +2,8 @@ package com.example.doan;
 
 import static android.content.ContentValues.TAG;
 
+import static java.lang.String.valueOf;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -32,6 +34,19 @@ public class CartActivity extends AppCompatActivity {
         binding = ActivityCartBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        CartManager cartManager = CartManager.getInstance();
+        cartManager.setOnTotalChangedListener(new CartManager.OnTotalChangedListener() {
+            @Override
+            public void onTotalChanged(int newTotal) {
+                // Cập nhật TextView mỗi khi total thay đổi
+                String total = newTotal + "$";
+                Log.d(TAG, "onTotalChanged: ");
+                binding.totalOrder.setText(total);
+            }
+        });
+        Log.d(TAG, "Set listener");
+        cartManager.notifyTotalChanged();
+
         adapter = new CartAdapter(cartList, this);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(binding.recyclerView.getContext(), LinearLayout.VERTICAL);
@@ -39,10 +54,10 @@ public class CartActivity extends AppCompatActivity {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setAdapter(adapter);
 
-
         binding.recyclerView.addItemDecoration(dividerItemDecoration);
         //binding.recyclerView.addItemDecoration(new SpaceItemDecoration(10));
         binding.btnBack.setOnClickListener(v -> finish());
+
     }
 
 

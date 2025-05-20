@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.doan.CartManager;
 import com.example.doan.Item;
 import com.example.doan.databinding.CartItemBinding;
 import com.example.doan.detailsActivity;
@@ -23,14 +24,12 @@ import java.util.List;
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder> {
     private static List<Item> cartList;
     private final Context requireContext;
-
-    private final int[] itemQuantities;
+    static CartManager cartManager = CartManager.getInstance();
+    static int quantity;
 
     public CartAdapter(List<Item> cartList, Context requireContext) {
         this.cartList = cartList;
-        itemQuantities = new int[cartList.size()];
         this.requireContext = requireContext;
-        Arrays.fill(itemQuantities, 1);
     }
 
     public void setFilteredList(List<Item> filteredList) {
@@ -66,9 +65,14 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         }
 
         public void bind(int position) {
+
+            int price = Integer.parseInt(cartList.get(position).getItemPrice().substring(0, cartList.get(position).getItemPrice().length() - 1));
+            quantity = Integer.parseInt(cartList.get(position).getItemQuantity());
+            String total = (price * quantity) + "$";
             binding.tvName.setText(cartList.get(position).getItemName());
-            binding.tvPrice.setText(cartList.get(position).getItemPrice());
+            binding.tvPrice.setText(total);
             binding.imageView.setImageResource(cartList.get(position).getItemImage());
+            binding.quantity.setText(cartList.get(position).getItemQuantity());
 
             binding.getRoot().setOnClickListener(new View.OnClickListener(){
 
@@ -80,13 +84,31 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                         intent.putExtra("MenuItemName", cartList.get(position).getItemName());
                         intent.putExtra("MenuItemPrice", cartList.get(position).getItemPrice());
                         intent.putExtra("MenuItemImage", cartList.get(position).getItemImage());
+                        intent.putExtra("MenuItemQuantity", cartList.get(position).getItemQuantity());
                         requireContext.startActivity(intent);
                     }
 
                 }
             });
 
+            binding.btnMinus.setOnClickListener(v -> {
+                if(quantity > 1) {
+                    quantity--;
+                    cartList.get(position).setItemQuantity(String.valueOf(quantity));
+                    binding.quantity.setText(String.valueOf(quantity));
+                    String Total = quantity * price + "$";
+                    cartManager.setTotalOrder(cartManager.getTotalOrder() - price);
+                    binding.tvPrice.setText(Total);
+                }
+            });
 
+            binding.btnPlus.setOnClickListener(v -> {
+                quantity++;
+                cartList.get(position).setItemQuantity(String.valueOf(quantity));
+                binding.quantity.setText(String.valueOf(quantity));
+                String Total = quantity * price + "$";
+                binding.tvPrice.setText(Total);
+            });
         }
 
 

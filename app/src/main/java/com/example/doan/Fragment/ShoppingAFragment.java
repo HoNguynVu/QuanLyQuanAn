@@ -34,10 +34,10 @@ public class ShoppingAFragment extends Fragment {
     }
 
     List<Item> itemList = List.of(
-            new Item("Pizza", "10$", R.drawable.soup_celery),
-            new Item("Burger", "10$", R.drawable.soup_dimsum),
-            new Item("Hotdog", "10$", R.drawable.kale_soup),
-            new Item("Drink", "10$", R.drawable.soup_mushroom)
+            new Item("Pizza", "10$", R.drawable.soup_celery, "1"),
+            new Item("Burger", "10$", R.drawable.soup_dimsum, "1"),
+            new Item("Hotdog", "10$", R.drawable.kale_soup, "1"),
+            new Item("Drink", "10$", R.drawable.soup_mushroom, "1")
     );
 
     @Override

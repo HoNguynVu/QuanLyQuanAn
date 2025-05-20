@@ -74,6 +74,7 @@ public class HomePopularItemAdapter extends RecyclerView.Adapter<HomePopularItem
                         intent.putExtra("MenuItemName", itemList.get(position).getItemName());
                         intent.putExtra("MenuItemPrice", itemList.get(position).getItemPrice());
                         intent.putExtra("MenuItemImage", itemList.get(position).getItemImage());
+                        intent.putExtra("MenuItemQuantity", itemList.get(position).getItemQuantity());
                         requireContext.startActivity(intent);
                     }
 
