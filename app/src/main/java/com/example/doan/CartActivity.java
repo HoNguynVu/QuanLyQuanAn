@@ -2,22 +2,14 @@ package com.example.doan;
 
 import static android.content.ContentValues.TAG;
 
-import static java.lang.String.valueOf;
 
+import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.example.doan.Adapter.CartAdapter;
 import com.example.doan.databinding.ActivityCartBinding;
@@ -55,6 +47,10 @@ public class CartActivity extends AppCompatActivity {
 
         binding.btnBack.setOnClickListener(v -> finish());
 
+        binding.btnCheckout.setOnClickListener(v -> {
+                Intent intent = new Intent(this, CheckOutActivity.class);
+                startActivity(intent);
+        });
     }
 
     private int dpToPx(int dp) {
