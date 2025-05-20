@@ -17,6 +17,7 @@ import com.example.doan.databinding.ActivityDetailsBinding;
 
 public class detailsActivity extends AppCompatActivity {
     ActivityDetailsBinding binding;
+    CartManager cartManager = CartManager.getInstance();
     int quantity;
     public detailsActivity() {
         // Constructor mặc định
@@ -43,7 +44,6 @@ public class detailsActivity extends AppCompatActivity {
         int price = Integer.parseInt(foodPrice.substring(0, foodPrice.length() - 1));
         assert foodQuantity != null;
         quantity = Integer.parseInt(foodQuantity);
-        Log.d(TAG, "quantity: " + quantity);
         String Total = (price * quantity) + "$";
 
         binding.detailsFoodName.setText(foodName);
@@ -61,6 +61,7 @@ public class detailsActivity extends AppCompatActivity {
                 binding.quantity.setText(String.valueOf(quantity));
                 String total = quantity * price + "$";
                 binding.total.setText(total);
+
             }
         });
 

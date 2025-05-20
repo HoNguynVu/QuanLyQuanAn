@@ -21,15 +21,13 @@ import com.example.doan.Adapter.HomePopularItemAdapter;
 import com.example.doan.CartActivity;
 import com.example.doan.Item;
 import com.example.doan.R;
+import com.example.doan.SpaceItemDecoration;
 import com.example.doan.databinding.HomeFragmentBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
-    List<String> titles;
-    List<String> prices;
-    List<Integer> images;
     HomePopularItemAdapter adapter;
     private HomeFragmentBinding binding;
 
@@ -104,5 +102,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        binding.recyclerView.addItemDecoration(new SpaceItemDecoration(16));
     }
 }

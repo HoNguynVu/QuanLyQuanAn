@@ -23,7 +23,6 @@ public class CartManager {
         this.listener = listener;
     }
     public void notifyTotalChanged() {
-        Log.d(TAG, "Notify called");
         if (listener != null) {
             listener.onTotalChanged(TotalOrder);
         }
@@ -44,7 +43,6 @@ public class CartManager {
     }
 
     public void addItem(Item item) {
-
         cartItems.add(item);
         TotalOrder += Integer.parseInt(item.getItemPrice().substring(0, item.getItemPrice().length() - 1)) * Integer.parseInt(item.getItemQuantity());
         notifyTotalChanged();

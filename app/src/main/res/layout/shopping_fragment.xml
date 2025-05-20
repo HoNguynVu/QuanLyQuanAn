@@ -6,8 +6,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
-
 
     <SearchView
         android:id="@+id/searchView"
@@ -20,23 +18,17 @@
         android:iconifiedByDefault="false"
         android:queryBackground="@android:color/transparent"
         android:queryHint="What do you want to order?"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="16dp"
         android:searchIcon="@drawable/ic_search" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Menu"
-        android:fontFamily="@font/arial_rounded"
-        android:textStyle="bold"
-        android:textSize="50sp"
-        android:layout_gravity="center"
-        />
 
     <com.google.android.material.tabs.TabLayout
         android:layout_marginTop="16dp"
         android:id="@+id/menu_container"
         android:layout_width="match_parent"
+        android:elevation="0dp"
+        app:tabIndicatorHeight="0dp"
+        app:elevation="0dp"
+        android:background="@android:color/transparent"
         app:tabMode="scrollable"
         android:layout_height="wrap_content" />
 

@@ -59,16 +59,16 @@ public class ShoppingFragment extends Fragment {
             TextView tabText = tabView.findViewById(R.id.tabText);
             switch (position) {
                 case 1:
-                    tabText.setText("A");
-                    tabIcon.setImageResource(R.drawable.ic_a);
+                    tabText.setText("Chips");
+                    tabIcon.setImageResource(R.drawable.ic_chips);
                     break;
                 case 2:
                     tabText.setText("Drinks");
-                    tabIcon.setImageResource(R.drawable.ic_b);
+                    tabIcon.setImageResource(R.drawable.ic_tea_cup);
                     break;
                 default:
                     tabText.setText("Soups");
-                    tabIcon.setImageResource(R.drawable.ic_soups);
+                    tabIcon.setImageResource(R.drawable.ic_soup);
             }
 
             tab.setCustomView(tabView);

@@ -40,25 +40,24 @@ public class CartActivity extends AppCompatActivity {
             public void onTotalChanged(int newTotal) {
                 // Cập nhật TextView mỗi khi total thay đổi
                 String total = newTotal + "$";
-                Log.d(TAG, "onTotalChanged: ");
+                Log.d(TAG, "onTotalChanged: " + newTotal);
                 binding.totalOrder.setText(total);
             }
         });
-        Log.d(TAG, "Set listener");
+
         cartManager.notifyTotalChanged();
 
         adapter = new CartAdapter(cartList, this);
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(binding.recyclerView.getContext(), LinearLayout.VERTICAL);
-
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setAdapter(adapter);
+        binding.recyclerView.addItemDecoration(new SpaceItemDecoration(dpToPx(16)));
 
-        binding.recyclerView.addItemDecoration(dividerItemDecoration);
-        //binding.recyclerView.addItemDecoration(new SpaceItemDecoration(10));
         binding.btnBack.setOnClickListener(v -> finish());
 
     }
 
-
+    private int dpToPx(int dp) {
+        return Math.round(dp * getResources().getDisplayMetrics().density);
+    }
 }

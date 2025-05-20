@@ -4,26 +4,24 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.doan.Adapter.HomePopularItemAdapter;
+import com.example.doan.Adapter.MenuAdapter;
 import com.example.doan.Item;
 import com.example.doan.R;
+import com.example.doan.SpaceItemDecoration;
 import com.example.doan.databinding.ShoppingDrinksFragmentBinding;
+import com.example.doan.databinding.ShoppingSoupsFragmentBinding;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ShoppingDrinksFragment extends Fragment {
-    List<String> titles;
-    List<String> prices;
-    List<Integer> images;
-    HomePopularItemAdapter adapter;
+    MenuAdapter adapter;
     private ShoppingDrinksFragmentBinding binding;
 
     @Override
@@ -42,13 +40,13 @@ public class ShoppingDrinksFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d("onCreateView", "onCreateView: ");
         binding = ShoppingDrinksFragmentBinding.inflate(inflater, container, false);
 
-        adapter = new HomePopularItemAdapter(requireContext(), itemList);
-
+        adapter = new MenuAdapter(itemList, requireContext());
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerView.setAdapter(adapter);
-        binding.recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        binding.recyclerView.setHasFixedSize(true);
+        binding.recyclerView.addItemDecoration(new SpaceItemDecoration(16));
         return binding.getRoot();
     }
 }

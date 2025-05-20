@@ -6,14 +6,18 @@
     android:orientation="vertical"
     tools:context=".Fragment.MenuBottomSheetFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:layout_marginTop="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Cart" />
+        android:fontFamily="@font/arial_rounded"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:text="Menu" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/menu_recycler_view"

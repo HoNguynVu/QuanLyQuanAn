@@ -24,7 +24,6 @@ public class HomePopularItemAdapter extends RecyclerView.Adapter<HomePopularItem
     private HomePopularItemBinding binding;
     private final Context requireContext;
     static List<Item> itemList;
-    Activity activity;
 
     public HomePopularItemAdapter(Context requireContext, List<Item> itemList) {
         this.itemList = itemList;

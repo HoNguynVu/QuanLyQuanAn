@@ -23,7 +23,6 @@ public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
         outRect.right = space;
         outRect.bottom = space;
         outRect.top = space;
-        Log.d(TAG, "sua thanh cong");
     }
 }
 

@@ -25,7 +25,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     private static List<Item> cartList;
     private final Context requireContext;
     static CartManager cartManager = CartManager.getInstance();
-    static int quantity;
 
     public CartAdapter(List<Item> cartList, Context requireContext) {
         this.cartList = cartList;
@@ -54,9 +53,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         return cartList.size();
     }
 
-    public static class CartViewHolder extends RecyclerView.ViewHolder {
+    public class CartViewHolder extends RecyclerView.ViewHolder {
         private final CartItemBinding binding;
         private final Context requireContext;
+
+        CartManager cartManager = CartManager.getInstance();
 
         public CartViewHolder(CartItemBinding binding, Context requireContext) {
             super(binding.getRoot());
@@ -67,8 +68,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         public void bind(int position) {
 
             int price = Integer.parseInt(cartList.get(position).getItemPrice().substring(0, cartList.get(position).getItemPrice().length() - 1));
-            quantity = Integer.parseInt(cartList.get(position).getItemQuantity());
-            String total = (price * quantity) + "$";
+            final int[] quantity = {Integer.parseInt(cartList.get(position).getItemQuantity())};
+            String total = (price * quantity[0]) + "$";
             binding.tvName.setText(cartList.get(position).getItemName());
             binding.tvPrice.setText(total);
             binding.imageView.setImageResource(cartList.get(position).getItemImage());
@@ -92,22 +93,34 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             });
 
             binding.btnMinus.setOnClickListener(v -> {
-                if(quantity > 1) {
-                    quantity--;
-                    cartList.get(position).setItemQuantity(String.valueOf(quantity));
-                    binding.quantity.setText(String.valueOf(quantity));
-                    String Total = quantity * price + "$";
-                    cartManager.setTotalOrder(cartManager.getTotalOrder() - price);
+                if(quantity[0] > 1) {
+                    quantity[0]--;
+                    cartList.get(position).setItemQuantity(String.valueOf(quantity[0]));
+                    binding.quantity.setText(String.valueOf(quantity[0]));
+                    String Total = quantity[0] * price + "$";
                     binding.tvPrice.setText(Total);
+
+                    cartManager.setTotalOrder(cartManager.getTotalOrder() - price);
+                    cartManager.notifyTotalChanged();
                 }
             });
 
             binding.btnPlus.setOnClickListener(v -> {
-                quantity++;
-                cartList.get(position).setItemQuantity(String.valueOf(quantity));
-                binding.quantity.setText(String.valueOf(quantity));
-                String Total = quantity * price + "$";
+                quantity[0]++;
+                cartList.get(position).setItemQuantity(String.valueOf(quantity[0]));
+                binding.quantity.setText(String.valueOf(quantity[0]));
+                String Total = quantity[0] * price + "$";
                 binding.tvPrice.setText(Total);
+
+                cartManager.setTotalOrder(cartManager.getTotalOrder() + price);
+                cartManager.notifyTotalChanged();
+            });
+
+            binding.btnDelete.setOnClickListener(v -> {
+               cartList.remove(position);
+               notifyItemRemoved(position);
+               cartManager.setTotalOrder(cartManager.getTotalOrder() - price * quantity[0]);
+               cartManager.notifyTotalChanged();
             });
         }
 
