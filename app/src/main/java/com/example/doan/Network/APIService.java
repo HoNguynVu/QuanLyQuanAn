@@ -125,10 +125,10 @@ public interface APIService {
 
     @FormUrlEncoded
     @POST("change_password.php")
-    Call<String> changePassword(
+    Call<GenericResponse> changePassword(
             @Field("email") String email,
-            @Field("currentPassword") String currentPassword,
-            @Field("newPassword") String newPassword
+            @Field("old_password") String oldPassword,
+            @Field("new_password") String newPassword
     );
 
     @FormUrlEncoded
