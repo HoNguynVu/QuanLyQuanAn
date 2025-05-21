@@ -8,6 +8,7 @@ pluginManagement {
             }
         }
         mavenCentral()
+        maven { url = uri("https://jitpack.io") }  // Thêm JitPack repository
         gradlePluginPortal()
     }
 }
@@ -17,9 +18,9 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven { setUrl("https://jitpack.io") }
+        maven { url = uri("https://jitpack.io") }  // Thêm JitPack repository
     }
 }
 
 rootProject.name = "DoAn"
 include(":app")
- 

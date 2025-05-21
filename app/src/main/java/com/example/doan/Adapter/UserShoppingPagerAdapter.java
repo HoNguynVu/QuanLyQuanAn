@@ -4,10 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.doan.Fragment.UserShoppingChipsFragment;
-import com.example.doan.Fragment.UserShoppingDrinksFragment;
-import com.example.doan.Fragment.UserShoppingSoupsFragment;
-import com.example.doan.Fragment.UserShoppingFragment;
+import com.example.doan.UserFragment.UserShoppingChipsFragment;
+import com.example.doan.UserFragment.UserShoppingDrinksFragment;
+import com.example.doan.UserFragment.UserShoppingSoupsFragment;
+import com.example.doan.UserFragment.UserShoppingFragment;
 
 public class UserShoppingPagerAdapter extends FragmentStateAdapter {
     public UserShoppingPagerAdapter(@NonNull UserShoppingFragment fragmentActivity) {

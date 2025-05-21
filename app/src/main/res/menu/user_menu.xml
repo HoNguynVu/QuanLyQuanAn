@@ -5,7 +5,7 @@
         android:icon="@drawable/home"/>
 
     <item android:title="Search"
-        android:id="@+id/searchFragment"
+        android:id="@+id/shoppingFragment"
         android:icon="@drawable/search"/>
 
     <item android:title="Notification"
@@ -14,5 +14,5 @@
 
     <item android:title="Profile"
         android:id="@+id/profileFragment"
-        android:icon="@drawable/profile"/>
+        android:icon="@drawable/ic_person"/>
 </menu>
