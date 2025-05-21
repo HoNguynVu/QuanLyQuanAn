@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.doan"
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -42,7 +43,7 @@
             android:name=".Login.SplashActivity"
             android:exported="false" />
         <activity
-            android:name=".Login.MainActivity"
+            android:name=".Login.Activity"
             android:exported="false" />
         <activity android:name=".AdminActivity.AdminAddFoodItem"/>
         <activity android:name=".AdminActivity.AdminEditFoodItem"/>
@@ -63,9 +64,25 @@
             android:exported="false" />
         <activity
             android:name=".Login.LoginActivity"
+            android:exported="false">
+        </activity>
+
+        <activity
+            android:name=".UserCheckOutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserCartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserDetailsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".UserMainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -24,6 +24,7 @@ import com.example.doan.DatabaseClass.CurrentUser;
 import com.example.doan.Network.APIService;
 import com.example.doan.Network.RetrofitClient;
 import com.example.doan.R;
+import com.example.doan.UserMainActivity;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -110,7 +111,7 @@ public class LoginActivity extends AppCompatActivity {
                         if ("admin".equalsIgnoreCase(u.role)) {
                             startActivity(new Intent(LoginActivity.this, AdminHome.class));
                         } else {
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            startActivity(new Intent(LoginActivity.this, UserMainActivity.class));
                         }
                         finish();
                     } else {
