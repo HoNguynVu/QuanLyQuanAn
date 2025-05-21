@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">DoAn</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="explore_your_favorite_food">Explore Your Favorite Food</string>
+    <string name="maybe_you_like">Maybe you like</string>
+    <string name="item_name">Item name</string>
+    <string name="price">Price</string>
+    <string name="add">Add</string>
+    <string name="food">Food</string>
+    <string name="_1">1</string>
+</resources>

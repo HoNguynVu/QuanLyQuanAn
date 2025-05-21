@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.doan.UserFragment.UserHomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/user_home_fragment" />
+
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:label="fragment_notification"
+        android:name="com.example.doan.UserFragment.UserHomeFragment"
+        tools:layout="@layout/notification_fragment" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:label="fragment_profile"
+        android:name="com.example.doan.UserFragment.ProfileFragment"
+        tools:layout="@layout/activity_my_profile" />
+
+    <fragment
+        android:id="@+id/shoppingFragment"
+        android:label="fragment_shopping"
+        android:name="com.example.doan.UserFragment.UserShoppingFragment"
+        tools:layout="@layout/user_shopping_fragment" />
+</navigation>
