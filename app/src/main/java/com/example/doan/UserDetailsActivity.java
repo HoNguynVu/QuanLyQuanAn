@@ -1,29 +1,22 @@
 package com.example.doan;
 
-import static android.content.ContentValues.TAG;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-import com.example.doan.databinding.ActivityDetailsBinding;
+import com.example.doan.databinding.UserActivityDetailsBinding;
 
-public class detailsActivity extends AppCompatActivity {
-    ActivityDetailsBinding binding;
-    CartManager cartManager = CartManager.getInstance();
+public class UserDetailsActivity extends AppCompatActivity {
+    UserActivityDetailsBinding binding;
+    UserCartManager userCartManager = UserCartManager.getInstance();
     int quantity;
-    public detailsActivity() {
+    public UserDetailsActivity() {
         // Constructor mặc định
     }
 
-    public detailsActivity(ActivityDetailsBinding binding) {
+    public UserDetailsActivity(UserActivityDetailsBinding binding) {
         this.binding = binding;
     }
 
@@ -31,7 +24,7 @@ public class detailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityDetailsBinding.inflate(getLayoutInflater());
+        binding = UserActivityDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         Intent intent = getIntent();
@@ -73,7 +66,7 @@ public class detailsActivity extends AppCompatActivity {
         });
 
         binding.btnOrder.setOnClickListener(v -> {
-            CartManager.getInstance().addItem(new Item(foodName, foodPrice, foodImage, String.valueOf(quantity)));
+            UserCartManager.getInstance().addItem(new UserItem(foodName, foodPrice, foodImage, String.valueOf(quantity)));
             Toast.makeText(this, "Đã thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
         });
     }

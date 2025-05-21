@@ -1,7 +1,5 @@
 package com.example.doan;
 
-import static android.content.ContentValues.TAG;
-
 
 import android.os.Bundle;
 
@@ -9,25 +7,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.util.Log;
-
-import com.example.doan.Adapter.CartAdapter;
-import com.example.doan.Adapter.CheckOutAdapter;
-import com.example.doan.databinding.ActivityCheckOutBinding;
+import com.example.doan.Adapter.UserCheckOutAdapter;
+import com.example.doan.databinding.UserActivityCheckOutBinding;
 
 import java.util.List;
 
-public class CheckOutActivity extends AppCompatActivity {
-    List<Item> cartList = CartManager.getInstance().getCartItems();
-    CheckOutAdapter adapter;
-    private ActivityCheckOutBinding binding;
+public class UserCheckOutActivity extends AppCompatActivity {
+    List<UserItem> cartList = UserCartManager.getInstance().getCartItems();
+    UserCheckOutAdapter adapter;
+    private UserActivityCheckOutBinding binding;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityCheckOutBinding.inflate(getLayoutInflater());
+        binding = UserActivityCheckOutBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        adapter = new CheckOutAdapter(cartList, this);
+        adapter = new UserCheckOutAdapter(cartList, this);
         binding.recyclerviewList.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerviewList.setAdapter(adapter);
 
@@ -40,7 +35,7 @@ public class CheckOutActivity extends AppCompatActivity {
 
         binding.btnBack.setOnClickListener(v -> finish());
 
-        String price = CartManager.getInstance().getTotalOrder() + "$";
+        String price = UserCartManager.getInstance().getTotalOrder() + "$";
         binding.price.setText(price);
         binding.fee.setText("0$");
         binding.totalOrder.setText(price);

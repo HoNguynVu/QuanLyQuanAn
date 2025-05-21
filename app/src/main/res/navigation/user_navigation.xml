@@ -7,14 +7,9 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.doan.Fragment.HomeFragment"
+        android:name="com.example.doan.Fragment.UserHomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/home_fragment" />
-    <fragment
-        android:id="@+id/cartFragment"
-        android:name="com.example.doan.Fragment.CartFragment"
-        android:label="fragment_cart"
-        tools:layout="@layout/cart_fragment" />
+        tools:layout="@layout/user_home_fragment" />
     <fragment
         android:id="@+id/notificationFragment"
         android:name="com.example.doan.Fragment.NotificationFragment"
@@ -27,7 +22,7 @@
         tools:layout="@layout/profile_fragment" />
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.example.doan.Fragment.ShoppingFragment"
+        android:name="com.example.doan.Fragment.UserShoppingFragment"
         android:label="fragment_search"
-        tools:layout="@layout/shopping_fragment" />
+        tools:layout="@layout/user_shopping_fragment" />
 </navigation>

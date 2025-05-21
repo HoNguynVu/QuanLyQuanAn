@@ -13,26 +13,26 @@ import android.view.ViewGroup;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.example.doan.Adapter.MenuAdapter;
-import com.example.doan.Item;
+import com.example.doan.Adapter.UserMenuAdapter;
+import com.example.doan.UserItem;
 import com.example.doan.R;
-import com.example.doan.SpaceItemDecoration;
-import com.example.doan.databinding.FragmentSearchBinding;
+import com.example.doan.UserSpaceItemDecoration;
+import com.example.doan.databinding.UserFragmentSearchBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchFragment extends Fragment {
-    private FragmentSearchBinding binding;
-    private MenuAdapter adapter;
+public class UserSearchFragment extends Fragment {
+    private UserFragmentSearchBinding binding;
+    private UserMenuAdapter adapter;
 
-    List<Item> cartList = List.of(
-            new Item("Pizza", "10$", R.drawable.soup_celery, "1"),
-            new Item("Burger", "10$", R.drawable.soup_dimsum, "1"),
-            new Item("Hotdog", "10$", R.drawable.kale_soup, "1"),
-            new Item("Drink", "10$", R.drawable.soup_mushroom, "1")
+    List<UserItem> cartList = List.of(
+            new UserItem("Pizza", "10$", R.drawable.soup_celery, "1"),
+            new UserItem("Burger", "10$", R.drawable.soup_dimsum, "1"),
+            new UserItem("Hotdog", "10$", R.drawable.kale_soup, "1"),
+            new UserItem("Drink", "10$", R.drawable.soup_mushroom, "1")
     );
-    List<Item> filteredList;
+    List<UserItem> filteredList;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,7 +42,7 @@ public class SearchFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentSearchBinding.inflate(inflater, container, false);
+        binding = UserFragmentSearchBinding.inflate(inflater, container, false);
 
         return binding.getRoot();
     }
@@ -51,10 +51,10 @@ public class SearchFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         filteredList = new ArrayList<>();
-        adapter = new MenuAdapter(filteredList, requireContext());
+        adapter = new UserMenuAdapter(filteredList, requireContext());
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerView.setAdapter(adapter);
-        binding.recyclerView.addItemDecoration(new SpaceItemDecoration(16));
+        binding.recyclerView.addItemDecoration(new UserSpaceItemDecoration(16));
 
         binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -73,7 +73,7 @@ public class SearchFragment extends Fragment {
     private void filteredMenu(String newText) {
         filteredList.clear();
         if(newText != null && !newText.isEmpty()) {
-            for (Item item : cartList) {
+            for (UserItem item : cartList) {
                 if (item.getItemName().toLowerCase().contains(newText.toLowerCase())) {
                     filteredList.add(item);
                 }

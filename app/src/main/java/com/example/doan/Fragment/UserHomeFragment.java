@@ -17,19 +17,19 @@ import android.widget.Toast;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.interfaces.ItemClickListener;
 import com.denzcoskun.imageslider.models.SlideModel;
-import com.example.doan.Adapter.HomePopularItemAdapter;
-import com.example.doan.CartActivity;
-import com.example.doan.Item;
+import com.example.doan.Adapter.UserHomePopularItemAdapter;
+import com.example.doan.UserCartActivity;
+import com.example.doan.UserItem;
 import com.example.doan.R;
-import com.example.doan.SpaceItemDecoration;
-import com.example.doan.databinding.HomeFragmentBinding;
+import com.example.doan.UserSpaceItemDecoration;
+import com.example.doan.databinding.UserHomeFragmentBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
-    HomePopularItemAdapter adapter;
-    private HomeFragmentBinding binding;
+public class UserHomeFragment extends Fragment {
+    UserHomePopularItemAdapter adapter;
+    private UserHomeFragmentBinding binding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,36 +37,36 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    List<Item> itemList = List.of(
-            new Item("Pizza", "10$", R.drawable.soup_celery, "1"),
-            new Item("Burger", "10$", R.drawable.soup_dimsum, "1"),
-            new Item("Hotdog", "10$", R.drawable.kale_soup, "1"),
-            new Item("Drink", "10$", R.drawable.soup_mushroom, "1")
+    List<UserItem> itemList = List.of(
+            new UserItem("Pizza", "10$", R.drawable.soup_celery, "1"),
+            new UserItem("Burger", "10$", R.drawable.soup_dimsum, "1"),
+            new UserItem("Hotdog", "10$", R.drawable.kale_soup, "1"),
+            new UserItem("Drink", "10$", R.drawable.soup_mushroom, "1")
     );
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = HomeFragmentBinding.inflate(inflater, container, false);
+        binding = UserHomeFragmentBinding.inflate(inflater, container, false);
 
-        adapter = new HomePopularItemAdapter(requireContext(), itemList);
+        adapter = new UserHomePopularItemAdapter(requireContext(), itemList);
 
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         binding.viewall.setOnClickListener(v -> {
-            MenuBottomSheetFragment bottomSheetDialog = new MenuBottomSheetFragment();
+            UserMenuBottomSheetFragment bottomSheetDialog = new UserMenuBottomSheetFragment();
             bottomSheetDialog.show(getParentFragmentManager(), "Test");
         });
 
         binding.cartFragment.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), CartActivity.class);
+            Intent intent = new Intent(getActivity(), UserCartActivity.class);
             startActivity(intent);
         });
 
         binding.searchView.setOnQueryTextFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
                 FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragmentContainerView, new SearchFragment());
+                transaction.replace(R.id.fragmentContainerView, new UserSearchFragment());
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
@@ -102,6 +102,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        binding.recyclerView.addItemDecoration(new SpaceItemDecoration(16));
+        binding.recyclerView.addItemDecoration(new UserSpaceItemDecoration(16));
     }
 }

@@ -1,31 +1,23 @@
 package com.example.doan.Adapter;
 
-import static android.content.ContentValues.TAG;
-
 import android.content.Context;
-import android.content.Intent;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.doan.CartManager;
-import com.example.doan.Item;
-import com.example.doan.databinding.ActivityCheckOutBinding;
-import com.example.doan.databinding.CheckOutItemBinding;
-import com.example.doan.detailsActivity;
+import com.example.doan.UserItem;
+import com.example.doan.databinding.UserCheckOutItemBinding;
 
 import java.util.List;
 
-public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.CheckOutViewHolder> {
-    private static List<Item> cartList;
+public class UserCheckOutAdapter extends RecyclerView.Adapter<UserCheckOutAdapter.CheckOutViewHolder> {
+    private static List<UserItem> cartList;
     private final Context requireContext;
-    static CartManager cartManager = CartManager.getInstance();
 
-    public CheckOutAdapter(List<Item> cartList, Context requireContext) {
+    public UserCheckOutAdapter(List<UserItem> cartList, Context requireContext) {
         this.cartList = cartList;
         this.requireContext = requireContext;
     }
@@ -34,7 +26,7 @@ public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.CheckO
     @NonNull
     @Override
     public CheckOutViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        var binding = CheckOutItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        var binding = UserCheckOutItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new CheckOutViewHolder(binding, requireContext);
     }
 
@@ -49,12 +41,10 @@ public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.CheckO
     }
 
     public class CheckOutViewHolder extends RecyclerView.ViewHolder {
-        private final CheckOutItemBinding binding;
+        private final UserCheckOutItemBinding binding;
         private final Context requireContext;
 
-        CartManager cartManager = CartManager.getInstance();
-
-        public CheckOutViewHolder(CheckOutItemBinding binding, Context requireContext) {
+        public CheckOutViewHolder(UserCheckOutItemBinding binding, Context requireContext) {
             super(binding.getRoot());
             this.binding = binding;
             this.requireContext = requireContext;

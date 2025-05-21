@@ -11,23 +11,23 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.util.Log;
 
-import com.example.doan.Adapter.CartAdapter;
-import com.example.doan.databinding.ActivityCartBinding;
+import com.example.doan.Adapter.UserCartAdapter;
+import com.example.doan.databinding.UserActivityCartBinding;
 
 import java.util.List;
 
-public class CartActivity extends AppCompatActivity {
-    List<Item> cartList = CartManager.getInstance().getCartItems();
-    CartAdapter adapter;
-    private ActivityCartBinding binding;
+public class UserCartActivity extends AppCompatActivity {
+    List<UserItem> cartList = UserCartManager.getInstance().getCartItems();
+    UserCartAdapter adapter;
+    private UserActivityCartBinding binding;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityCartBinding.inflate(getLayoutInflater());
+        binding = UserActivityCartBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        CartManager cartManager = CartManager.getInstance();
-        cartManager.setOnTotalChangedListener(new CartManager.OnTotalChangedListener() {
+        UserCartManager userCartManager = UserCartManager.getInstance();
+        userCartManager.setOnTotalChangedListener(new UserCartManager.OnTotalChangedListener() {
             @Override
             public void onTotalChanged(int newTotal) {
                 // Cập nhật TextView mỗi khi total thay đổi
@@ -37,18 +37,18 @@ public class CartActivity extends AppCompatActivity {
             }
         });
 
-        cartManager.notifyTotalChanged();
+        userCartManager.notifyTotalChanged();
 
-        adapter = new CartAdapter(cartList, this);
+        adapter = new UserCartAdapter(cartList, this);
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setAdapter(adapter);
-        binding.recyclerView.addItemDecoration(new SpaceItemDecoration(dpToPx(16)));
+        binding.recyclerView.addItemDecoration(new UserSpaceItemDecoration(dpToPx(16)));
 
         binding.btnBack.setOnClickListener(v -> finish());
 
         binding.btnCheckout.setOnClickListener(v -> {
-                Intent intent = new Intent(this, CheckOutActivity.class);
+                Intent intent = new Intent(this, UserCheckOutActivity.class);
                 startActivity(intent);
         });
     }

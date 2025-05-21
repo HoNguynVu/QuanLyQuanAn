@@ -1,11 +1,7 @@
 package com.example.doan.Adapter;
 
-import static android.content.ContentValues.TAG;
-
 import android.content.Context;
 import android.content.Intent;
-import android.nfc.Tag;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,25 +9,24 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.doan.CartManager;
-import com.example.doan.Item;
-import com.example.doan.databinding.CartItemBinding;
-import com.example.doan.detailsActivity;
+import com.example.doan.UserCartManager;
+import com.example.doan.UserItem;
+import com.example.doan.databinding.UserCartItemBinding;
+import com.example.doan.UserDetailsActivity;
 
-import java.util.Arrays;
 import java.util.List;
 
-public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder> {
-    private static List<Item> cartList;
+public class UserCartAdapter extends RecyclerView.Adapter<UserCartAdapter.CartViewHolder> {
+    private static List<UserItem> cartList;
     private final Context requireContext;
-    static CartManager cartManager = CartManager.getInstance();
+    static UserCartManager userCartManager = UserCartManager.getInstance();
 
-    public CartAdapter(List<Item> cartList, Context requireContext) {
+    public UserCartAdapter(List<UserItem> cartList, Context requireContext) {
         this.cartList = cartList;
         this.requireContext = requireContext;
     }
 
-    public void setFilteredList(List<Item> filteredList) {
+    public void setFilteredList(List<UserItem> filteredList) {
         cartList = filteredList;
         notifyDataSetChanged();
     }
@@ -39,7 +34,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     @NonNull
     @Override
     public CartViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        var binding = CartItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        var binding = UserCartItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new CartViewHolder(binding, requireContext);
     }
 
@@ -54,12 +49,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     }
 
     public class CartViewHolder extends RecyclerView.ViewHolder {
-        private final CartItemBinding binding;
+        private final UserCartItemBinding binding;
         private final Context requireContext;
 
-        CartManager cartManager = CartManager.getInstance();
+        UserCartManager userCartManager = UserCartManager.getInstance();
 
-        public CartViewHolder(CartItemBinding binding, Context requireContext) {
+        public CartViewHolder(UserCartItemBinding binding, Context requireContext) {
             super(binding.getRoot());
             this.binding = binding;
             this.requireContext = requireContext;
@@ -81,7 +76,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
-                        Intent intent = new Intent(requireContext, detailsActivity.class);
+                        Intent intent = new Intent(requireContext, UserDetailsActivity.class);
                         intent.putExtra("MenuItemName", cartList.get(position).getItemName());
                         intent.putExtra("MenuItemPrice", cartList.get(position).getItemPrice());
                         intent.putExtra("MenuItemImage", cartList.get(position).getItemImage());
@@ -100,8 +95,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                     String Total = quantity[0] * price + "$";
                     binding.tvPrice.setText(Total);
 
-                    cartManager.setTotalOrder(cartManager.getTotalOrder() - price);
-                    cartManager.notifyTotalChanged();
+                    userCartManager.setTotalOrder(userCartManager.getTotalOrder() - price);
+                    userCartManager.notifyTotalChanged();
                 }
             });
 
@@ -112,15 +107,15 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                 String Total = quantity[0] * price + "$";
                 binding.tvPrice.setText(Total);
 
-                cartManager.setTotalOrder(cartManager.getTotalOrder() + price);
-                cartManager.notifyTotalChanged();
+                userCartManager.setTotalOrder(userCartManager.getTotalOrder() + price);
+                userCartManager.notifyTotalChanged();
             });
 
             binding.btnDelete.setOnClickListener(v -> {
                cartList.remove(position);
                notifyItemRemoved(position);
-               cartManager.setTotalOrder(cartManager.getTotalOrder() - price * quantity[0]);
-               cartManager.notifyTotalChanged();
+               userCartManager.setTotalOrder(userCartManager.getTotalOrder() - price * quantity[0]);
+               userCartManager.notifyTotalChanged();
             });
         }
 

@@ -1,18 +1,15 @@
 package com.example.doan;
 
-import static android.content.ContentValues.TAG;
-
 import android.graphics.Rect;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
+public class UserSpaceItemDecoration extends RecyclerView.ItemDecoration {
     private final int space;
 
-    public SpaceItemDecoration(int space) {
+    public UserSpaceItemDecoration(int space) {
         this.space = space;
     }
 

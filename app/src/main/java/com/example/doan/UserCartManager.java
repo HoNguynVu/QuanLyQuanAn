@@ -4,14 +4,12 @@ import static android.content.ContentValues.TAG;
 
 import android.util.Log;
 
-import com.example.doan.Adapter.CartAdapter;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class CartManager {
-    private static CartManager instance;
-    private final List<Item> cartItems;
+public class UserCartManager {
+    private static UserCartManager instance;
+    private final List<UserItem> cartItems;
     private int TotalOrder = 0;
     private OnTotalChangedListener listener;
 
@@ -30,25 +28,25 @@ public class CartManager {
             Log.d(TAG, "listener null");
         }
     }
-    private CartManager() {
+    private UserCartManager() {
         cartItems = new ArrayList<>();
     }
 
-    public static synchronized CartManager getInstance() {
+    public static synchronized UserCartManager getInstance() {
         if(instance == null) {
-            instance = new CartManager();
+            instance = new UserCartManager();
         }
 
         return instance;
     }
 
-    public void addItem(Item item) {
+    public void addItem(UserItem item) {
         cartItems.add(item);
         TotalOrder += Integer.parseInt(item.getItemPrice().substring(0, item.getItemPrice().length() - 1)) * Integer.parseInt(item.getItemQuantity());
         notifyTotalChanged();
     }
 
-    public List<Item> getCartItems() {
+    public List<UserItem> getCartItems() {
         return cartItems;
     }
 

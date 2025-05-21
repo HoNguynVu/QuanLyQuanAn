@@ -1,11 +1,11 @@
 package com.example.doan;
 
-public class Item {
+public class UserItem {
     private final String itemName;
     private final String itemPrice;
     private final Integer itemImage;
     private String itemQuantity;
-    public Item(String itemName, String itemPrice, Integer itemImage, String itemQuantity) {
+    public UserItem(String itemName, String itemPrice, Integer itemImage, String itemQuantity) {
         this.itemName = itemName;
         this.itemPrice = itemPrice;
         this.itemImage = itemImage;
