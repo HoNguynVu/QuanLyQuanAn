@@ -1,38 +1,45 @@
 package com.example.doan.AdminActivity;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.doan.DatabaseClass.CurrentUser;
+import com.example.doan.DatabaseClass.GenericResponse;
+import com.example.doan.DatabaseClass.User;
+import com.example.doan.DatabaseClass.UserResponse;
+import com.example.doan.Network.APIService;
+import com.example.doan.Network.RetrofitClient;
 import com.example.doan.R;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthProvider;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AdminSetting extends AppCompatActivity {
 
-    private EditText edtName, edtGender;
-    private Spinner edtDob;
-    private EditText txtPhone, txtEmail;
+    private EditText edtName, edtPhone, edtEmail, edtDob;
     private TextView txtChangePassword;
-    private FirebaseAuth mAuth;
-    private DatabaseReference userRef;
+    private String currentEmail;
+
+    private final SimpleDateFormat displayFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+    private final SimpleDateFormat serverFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +47,7 @@ public class AdminSetting extends AppCompatActivity {
         setContentView(R.layout.admin_setting);
 
         Toolbar toolbar = findViewById(R.id.topAppBar);
-        toolbar.setNavigationOnClickListener(v -> finish());
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
         toolbar.inflateMenu(R.menu.menu_save_setting);
         toolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.action_save) {
@@ -51,135 +58,162 @@ public class AdminSetting extends AppCompatActivity {
         });
 
         edtName = findViewById(R.id.edtName);
-        edtGender = findViewById(R.id.edtGender);
+        edtPhone = findViewById(R.id.edtPhone);
+        edtEmail = findViewById(R.id.edtEmail);
         edtDob = findViewById(R.id.edtDob);
-        txtPhone = findViewById(R.id.edtPhone);
-        txtEmail = findViewById(R.id.edtEmail);
         txtChangePassword = findViewById(R.id.txtChangePassword);
-        String[] categories = {"Nam", "Nữ"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this,
-                R.layout.spinner_item,   // 👈 dùng layout custom
-                categories
-        );
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        edtDob.setAdapter(adapter);
-        String dobFromIntent = getIntent().getStringExtra("category");
-        if (dobFromIntent != null) {
-            for (int i = 0; i < categories.length; i++) {
-                if (categories[i].equalsIgnoreCase(dobFromIntent)) {
-                    edtDob.setSelection(i);
-                    break;
-                }
-            }
+
+        // DatePicker cho ngày sinh
+        edtDob.setOnClickListener(v -> showDatePickerDialog());
+
+        currentEmail = CurrentUser.getInstance().getEmail();
+        if (currentEmail == null) {
+            Toast.makeText(this, "Không có email người dùng", Toast.LENGTH_SHORT).show();
+            finish();
         }
 
-        mAuth = FirebaseAuth.getInstance();
-        String uid = mAuth.getCurrentUser().getUid();
-        userRef = FirebaseDatabase.getInstance().getReference("Users").child(uid);
-
-        txtChangePassword.setOnClickListener(v-> showChangePasswordDialog());
-
         loadUserData();
+        txtChangePassword.setOnClickListener(v -> showChangePasswordDialog());
+    }
+
+    private void showDatePickerDialog() {
+        Calendar calendar = Calendar.getInstance();
+
+        DatePickerDialog dialog = new DatePickerDialog(this, (view, year, month, dayOfMonth) -> {
+            Calendar selected = Calendar.getInstance();
+            selected.set(year, month, dayOfMonth);
+            edtDob.setText(displayFormat.format(selected.getTime()));
+        },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH));
+
+        dialog.show();
     }
 
     private void loadUserData() {
-        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
+        apiService.getAdminInfo(currentEmail).enqueue(new Callback<UserResponse>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    String name = snapshot.child("name").getValue(String.class);
-                    String gender = snapshot.child("gender").getValue(String.class);
-                    String dob = snapshot.child("dob").getValue(String.class);
-                    String phone = snapshot.child("phone").getValue(String.class);
-                    String email = snapshot.child("email").getValue(String.class);
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    User user = response.body().user;
+                    if (user != null && user.email != null) {
+                        edtName.setText(user.name);
+                        edtPhone.setText(user.phone);
+                        edtEmail.setText(user.email);
 
-                    edtName.setText(name != null ? name : "");
-                    edtGender.setText(gender != null ? gender : "");
-
-                    txtPhone.setText(phone != null ? phone : "");
-                    txtEmail.setText(email != null ? email : "");
+                        if (user.date_birth != null && !user.date_birth.isEmpty()) {
+                            try {
+                                edtDob.setText(displayFormat.format(serverFormat.parse(user.date_birth)));
+                            } catch (ParseException e) {
+                                edtDob.setText("");
+                            }
+                        }
+                    } else {
+                        Toast.makeText(AdminSetting.this, "Không tìm thấy thông tin người dùng", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(AdminSetting.this, "Phản hồi không hợp lệ", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(AdminSetting.this, "Lỗi tải dữ liệu", Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<UserResponse> call, Throwable t) {
+                Toast.makeText(AdminSetting.this, "Lỗi kết nối server", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
     private void saveUserData() {
         String name = edtName.getText().toString().trim();
-        String gender = edtGender.getText().toString().trim();
-        String dob = edtDob.getSelectedItem().toString().trim();
-        String phone = txtPhone.getText().toString().trim();
-        String email = txtEmail.getText().toString().trim();
+        String phone = edtPhone.getText().toString().trim();
+        String dob = edtDob.getText().toString().trim();
 
-        userRef.child("name").setValue(name);
-        userRef.child("gender").setValue(gender);
-        userRef.child("dob").setValue(dob);
-        userRef.child("phone").setValue(phone);
-        userRef.child("email").setValue(email);
+        String dobToSend;
+        try {
+            dobToSend = serverFormat.format(displayFormat.parse(dob));
+        } catch (ParseException e) {
+            Toast.makeText(this, "Ngày sinh không hợp lệ", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        Toast.makeText(this, "Đã lưu thay đổi", Toast.LENGTH_SHORT).show();
-    }
-    private void showChangePasswordDialog() {
+        APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
+        apiService.updateAdminInfo(currentEmail, name, phone, dobToSend).enqueue(new Callback<GenericResponse>() {
+            @Override
+            public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Toast.makeText(AdminSetting.this, response.body().message, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(AdminSetting.this, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GenericResponse> call, Throwable t) {
+                Toast.makeText(AdminSetting.this, "Lỗi kết nối server", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }    private void showChangePasswordDialog() {
+        // Tạo dialog tùy chỉnh
+        Dialog dialog = new Dialog(this, R.style.FullWidthDialog);
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_change_password, null);
+        dialog.setContentView(view);
+        
+        // Thiết lập kích thước của dialog để hiển thị toàn màn hình chiều ngang
+        dialog.getWindow().setLayout(
+                android.view.WindowManager.LayoutParams.MATCH_PARENT,
+                android.view.WindowManager.LayoutParams.WRAP_CONTENT
+        );
+        
+        // Thiết lập các trường nhập liệu
         EditText edtOldPassword = view.findViewById(R.id.edtOldPassword);
         EditText edtNewPassword = view.findViewById(R.id.edtNewPassword);
         EditText edtConfirmPassword = view.findViewById(R.id.edtConfirmPassword);
+        
+        // Thiết lập các nút
+        Button btnCancel = view.findViewById(R.id.btnCancel);
+        Button btnConfirm = view.findViewById(R.id.btnConfirm);
+        
+        // Xử lý sự kiện nút Hủy
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
+        
+        // Xử lý sự kiện nút Lưu
+        btnConfirm.setOnClickListener(v -> {
+            String oldPass = edtOldPassword.getText().toString().trim();
+            String newPass = edtNewPassword.getText().toString().trim();
+            String confirmPass = edtConfirmPassword.getText().toString().trim();
 
-        new AlertDialog.Builder(this)
-                .setTitle("Đổi mật khẩu")
-                .setView(view)
-                .setPositiveButton("Lưu", (dialog, which) -> {
-                    String oldPass = edtOldPassword.getText().toString().trim();
-                    String newPass = edtNewPassword.getText().toString().trim();
-                    String confirmPass = edtConfirmPassword.getText().toString().trim();
+            if (oldPass.isEmpty() || newPass.isEmpty() || confirmPass.isEmpty()) {
+                Toast.makeText(this, "Vui lòng nhập đầy đủ", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-                    // Kiểm tra nhập thiếu
-                    if (oldPass.isEmpty() || newPass.isEmpty() || confirmPass.isEmpty()) {
-                        Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
-                        return;
+            if (!newPass.equals(confirmPass)) {
+                Toast.makeText(this, "Mật khẩu mới không khớp", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
+            apiService.changePassword(currentEmail, oldPass, newPass).enqueue(new Callback<GenericResponse>() {
+                @Override
+                public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        Toast.makeText(AdminSetting.this, response.body().message, Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    } else {
+                        Toast.makeText(AdminSetting.this, "Lỗi đổi mật khẩu", Toast.LENGTH_SHORT).show();
                     }
+                }
 
-                    // Kiểm tra độ dài
-                    if (newPass.length() < 6) {
-                        Toast.makeText(this, "Mật khẩu mới phải từ 6 ký tự", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    // Kiểm tra trùng khớp xác nhận
-                    if (!newPass.equals(confirmPass)) {
-                        Toast.makeText(this, "Xác nhận mật khẩu không khớp", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    // Tiến hành xác thực lại và đổi mật khẩu
-                    reAuthenticateAndChangePassword(oldPass, newPass);
-                })
-                .setNegativeButton("Huỷ", null)
-                .show();
+                @Override
+                public void onFailure(Call<GenericResponse> call, Throwable t) {
+                    Toast.makeText(AdminSetting.this, "Lỗi server", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+        
+        // Hiển thị dialog
+        dialog.show();
     }
-    private void reAuthenticateAndChangePassword(String oldPass, String newPass) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user == null || user.getEmail() == null) return;
-
-        AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), oldPass);
-
-        user.reauthenticate(credential)
-                .addOnSuccessListener(aVoid -> {
-                    user.updatePassword(newPass)
-                            .addOnSuccessListener(unused -> {
-                                Toast.makeText(this, "Đổi mật khẩu thành công", Toast.LENGTH_SHORT).show();
-                            })
-                            .addOnFailureListener(e -> {
-                                Toast.makeText(this, "Lỗi đổi mật khẩu: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                            });
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Mật khẩu hiện tại không chính xác", Toast.LENGTH_SHORT).show();
-                });
-    }
-
 }
