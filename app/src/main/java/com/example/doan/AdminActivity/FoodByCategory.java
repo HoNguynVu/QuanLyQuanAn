@@ -82,7 +82,6 @@ public class FoodByCategory extends Fragment {
             public void onResponse(Call<FoodListResponse> call, Response<FoodListResponse> response) {
                 if (response.isSuccessful() && response.body() != null && "success".equals(response.body().status)) {
                     itemList.clear();
-
                     itemList.addAll(response.body().data);
                     menuAdapter.notifyDataSetChanged();
                 } else {
@@ -120,6 +119,8 @@ public class FoodByCategory extends Fragment {
             holder.txtName.setText(item.getName());
             holder.txtCategory.setText(item.getCategory());
             holder.txtPrice.setText(item.getPrice() + "đ");
+            holder.txtAmount.setText("Số lượng: " + item.getAvailable() + "");
+
 
             Glide.with(context)
                     .load(item.getImageUrl())
@@ -139,6 +140,8 @@ public class FoodByCategory extends Fragment {
                 intent.putExtra("price", item.getPrice());
                 intent.putExtra("imageUrl", item.getImageUrl());
                 intent.putExtra("id", item.getId());
+                intent.putExtra("amount", item.getAvailable());
+                intent.putExtra("description", item.getDescription());
                 context.startActivity(intent);
             });
 
@@ -183,12 +186,13 @@ public class FoodByCategory extends Fragment {
             TextView txtName, txtCategory, txtPrice;
             ImageView imgMenu;
             AppCompatButton btnEdit, btnDelete;
-
+            TextView txtAmount;
             public MenuViewHolder(@NonNull View itemView) {
                 super(itemView);
                 txtName = itemView.findViewById(R.id.txtName);
                 txtCategory = itemView.findViewById(R.id.txtCategory);
                 txtPrice = itemView.findViewById(R.id.txtPrice);
+                txtAmount = itemView.findViewById(R.id.txtAmount);
                 imgMenu = itemView.findViewById(R.id.imgMenu);
                 btnDelete = itemView.findViewById(R.id.btnDelete);
                 btnEdit = itemView.findViewById(R.id.btnEdit);
