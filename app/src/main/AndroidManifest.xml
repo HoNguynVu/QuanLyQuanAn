@@ -42,9 +42,7 @@
         <activity
             android:name=".Login.SplashActivity"
             android:exported="false" />
-        <activity
-            android:name=".Login.Activity"
-            android:exported="false" />
+
         <activity android:name=".AdminActivity.AdminAddFoodItem"/>
         <activity android:name=".AdminActivity.AdminEditFoodItem"/>
         <activity
@@ -63,7 +61,7 @@
             android:name=".Login.VerifyResetOtpActivity"
             android:exported="false" />
         <activity
-            android:name=".Login.LoginActivity"
+            android:name=".UserMainActivity"
             android:exported="false">
         </activity>
 
@@ -78,7 +76,7 @@
             android:exported="false" />
 
         <activity
-            android:name=".UserMainActivity"
+            android:name=".Login.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
