@@ -3,11 +3,10 @@ package com.example.doan.DatabaseClass;
 import com.google.gson.annotations.SerializedName;
 
 public class Order {
-    @SerializedName("order_id")
+    @SerializedName("id")
     private String orderId;
-
-    @SerializedName("customer_name")
-    private String customerName;
+    @SerializedName("user_id")
+    private int userId;
 
     @SerializedName("final_amount")
     private int finalAmount;
@@ -26,14 +25,6 @@ public class Order {
 
     public void setOrderId(String orderId) {
         this.orderId = orderId;
-    }
-
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
     }
 
     public int getFinalAmount() {
@@ -59,5 +50,8 @@ public class Order {
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
+    public int getUser_id() { return userId; }
+    public void setUser_id(int user_id) { this.userId = user_id; }
+
 }
 
