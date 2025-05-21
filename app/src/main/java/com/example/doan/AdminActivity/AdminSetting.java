@@ -1,9 +1,11 @@
 package com.example.doan.AdminActivity;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -152,56 +154,66 @@ public class AdminSetting extends AppCompatActivity {
                 Toast.makeText(AdminSetting.this, "Lỗi kết nối server", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private void showChangePasswordDialog() {
+    }    private void showChangePasswordDialog() {
+        // Tạo dialog tùy chỉnh
+        Dialog dialog = new Dialog(this, R.style.FullWidthDialog);
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_change_password, null);
+        dialog.setContentView(view);
+        
+        // Thiết lập kích thước của dialog để hiển thị toàn màn hình chiều ngang
+        dialog.getWindow().setLayout(
+                android.view.WindowManager.LayoutParams.MATCH_PARENT,
+                android.view.WindowManager.LayoutParams.WRAP_CONTENT
+        );
+        
+        // Thiết lập các trường nhập liệu
         EditText edtOldPassword = view.findViewById(R.id.edtOldPassword);
         EditText edtNewPassword = view.findViewById(R.id.edtNewPassword);
         EditText edtConfirmPassword = view.findViewById(R.id.edtConfirmPassword);
+        
+        // Thiết lập các nút
+        Button btnCancel = view.findViewById(R.id.btnCancel);
+        Button btnConfirm = view.findViewById(R.id.btnConfirm);
+        
+        // Xử lý sự kiện nút Hủy
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
+        
+        // Xử lý sự kiện nút Lưu
+        btnConfirm.setOnClickListener(v -> {
+            String oldPass = edtOldPassword.getText().toString().trim();
+            String newPass = edtNewPassword.getText().toString().trim();
+            String confirmPass = edtConfirmPassword.getText().toString().trim();
 
-        new AlertDialog.Builder(this)
-                .setTitle("Đổi mật khẩu")
-                .setView(view)
-                .setPositiveButton("Lưu", (dialog, which) -> {
-                    String oldPass = edtOldPassword.getText().toString().trim();
-                    String newPass = edtNewPassword.getText().toString().trim();
-                    String confirmPass = edtConfirmPassword.getText().toString().trim();
+            if (oldPass.isEmpty() || newPass.isEmpty() || confirmPass.isEmpty()) {
+                Toast.makeText(this, "Vui lòng nhập đầy đủ", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-                    if (oldPass.isEmpty() || newPass.isEmpty() || confirmPass.isEmpty()) {
-                        Toast.makeText(this, "Vui lòng nhập đầy đủ", Toast.LENGTH_SHORT).show();
-                        return;
+            if (!newPass.equals(confirmPass)) {
+                Toast.makeText(this, "Mật khẩu mới không khớp", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
+            apiService.changePassword(currentEmail, oldPass, newPass).enqueue(new Callback<GenericResponse>() {
+                @Override
+                public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        Toast.makeText(AdminSetting.this, response.body().message, Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    } else {
+                        Toast.makeText(AdminSetting.this, "Lỗi đổi mật khẩu", Toast.LENGTH_SHORT).show();
                     }
+                }
 
-                    if (!newPass.equals(confirmPass)) {
-                        Toast.makeText(this, "Mật khẩu mới không khớp", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
-                    apiService.changePassword(currentEmail, oldPass, newPass).enqueue(new Callback<GenericResponse>() {
-                        @Override
-                        public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
-                            if (response.isSuccessful() && response.body() != null) {
-                                Toast.makeText(AdminSetting.this, response.body().message, Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(AdminSetting.this, "Lỗi đổi mật khẩu", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<GenericResponse> call, Throwable t) {
-                            Toast.makeText(AdminSetting.this, "Lỗi server", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                })
-                .setNegativeButton("Huỷ", null)
-                .show();
+                @Override
+                public void onFailure(Call<GenericResponse> call, Throwable t) {
+                    Toast.makeText(AdminSetting.this, "Lỗi server", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+        
+        // Hiển thị dialog
+        dialog.show();
     }
-    @Override
-    public void onBackPressed() {
-        // Quay lại fragment trước (AdminProfileFragment)
-        super.onBackPressed(); // tự động quay lại Fragment trước
-    }
-
 }
