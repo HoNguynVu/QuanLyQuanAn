@@ -42,7 +42,7 @@ import retrofit2.Response;
 public class AdminAddFoodItem extends AppCompatActivity {
 
     private static final int REQUEST_PERMISSION_CODE = 101;
-    private static final String UPLOAD_URL = "http://192.168.1.47/restaurantapi/upload_image.php";
+    private static final String UPLOAD_URL = "http://10.0.2.2/restaurantapi/upload_image.php";
 
     // Khai báo các thành phần giao diện
     private EditText edtName, edtPrice, edtAmount, edtDescription;
