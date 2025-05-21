@@ -10,86 +10,96 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- CardView 1: Cơm -->
+        <!-- CardView 1: Khai vị -->
         <androidx.cardview.widget.CardView
             android:id="@+id/cardKhaiVi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="6dp">
+            android:layout_margin="12dp"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="10dp"
+            app:cardUseCompatPadding="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp"
-                android:background="#F3F3F3">
+                android:padding="24dp"
+                android:background="#FFFFFF"
+                android:gravity="center_vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="🍚 Khai vị"
-                    android:textSize="20sp"
+                    android:textSize="22sp"
                     android:textStyle="bold"
-                    android:textColor="#000000" />
-
-                <!-- Các món cơm (sau này thêm TextView, ImageView vào) -->
-
+                    android:textColor="#222222"
+                    android:letterSpacing="0.03"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="sans-serif-medium" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- CardView 2: Mì -->
+        <!-- CardView 2: Món Chính -->
         <androidx.cardview.widget.CardView
             android:id="@+id/cardMonChinh"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="6dp">
+            android:layout_margin="12dp"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="10dp"
+            app:cardUseCompatPadding="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp"
-                android:background="#F3F3F3">
+                android:padding="24dp"
+                android:background="#FFFFFF"
+                android:gravity="center_vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="🍜 Món Chính"
-                    android:textSize="20sp"
+                    android:textSize="22sp"
                     android:textStyle="bold"
-                    android:textColor="#000000" />
-
+                    android:textColor="#222222"
+                    android:letterSpacing="0.03"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="sans-serif-medium" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- CardView 3: Lẩu -->
+        <!-- CardView 3: Tráng miệng -->
         <androidx.cardview.widget.CardView
             android:id="@+id/cardTrangMieng"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="6dp">
+            android:layout_margin="12dp"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="10dp"
+            app:cardUseCompatPadding="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp"
-                android:background="#F3F3F3">
+                android:padding="24dp"
+                android:background="#FFFFFF"
+                android:gravity="center_vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="🍲 Tráng miệng"
-                    android:textSize="20sp"
+                    android:textSize="22sp"
                     android:textStyle="bold"
-                    android:textColor="#000000" />
-
+                    android:textColor="#222222"
+                    android:letterSpacing="0.03"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="sans-serif-medium" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -98,25 +108,29 @@
             android:id="@+id/cardThucUong"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="6dp">
+            android:layout_margin="12dp"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="10dp"
+            app:cardUseCompatPadding="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp"
-                android:background="#F3F3F3">
+                android:padding="24dp"
+                android:background="#FFFFFF"
+                android:gravity="center_vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="🥤 Thức uống"
-                    android:textSize="20sp"
+                    android:textSize="22sp"
                     android:textStyle="bold"
-                    android:textColor="#000000" />
-
+                    android:textColor="#222222"
+                    android:letterSpacing="0.03"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="sans-serif-medium" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
