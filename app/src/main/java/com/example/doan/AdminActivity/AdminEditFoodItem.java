@@ -42,10 +42,10 @@ import retrofit2.Response;
 
 public class AdminEditFoodItem extends AppCompatActivity {
     private static final int REQUEST_PERMISSION_CODE = 101;
-    private static final String UPLOAD_URL = "http://192.168.98.113/restaurantapi/upload_image.php"; //đổi thành link ip của ae
+    private static final String UPLOAD_URL = "http://10.0.2.2/restaurantapi/upload_image.php"; //đổi thành link ip của ae
 
     private ActivityResultLauncher<Intent> imagePickerLauncher;
-    private EditText edtName, edtPrice;
+    private EditText edtName, edtPrice, edtAmount, edtDescription;
     private Spinner spinnerCategory;
     private ImageView imgPreview;
     private Button btnChooseImage, btnSubmit, btnCancel;
@@ -58,9 +58,16 @@ public class AdminEditFoodItem extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_item);
-
+        initViews();
+        setupSpinner();
+        setupImagePicker();
+        setListeners();
+    }
+    private void initViews() {
         edtName = findViewById(R.id.editName);
         edtPrice = findViewById(R.id.editPrice);
+        edtAmount = findViewById(R.id.editAmount);
+        edtDescription = findViewById(R.id.editDescription);
         spinnerCategory = findViewById(R.id.spinnerEditCategory);
         imgPreview = findViewById(R.id.EditimgPreview);
         btnChooseImage = findViewById(R.id.btnEditChooseImage);
@@ -68,18 +75,19 @@ public class AdminEditFoodItem extends AppCompatActivity {
         btnCancel = findViewById(R.id.btnEditCancel);
         progressBar = findViewById(R.id.EditprogressBar);
         progressBar.setVisibility(View.GONE);
-
         // Nhận dữ liệu từ Intent
         id = getIntent().getIntExtra("id", -1);
         edtName.setText(getIntent().getStringExtra("name"));
-        edtPrice.setText(String.valueOf(getIntent().getIntExtra("price", 0)));
+        edtPrice.setText(String.valueOf(getIntent().getDoubleExtra("price", 0.0)));
         currentImageUrl = getIntent().getStringExtra("imageUrl");
-
+        edtAmount.setText(String.valueOf(getIntent().getIntExtra("amount", 0)));
+        edtDescription.setText(getIntent().getStringExtra("description"));
+    }
+    private void setupSpinner() {
         String[] categories = {"Khai vị", "Món chính", "Tráng miệng", "Thức uống"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, categories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCategory.setAdapter(adapter);
-
         String categoryFromIntent = getIntent().getStringExtra("category");
         if (categoryFromIntent != null) {
             for (int i = 0; i < categories.length; i++) {
@@ -89,13 +97,9 @@ public class AdminEditFoodItem extends AppCompatActivity {
                 }
             }
         }
-
+    }
+    private void setupImagePicker() {
         Glide.with(this).load(currentImageUrl).into(imgPreview);
-
-        btnChooseImage.setOnClickListener(v -> checkPermissionAndChooseImage());
-        btnSubmit.setOnClickListener(v -> uploadFoodItem());
-        btnCancel.setOnClickListener(v -> finish());
-
         imagePickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -110,7 +114,11 @@ public class AdminEditFoodItem extends AppCompatActivity {
                     }
                 });
     }
-
+    private void setListeners() {
+        btnChooseImage.setOnClickListener(v -> checkPermissionAndChooseImage());
+        btnSubmit.setOnClickListener(v -> uploadFoodItem());
+        btnCancel.setOnClickListener(v -> finish());
+    }
     private void checkPermissionAndChooseImage() {
         String permission = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU ?
                 Manifest.permission.READ_MEDIA_IMAGES : Manifest.permission.READ_EXTERNAL_STORAGE;
@@ -121,7 +129,6 @@ public class AdminEditFoodItem extends AppCompatActivity {
             chooseImage();
         }
     }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -131,28 +138,36 @@ public class AdminEditFoodItem extends AppCompatActivity {
             Toast.makeText(this, "Bạn cần cấp quyền để chọn ảnh", Toast.LENGTH_SHORT).show();
         }
     }
-
     private void chooseImage() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
         imagePickerLauncher.launch(Intent.createChooser(intent, "Chọn ảnh"));
     }
-
     private void uploadFoodItem() {
         String name = edtName.getText().toString().trim();
         String category = spinnerCategory.getSelectedItem().toString().trim();
         String priceStr = edtPrice.getText().toString().trim();
+        String amountStr = edtAmount.getText().toString().trim();
+        String description = edtDescription.getText().toString().trim();
 
-        if (name.isEmpty() || category.isEmpty() || priceStr.isEmpty()) {
+        if (name.isEmpty() || category.isEmpty() || priceStr.isEmpty() || amountStr.isEmpty() || description.isEmpty()) {
             Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        int price;
+        double price;
         try {
-            price = Integer.parseInt(priceStr);
+            price = Double.parseDouble(priceStr);
         } catch (NumberFormatException e) {
             Toast.makeText(this, "Giá không hợp lệ", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        int amount;
+        try {
+            amount = Integer.parseInt(amountStr);
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Số lượng không hợp lệ", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -162,7 +177,7 @@ public class AdminEditFoodItem extends AppCompatActivity {
             uploadImageToLocalServer(imageUri, new ImageUploadCallback() {
                 @Override
                 public void onSuccess(String imageUrl) {
-                    updateToServer(name, category, price, imageUrl);
+                    updateToServer(name, category, price, imageUrl, amount, description);
                 }
 
                 @Override
@@ -172,13 +187,12 @@ public class AdminEditFoodItem extends AppCompatActivity {
                 }
             });
         } else {
-            updateToServer(name, category, price, currentImageUrl);
+            updateToServer(name, category, price, currentImageUrl, amount, description);
         }
     }
-
-    private void updateToServer(String name, String category, int price, String imageUrl) {
+    private void updateToServer(String name, String category, double price, String imageUrl, int amount, String description) {
         APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
-        apiService.updateFood(id, name, price, category, imageUrl).enqueue(new Callback<GenericResponse>() {
+        apiService.updateFood(id, name, price, category, imageUrl, amount, description).enqueue(new Callback<GenericResponse>() {
 
             @Override
             public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
@@ -203,7 +217,6 @@ public class AdminEditFoodItem extends AppCompatActivity {
             }
         });
     }
-
     private void uploadImageToLocalServer(Uri uri, ImageUploadCallback callback) {
         new Thread(() -> {  // Chạy khối code upload ảnh trong luồng riêng để tránh chặn UI
             try {

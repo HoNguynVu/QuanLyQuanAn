@@ -3,9 +3,13 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
     card_view:cardCornerRadius="12dp"
-    card_view:cardElevation="6dp">
+    card_view:cardElevation="3dp"
+    card_view:cardUseCompatPadding="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,7 +17,7 @@
         android:orientation="horizontal"
         android:padding="12dp"
         android:gravity="center_vertical"
-        android:background="#B8B6B4">
+        android:background="#F7F8FA">
 
         <!-- ẢNH MÓN ĂN -->
         <ImageView
@@ -22,14 +26,17 @@
             android:layout_height="90dp"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_launcher_background"
-            android:contentDescription="Ảnh món ăn" />
+            android:contentDescription="Ảnh món ăn"
+            android:background="@drawable/bg_edit_text_log"
+            android:clipToOutline="true"
+            android:outlineProvider="background" />
 
         <!-- THÔNG TIN MÓN ĂN -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="16dp"
             android:orientation="vertical">
 
             <TextView
@@ -37,9 +44,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Tên món"
-                android:textColor="@android:color/black"
+                android:textColor="#222222"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
             <TextView
                 android:id="@+id/txtCategory"
@@ -47,7 +56,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Loại món"
-                android:textColor="#0053FF" />
+                android:textColor="#2196F3"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/txtPrice"
@@ -55,8 +65,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Giá: 0đ"
-                android:textColor="@android:color/holo_red_dark"
-                android:textStyle="bold" />
+                android:textColor="#E53935"
+                android:textStyle="bold"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/txtAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Số lượng"
+                android:textColor="#8600FF"
+                android:textStyle="bold"
+                android:textSize="15sp" />
         </LinearLayout>
 
         <!-- NÚT SỬA + XOÁ THEO CHIỀU DỌC -->
@@ -64,30 +85,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginStart="8dp">
+            android:layout_marginStart="12dp">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnEdit"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:text="Sửa"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:background="@drawable/button_item_menu"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:layout_marginBottom="8dp" />
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:textSize="15sp" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnDelete"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:text="Xoá"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:background="@drawable/button_item_menu"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp" />
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:textSize="15sp" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

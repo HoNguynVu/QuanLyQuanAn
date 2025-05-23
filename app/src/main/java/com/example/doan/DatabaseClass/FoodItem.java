@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 public class FoodItem {
 
     @SerializedName("id")
-    private String id;
+    private int id;
 
     @SerializedName("name")
     private String name;
@@ -14,13 +14,13 @@ public class FoodItem {
     private String category;
 
     @SerializedName("price")
-    private int price;
+    private double price;
 
     @SerializedName("available")
     private int available;
 
     @SerializedName("image_url")
-    private String imageUrl;
+    private String image_url;
 
     @SerializedName("description")
     private String description;
@@ -30,19 +30,19 @@ public class FoodItem {
 
     public FoodItem() {}
 
-    public FoodItem(String name, String category, int price, int available,
-                String imageUrl, String description, float ratingAvg) {
+
+    public FoodItem(String name, String category, double price, String imageUrl, int available, String description, float ratingAvg) {
         this.name = name;
         this.category = category;
         this.price = price;
         this.available = available;
-        this.imageUrl = imageUrl;
+        this.image_url = imageUrl;
         this.description = description;
         this.ratingAvg = ratingAvg;
     }
 
     // Chỉ có getter cho id vì id tự sinh từ MySQL
-    public String getId() {
+    public int getId() {
         return id;
     }
 
@@ -62,14 +62,14 @@ public class FoodItem {
         this.category = category;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
     public void setPrice(int price) {
         this.price = price;
     }
 
-    public int isAvailable() {
+    public int getAvailable() {
         return available;
     }
     public void setAvailable(int available) {
@@ -77,10 +77,10 @@ public class FoodItem {
     }
 
     public String getImageUrl() {
-        return imageUrl;
+        return image_url;
     }
     public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+        this.image_url = imageUrl;
     }
 
     public String getDescription() {
@@ -90,6 +90,7 @@ public class FoodItem {
         this.description = description;
     }
 
+
     public float getRatingAvg() {
         return ratingAvg;
     }
@@ -97,3 +98,5 @@ public class FoodItem {
         this.ratingAvg = ratingAvg;
     }
 }
+
+
