@@ -2,25 +2,61 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="24dp"
-    android:gravity="center">
+    android:gravity="center"
+    android:background="#F7F8FA"
+    android:padding="0dp">
 
-    <EditText
-        android:id="@+id/edt_otp"
-        android:layout_width="match_parent"
+    <androidx.cardview.widget.CardView
+        android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:hint="Nhập mã OTP"
-        android:inputType="number"
-        android:maxLength="6"
-        android:padding="12dp"
-        android:background="@drawable/edittext_log" />
+        android:layout_margin="24dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="8dp"
+        app:cardUseCompatPadding="true">
 
-    <Button
-        android:id="@+id/btn_verify_otp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Xác minh"
-        android:background="@drawable/bg_btn_login"
-        android:layout_marginTop="16dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="28dp"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Xác thực OTP"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#222222"
+                android:layout_marginBottom="18dp"
+                android:fontFamily="sans-serif-medium" />
+
+            <EditText
+                android:id="@+id/edt_otp"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="Nhập mã OTP"
+                android:inputType="number"
+                android:maxLength="6"
+                android:background="@drawable/bg_edit_text_log"
+                android:padding="0dp"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:layout_marginBottom="20dp" />
+
+            <Button
+                android:id="@+id/btn_verify_otp"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_btn_login"
+                android:text="Xác minh"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_marginTop="0dp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
 </LinearLayout>

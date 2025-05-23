@@ -72,7 +72,7 @@ public class AdminHomeFragment extends Fragment {
         });
     }
 
-
+    // Hiển thị biểu đồ
     private void displayChart(double todayRevenue, double monthlyRevenue) {
         ArrayList<BarEntry> entries = new ArrayList<>();
         entries.add(new BarEntry(0, (float) todayRevenue));

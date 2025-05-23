@@ -11,6 +11,7 @@ import com.example.doan.DatabaseClass.StatisticsResponse;
 import com.example.doan.DatabaseClass.StatusResponse;
 import com.example.doan.DatabaseClass.UploadResponse;
 import com.example.doan.DatabaseClass.User;
+import com.example.doan.DatabaseClass.UserResponse;
 
 import java.util.List;
 
@@ -100,7 +101,9 @@ public interface APIService {
             @Field("name") String name,
             @Field("price") double price,
             @Field("category") String category,
-            @Field("image_url") String imageUrl
+            @Field("image_url") String imageUrl,
+            @Field("available") int available,
+            @Field("description") String description
     );
 
     @FormUrlEncoded
@@ -116,20 +119,38 @@ public interface APIService {
             @Field("name") String name,
             @Field("price") double price,
             @Field("category") String category,
-            @Field("image_url") String imageUrl
+            @Field("image_url") String imageUrl,
+            @Field("available") int available,
+            @Field("description") String description
     );
 
     @FormUrlEncoded
     @POST("change_password.php")
-    Call<String> changePassword(
+    Call<GenericResponse> changePassword(
             @Field("email") String email,
-            @Field("currentPassword") String currentPassword,
-            @Field("newPassword") String newPassword
+            @Field("old_password") String oldPassword,
+            @Field("new_password") String newPassword
     );
 
     @FormUrlEncoded
     @POST("get_orders_by_user.php")
     Call<List<Order>> getOrdersByUser(@Field("email") String email);
+
+
+    @FormUrlEncoded
+    @POST("get_admin_info.php")
+    Call<UserResponse> getAdminInfo(@Field("email") String email);
+
+    @FormUrlEncoded
+    @POST("update_admin_info.php")
+    Call<GenericResponse> updateAdminInfo(
+            @Field("email") String email,
+            @Field("name") String name,
+            @Field("phone") String phone,
+            @Field("date_birth") String dob
+    );
+
+
 
     @FormUrlEncoded
     @POST("update_user.php")
