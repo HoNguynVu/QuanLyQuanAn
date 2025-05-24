@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.doan.UserCartManager;
 import com.example.doan.UserItem;
 import com.example.doan.databinding.UserMenuItemBinding;
@@ -61,13 +62,13 @@ public class UserMenuAdapter extends RecyclerView.Adapter<UserMenuAdapter.MenuVi
         }
 
         public void bind(int position) {
-
-            int price = Integer.parseInt(cartList.get(position).getItemPrice().substring(0, cartList.get(position).getItemPrice().length() - 1));
+            double price = cartList.get(position).getItemPrice();
             final int[] quantity = {Integer.parseInt(cartList.get(position).getItemQuantity())};
             String total = (price * quantity[0]) + "$";
             binding.tvName.setText(cartList.get(position).getItemName());
             binding.tvPrice.setText(total);
-            binding.imageView.setImageResource(cartList.get(position).getItemImage());
+            String imageUrl = cartList.get(position).getImageUrl();
+            Glide.with(binding.getRoot().getContext()).load(imageUrl).into(binding.imageView);
 
             binding.getRoot().setOnClickListener(new View.OnClickListener(){
 
@@ -78,7 +79,7 @@ public class UserMenuAdapter extends RecyclerView.Adapter<UserMenuAdapter.MenuVi
                         Intent intent = new Intent(requireContext, UserDetailsActivity.class);
                         intent.putExtra("MenuItemName", cartList.get(position).getItemName());
                         intent.putExtra("MenuItemPrice", cartList.get(position).getItemPrice());
-                        intent.putExtra("MenuItemImage", cartList.get(position).getItemImage());
+                        intent.putExtra("MenuItemImageUrl", cartList.get(position).getImageUrl());
                         intent.putExtra("MenuItemQuantity", cartList.get(position).getItemQuantity());
                         requireContext.startActivity(intent);
                     }

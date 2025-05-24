@@ -52,7 +52,7 @@ public class UserCheckOutAdapter extends RecyclerView.Adapter<UserCheckOutAdapte
 
         public void bind(int position) {
 
-            int price = Integer.parseInt(cartList.get(position).getItemPrice().substring(0, cartList.get(position).getItemPrice().length() - 1));
+            double price = cartList.get(position).getItemPrice();
             final int[] quantity = {Integer.parseInt(cartList.get(position).getItemQuantity())};
             String total = (price * quantity[0]) + "$";
 

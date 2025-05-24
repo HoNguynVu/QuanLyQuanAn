@@ -10,11 +10,11 @@ import java.util.List;
 public class UserCartManager {
     private static UserCartManager instance;
     private final List<UserItem> cartItems;
-    private int TotalOrder = 0;
+    private double TotalOrder = 0;
     private OnTotalChangedListener listener;
 
     public interface OnTotalChangedListener {
-        void onTotalChanged(int newTotal);
+        void onTotalChanged(double newTotal);
     }
 
     public void setOnTotalChangedListener(OnTotalChangedListener listener) {
@@ -42,7 +42,7 @@ public class UserCartManager {
 
     public void addItem(UserItem item) {
         cartItems.add(item);
-        TotalOrder += Integer.parseInt(item.getItemPrice().substring(0, item.getItemPrice().length() - 1)) * Integer.parseInt(item.getItemQuantity());
+        TotalOrder += item.getItemPrice() * Integer.parseInt(item.getItemQuantity());
         notifyTotalChanged();
     }
 
@@ -50,11 +50,11 @@ public class UserCartManager {
         return cartItems;
     }
 
-    public int getTotalOrder() {
+    public double getTotalOrder() {
         return TotalOrder;
     }
 
-    public void setTotalOrder(int newTotalOrder) {
+    public void setTotalOrder(double newTotalOrder) {
         TotalOrder = newTotalOrder;
     }
 }

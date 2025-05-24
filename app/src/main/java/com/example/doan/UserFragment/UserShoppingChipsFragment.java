@@ -16,6 +16,7 @@ import com.example.doan.R;
 import com.example.doan.UserSpaceItemDecoration;
 import com.example.doan.databinding.UserShoppingChipsFragmentBinding;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -29,13 +30,7 @@ public class UserShoppingChipsFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    List<UserItem> itemList = List.of(
-            new UserItem("Pizza", "10$", R.drawable.soup_celery, "1"),
-            new UserItem("Burger", "10$", R.drawable.soup_dimsum, "1"),
-            new UserItem("Hotdog", "10$", R.drawable.kale_soup, "1"),
-            new UserItem("Drink", "10$", R.drawable.soup_mushroom, "1")
-    );
-
+    List<UserItem> itemList = new ArrayList<>();
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
