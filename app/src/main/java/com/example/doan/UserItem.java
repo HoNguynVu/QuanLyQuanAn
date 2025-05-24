@@ -1,35 +1,40 @@
 package com.example.doan;
 
 public class UserItem {
-    private final String itemName;
-    private final String itemPrice;
-    private final Integer itemImage;
+    private int id;
+    private final String name;
+    private final String category;
+    private final double price;
+    private final String image_url;
+    private final String description;
     private String itemQuantity;
-    public UserItem(String itemName, String itemPrice, Integer itemImage, String itemQuantity) {
-        this.itemName = itemName;
-        this.itemPrice = itemPrice;
-        this.itemImage = itemImage;
+    public UserItem(int id, String name, String category, double price, String image_url, String description, String itemQuantity) {
+        this.id = id;
+        this.name = name;
+        this.category = category;
+        this.price = price;
+        this.image_url = image_url;
+        this.description = description;
         this.itemQuantity = itemQuantity;
     }
 
     public String getItemName() {
-        return itemName;
+        return name;
     }
 
-    public String getItemPrice() {
-        return itemPrice;
+    public double getItemPrice() {
+        return price;
     }
 
-    public Integer getItemImage() {
-        return itemImage;
+    public String getImageUrl() {
+        return image_url;
     }
 
     public String getItemQuantity() {
         return itemQuantity;
     }
 
-    public String setItemQuantity(String newQuantity) {
+    public void setItemQuantity(String newQuantity) {
         itemQuantity = newQuantity;
-        return itemQuantity;
     }
 }

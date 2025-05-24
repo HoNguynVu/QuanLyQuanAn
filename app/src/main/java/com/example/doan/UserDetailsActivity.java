@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.doan.databinding.UserActivityDetailsBinding;
 
 public class UserDetailsActivity extends AppCompatActivity {
@@ -29,19 +30,17 @@ public class UserDetailsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String foodName = intent.getStringExtra("MenuItemName");
-        String foodPrice = intent.getStringExtra("MenuItemPrice");
+        double foodPrice = intent.getDoubleExtra("MenuItemPrice", 0);
         String foodQuantity = intent.getStringExtra("MenuItemQuantity");
-        int foodImage = intent.getIntExtra("MenuItemImage", 0);
+        String foodImageUrl = intent.getStringExtra("MenuImageUrl");
 
-        assert foodPrice != null;
-        int price = Integer.parseInt(foodPrice.substring(0, foodPrice.length() - 1));
         assert foodQuantity != null;
         quantity = Integer.parseInt(foodQuantity);
-        String Total = (price * quantity) + "$";
+        String Total = (foodPrice * quantity) + "$";
 
         binding.detailsFoodName.setText(foodName);
-        binding.detailsFoodPrice.setText(foodPrice);
-        binding.detailsFoodImage.setImageResource(foodImage);
+        binding.detailsFoodPrice.setText(String.valueOf(foodPrice));
+        Glide.with(this).load(foodImageUrl).into(binding.detailsFoodImage);
         binding.quantity.setText(foodQuantity);
         binding.btnBack.setOnClickListener(v -> finish());
         binding.total.setText(Total);
@@ -52,7 +51,7 @@ public class UserDetailsActivity extends AppCompatActivity {
                 quantity--;
 
                 binding.quantity.setText(String.valueOf(quantity));
-                String total = quantity * price + "$";
+                String total = quantity * foodPrice + "$";
                 binding.total.setText(total);
 
             }
@@ -61,12 +60,12 @@ public class UserDetailsActivity extends AppCompatActivity {
         binding.btnPlus.setOnClickListener(v -> {
             quantity++;
             binding.quantity.setText(String.valueOf(quantity));
-            String total = quantity * price + "$";
+            String total = quantity * foodPrice + "$";
             binding.total.setText(total);
         });
 
         binding.btnOrder.setOnClickListener(v -> {
-            UserCartManager.getInstance().addItem(new UserItem(foodName, foodPrice, foodImage, String.valueOf(quantity)));
+            UserCartManager.getInstance().addItem(new UserItem(1, foodName, "", foodPrice, foodImageUrl, "", String.valueOf(quantity)));
             Toast.makeText(this, "Đã thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
         });
     }

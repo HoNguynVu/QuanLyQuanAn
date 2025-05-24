@@ -26,12 +26,7 @@ public class UserSearchFragment extends Fragment {
     private UserFragmentSearchBinding binding;
     private UserMenuAdapter adapter;
 
-    List<UserItem> cartList = List.of(
-            new UserItem("Pizza", "10$", R.drawable.soup_celery, "1"),
-            new UserItem("Burger", "10$", R.drawable.soup_dimsum, "1"),
-            new UserItem("Hotdog", "10$", R.drawable.kale_soup, "1"),
-            new UserItem("Drink", "10$", R.drawable.soup_mushroom, "1")
-    );
+    List<UserItem> cartList = new ArrayList<>();
     List<UserItem> filteredList;
 
     @Override

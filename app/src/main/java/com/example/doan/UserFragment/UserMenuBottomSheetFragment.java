@@ -18,17 +18,13 @@ import com.example.doan.UserSpaceItemDecoration;
 import com.example.doan.databinding.UserFragmentMenuBottomSheetBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserMenuBottomSheetFragment extends BottomSheetDialogFragment {
 
     private UserFragmentMenuBottomSheetBinding binding;
-    List<UserItem> cartList = List.of(
-            new UserItem("Pizza", "10$", R.drawable.soup_celery,"1"),
-            new UserItem("Burger", "10$", R.drawable.soup_dimsum, "1"),
-            new UserItem("Hotdog", "10$", R.drawable.kale_soup, "1"),
-            new UserItem("Drink", "10$", R.drawable.soup_mushroom, "1")
-    );
+    List<UserItem> cartList = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

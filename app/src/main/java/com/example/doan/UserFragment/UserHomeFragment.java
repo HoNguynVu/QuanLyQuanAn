@@ -1,5 +1,7 @@
 package com.example.doan.UserFragment;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -10,11 +12,18 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.interfaces.ItemClickListener;
 import com.denzcoskun.imageslider.models.SlideModel;
@@ -24,25 +33,40 @@ import com.example.doan.UserItem;
 import com.example.doan.R;
 import com.example.doan.UserSpaceItemDecoration;
 import com.example.doan.databinding.UserHomeFragmentBinding;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserHomeFragment extends Fragment {
+    public static final String ROOT_URL = "http://192.168.88.231/restaurantapi/";
+    public static final String GETFOODS_URL = ROOT_URL + "get_foods.php";
+
     UserHomePopularItemAdapter adapter;
     private UserHomeFragmentBinding binding;
+    List<UserItem> itemList = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, GETFOODS_URL,
+                response -> {
+                        //Log.d(TAG, "Response: " + response);
+                        Type itemListType = new TypeToken<List<UserItem>>(){}.getType();
+                        itemList = new Gson().fromJson(response, itemListType);
+                },
+                error ->  {
+                    //Log.e("VOLLEY", "Lỗi khi gọi API: " + error.getMessage());
+        });
+
+        RequestQueue queue = Volley.newRequestQueue(requireContext());
+        queue.add(stringRequest);
     }
 
-    List<UserItem> itemList = List.of(
-            new UserItem("Pizza", "10$", R.drawable.soup_celery, "1"),
-            new UserItem("Burger", "10$", R.drawable.soup_dimsum, "1"),
-            new UserItem("Hotdog", "10$", R.drawable.kale_soup, "1"),
-            new UserItem("Drink", "10$", R.drawable.soup_mushroom, "1")
-    );
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,

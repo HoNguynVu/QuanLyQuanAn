@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.doan.UserItem;
 import com.example.doan.databinding.UserHomePopularItemBinding;
 import com.example.doan.UserDetailsActivity;
@@ -58,8 +59,10 @@ public class UserHomePopularItemAdapter extends RecyclerView.Adapter<UserHomePop
 
         public void bind(int position) {
             binding.tvName.setText(itemList.get(position).getItemName());
-            binding.tvPrice.setText(itemList.get(position).getItemPrice());
-            binding.imageView.setImageResource(itemList.get(position).getItemImage());
+            binding.tvPrice.setText(String.valueOf(itemList.get(position).getItemPrice()));
+            String imageUrl = itemList.get(position).getImageUrl();
+
+            Glide.with(binding.getRoot().getContext()).load(imageUrl).into(binding.imageView);
 
             binding.getRoot().setOnClickListener(new View.OnClickListener(){
 
@@ -71,7 +74,7 @@ public class UserHomePopularItemAdapter extends RecyclerView.Adapter<UserHomePop
                         Intent intent = new Intent(requireContext, UserDetailsActivity.class);
                         intent.putExtra("MenuItemName", itemList.get(position).getItemName());
                         intent.putExtra("MenuItemPrice", itemList.get(position).getItemPrice());
-                        intent.putExtra("MenuItemImage", itemList.get(position).getItemImage());
+                        intent.putExtra("MenuItemImageUrl", itemList.get(position).getImageUrl());
                         intent.putExtra("MenuItemQuantity", itemList.get(position).getItemQuantity());
                         requireContext.startActivity(intent);
                     }

@@ -29,7 +29,7 @@ public class UserCartActivity extends AppCompatActivity {
         UserCartManager userCartManager = UserCartManager.getInstance();
         userCartManager.setOnTotalChangedListener(new UserCartManager.OnTotalChangedListener() {
             @Override
-            public void onTotalChanged(int newTotal) {
+            public void onTotalChanged(double newTotal) {
                 // Cập nhật TextView mỗi khi total thay đổi
                 String total = newTotal + "$";
                 Log.d(TAG, "onTotalChanged: " + newTotal);
