@@ -18,18 +18,13 @@ import com.example.doan.UserDetailsActivity;
 import java.util.List;
 
 public class UserCartAdapter extends RecyclerView.Adapter<UserCartAdapter.CartViewHolder> {
-    private List<UserItem> cartList;
+    private final List<UserItem> cartList;
     private final Context requireContext;
     static UserCartManager userCartManager = UserCartManager.getInstance();
 
     public UserCartAdapter(List<UserItem> cartList, Context requireContext) {
         this.cartList = cartList;
         this.requireContext = requireContext;
-    }
-
-    public void setFilteredList(List<UserItem> filteredList) {
-        cartList = filteredList;
-        notifyDataSetChanged();
     }
 
     @NonNull
@@ -72,6 +67,7 @@ public class UserCartAdapter extends RecyclerView.Adapter<UserCartAdapter.CartVi
             Glide.with(binding.getRoot().getContext()).load(imageUrl).into(binding.imageView);
 
             binding.quantity.setText(cartList.get(position).getItemQuantity());
+            binding.note.setText(cartList.get(position).getNote());
 
             binding.getRoot().setOnClickListener(new View.OnClickListener(){
 

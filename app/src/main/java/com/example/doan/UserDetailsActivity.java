@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.doan.databinding.UserActivityDetailsBinding;
 
+import java.util.Objects;
+
 public class UserDetailsActivity extends AppCompatActivity {
     UserActivityDetailsBinding binding;
     int quantity;
@@ -19,7 +21,6 @@ public class UserDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "vao duoc details");
         binding = UserActivityDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -62,7 +63,11 @@ public class UserDetailsActivity extends AppCompatActivity {
         });
 
         binding.btnOrder.setOnClickListener(v -> {
-            UserCartManager.getInstance().addItem(new UserItem(1, foodName, "", foodPrice, foodImageUrl, "", String.valueOf(quantity)));
+            String note = (binding.textInput.getEditText() != null && binding.textInput.getEditText().getText() != null)
+                    ? binding.textInput.getEditText().getText().toString()
+                    : "";
+            Log.d(TAG, "Note: " + note);
+            UserCartManager.getInstance().addItem(new UserItem(1, foodName, "", foodPrice, foodImageUrl, "", note, String.valueOf(quantity)));
             Toast.makeText(this, "Đã thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
         });
     }

@@ -7,14 +7,16 @@ public class UserItem {
     private final double price;
     private final String image_url;
     private final String description;
+    private final String note;
     private String itemQuantity;
-    public UserItem(int id, String name, String category, double price, String image_url, String description, String itemQuantity) {
+    public UserItem(int id, String name, String category, double price, String image_url, String description, String note, String itemQuantity) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.price = price;
         this.image_url = image_url;
         this.description = description;
+        this.note = note;
         this.itemQuantity = itemQuantity;
     }
 
@@ -40,5 +42,9 @@ public class UserItem {
 
     public String getDetail() {
         return description;
+    }
+
+    public String getNote() {
+        return note;
     }
 }
