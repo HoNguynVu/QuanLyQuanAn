@@ -37,4 +37,8 @@ public class UserItem {
     public void setItemQuantity(String newQuantity) {
         itemQuantity = newQuantity;
     }
+
+    public String getDetail() {
+        return description;
+    }
 }

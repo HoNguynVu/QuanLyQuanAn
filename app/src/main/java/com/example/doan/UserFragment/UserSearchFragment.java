@@ -1,5 +1,8 @@
 package com.example.doan.UserFragment;
 
+import static android.content.ContentValues.TAG;
+import static com.example.doan.UserConstants.GETFOODS_URL;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -7,13 +10,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.example.doan.Adapter.UserMenuAdapter;
+import com.example.doan.UserDataFetcher;
 import com.example.doan.UserItem;
 import com.example.doan.R;
 import com.example.doan.UserSpaceItemDecoration;
@@ -26,7 +32,7 @@ public class UserSearchFragment extends Fragment {
     private UserFragmentSearchBinding binding;
     private UserMenuAdapter adapter;
 
-    List<UserItem> cartList = new ArrayList<>();
+    List<UserItem> itemList = new ArrayList<>();
     List<UserItem> filteredList;
 
     @Override
@@ -46,7 +52,7 @@ public class UserSearchFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         filteredList = new ArrayList<>();
-        adapter = new UserMenuAdapter(filteredList, requireContext());
+        adapter = new UserMenuAdapter(requireContext(), filteredList);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.addItemDecoration(new UserSpaceItemDecoration(16));
@@ -63,12 +69,27 @@ public class UserSearchFragment extends Fragment {
                 return true;
             }
         });
+
+        UserDataFetcher.fetchFoods(requireContext(), GETFOODS_URL, new UserDataFetcher.FetchCallBack() {
+
+            @Override
+            public void onSuccess(List<UserItem> data) {
+                Log.d(TAG, "onSuccess: " + data);
+                itemList.clear();
+                itemList.addAll(data);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+            }
+        });
     }
 
     private void filteredMenu(String newText) {
         filteredList.clear();
         if(newText != null && !newText.isEmpty()) {
-            for (UserItem item : cartList) {
+            for (UserItem item : itemList) {
                 if (item.getItemName().toLowerCase().contains(newText.toLowerCase())) {
                     filteredList.add(item);
                 }
