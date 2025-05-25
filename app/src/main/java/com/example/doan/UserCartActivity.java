@@ -45,6 +45,7 @@ public class UserCartActivity extends AppCompatActivity {
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.addItemDecoration(new UserSpaceItemDecoration(dpToPx(16)));
 
+
         binding.btnBack.setOnClickListener(v -> finish());
 
         binding.btnCheckout.setOnClickListener(v -> {
