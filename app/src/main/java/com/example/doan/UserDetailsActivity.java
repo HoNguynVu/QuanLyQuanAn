@@ -1,7 +1,10 @@
 package com.example.doan;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,20 +14,12 @@ import com.example.doan.databinding.UserActivityDetailsBinding;
 
 public class UserDetailsActivity extends AppCompatActivity {
     UserActivityDetailsBinding binding;
-    UserCartManager userCartManager = UserCartManager.getInstance();
     int quantity;
-    public UserDetailsActivity() {
-        // Constructor mặc định
-    }
-
-    public UserDetailsActivity(UserActivityDetailsBinding binding) {
-        this.binding = binding;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.d(TAG, "vao duoc details");
         binding = UserActivityDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -32,19 +27,21 @@ public class UserDetailsActivity extends AppCompatActivity {
         String foodName = intent.getStringExtra("MenuItemName");
         double foodPrice = intent.getDoubleExtra("MenuItemPrice", 0);
         String foodQuantity = intent.getStringExtra("MenuItemQuantity");
-        String foodImageUrl = intent.getStringExtra("MenuImageUrl");
+        String foodImageUrl = intent.getStringExtra("MenuItemImageUrl");
+        String foodDescription = intent.getStringExtra("MenuItemDescription");
 
-        assert foodQuantity != null;
-        quantity = Integer.parseInt(foodQuantity);
-        String Total = (foodPrice * quantity) + "$";
+        quantity = (foodQuantity == null) ? 1 : Integer.parseInt(foodQuantity);
+        String Total = String.valueOf(foodPrice * quantity);
 
         binding.detailsFoodName.setText(foodName);
         binding.detailsFoodPrice.setText(String.valueOf(foodPrice));
+
+        Log.d(TAG, "foodImageUrl: " + foodImageUrl);
         Glide.with(this).load(foodImageUrl).into(binding.detailsFoodImage);
-        binding.quantity.setText(foodQuantity);
+        binding.quantity.setText(String.valueOf(quantity));
         binding.btnBack.setOnClickListener(v -> finish());
         binding.total.setText(Total);
-
+        binding.detailsFoodDescription.setText(foodDescription);
 
         binding.btnMinus.setOnClickListener(v -> {
             if(quantity > 1) {

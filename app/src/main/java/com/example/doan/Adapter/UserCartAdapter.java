@@ -18,7 +18,7 @@ import com.example.doan.UserDetailsActivity;
 import java.util.List;
 
 public class UserCartAdapter extends RecyclerView.Adapter<UserCartAdapter.CartViewHolder> {
-    private static List<UserItem> cartList;
+    private List<UserItem> cartList;
     private final Context requireContext;
     static UserCartManager userCartManager = UserCartManager.getInstance();
 
