@@ -1,18 +1,22 @@
 package com.example.doan;
 
+import static android.content.ContentValues.TAG;
 import static com.example.doan.UserConstants.GETFOODS_URL;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.doan.DatabaseClass.User;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDataFetcher {
@@ -26,6 +30,7 @@ public class UserDataFetcher {
                 response -> {
                     Type itemListType = new TypeToken<List<UserItem>>(){}.getType();
                     List<UserItem> newList = new Gson().fromJson(response, itemListType);
+                    Log.d("foods", response);
                     callBack.onSuccess(newList);
                 },
                 error ->  {
