@@ -1,6 +1,7 @@
 package com.example.doan;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,5 +40,10 @@ public class UserCheckOutActivity extends AppCompatActivity {
         binding.price.setText(price);
         binding.fee.setText("0$");
         binding.totalOrder.setText(price);
+
+        binding.btnCheckout.setOnClickListener(v -> {
+            Intent intent = new Intent(UserCheckOutActivity.this, UserOrderSuccessActivity.class);
+            startActivity(intent);
+        });
     }
 }

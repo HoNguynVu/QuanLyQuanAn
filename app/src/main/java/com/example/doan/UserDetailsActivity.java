@@ -68,6 +68,7 @@ public class UserDetailsActivity extends AppCompatActivity {
                     : "";
             Log.d(TAG, "Note: " + note);
             UserCartManager.getInstance().addItem(new UserItem(1, foodName, "", foodPrice, foodImageUrl, "", note, String.valueOf(quantity)));
+            binding.textInput.getEditText().setText("");
             Toast.makeText(this, "Đã thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
         });
     }
