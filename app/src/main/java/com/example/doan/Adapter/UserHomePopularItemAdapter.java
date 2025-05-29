@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.doan.UserItem;
+import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.databinding.UserHomePopularItemBinding;
 import com.example.doan.UserDetailsActivity;
 
@@ -22,9 +22,9 @@ import java.util.List;
 
 public class UserHomePopularItemAdapter extends RecyclerView.Adapter<UserHomePopularItemAdapter.myViewHolder> {
     private final Context requireContext;
-    private final List<UserItem> itemList;
+    private final List<FoodItem> itemList;
 
-    public UserHomePopularItemAdapter(Context requireContext, List<UserItem> itemList) {
+    public UserHomePopularItemAdapter(Context requireContext, List<FoodItem> itemList) {
         this.itemList = itemList;
         this.requireContext = requireContext;
     }
@@ -56,10 +56,10 @@ public class UserHomePopularItemAdapter extends RecyclerView.Adapter<UserHomePop
             this.requireContext = requireContext;
         }
 
-        public void bind(UserItem item) {
-            binding.tvName.setText(item.getItemName());
-            binding.tvPrice.setText(String.valueOf(item.getItemPrice()));
-            binding.tvDetail.setText(item.getDetail());
+        public void bind(FoodItem item) {
+            binding.tvName.setText(item.getName());
+            binding.tvPrice.setText(String.valueOf(item.getPrice()));
+            binding.tvDetail.setText(item.getDescription());
             String imageUrl = item.getImageUrl();
 
             Glide.with(binding.getRoot().getContext()).load(imageUrl).into(binding.imageView);
@@ -72,11 +72,11 @@ public class UserHomePopularItemAdapter extends RecyclerView.Adapter<UserHomePop
                     if (position != RecyclerView.NO_POSITION) {
                         Log.d(TAG, "Context class: " + requireContext.getClass().getName());
                         Intent intent = new Intent(requireContext, UserDetailsActivity.class);
-                        intent.putExtra("MenuItemName", item.getItemName());
-                        intent.putExtra("MenuItemPrice", item.getItemPrice());
+                        intent.putExtra("MenuItemName", item.getName());
+                        intent.putExtra("MenuItemPrice", item.getPrice());
                         intent.putExtra("MenuItemImageUrl", item.getImageUrl());
                         intent.putExtra("MenuItemQuantity", item.getItemQuantity());
-                        intent.putExtra("MenuItemDescription", item.getDetail());
+                        intent.putExtra("MenuItemDescription", item.getDescription());
                         requireContext.startActivity(intent);
                     }
 

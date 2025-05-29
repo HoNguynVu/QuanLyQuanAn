@@ -3,7 +3,6 @@ package com.example.doan.UserFragment;
 import static android.content.ContentValues.TAG;
 import static com.example.doan.UserConstants.GETFOODS_URL;
 
-import android.nfc.Tag;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,9 +17,8 @@ import android.view.ViewGroup;
 
 import com.android.volley.VolleyError;
 import com.example.doan.Adapter.UserMenuAdapter;
+import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.UserDataFetcher;
-import com.example.doan.UserItem;
-import com.example.doan.R;
 import com.example.doan.UserSpaceItemDecoration;
 import com.example.doan.databinding.UserShoppingChipsFragmentBinding;
 
@@ -32,7 +30,7 @@ public class UserShoppingChipsFragment extends Fragment {
     UserMenuAdapter adapter;
     private UserShoppingChipsFragmentBinding binding;
 
-    List<UserItem> itemList = new ArrayList<>();
+    List<FoodItem> itemList = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,7 +59,7 @@ public class UserShoppingChipsFragment extends Fragment {
         UserDataFetcher.fetchFoods(requireContext(), GETFOODS_URL, new UserDataFetcher.FetchCallBack() {
 
             @Override
-            public void onSuccess(List<UserItem> data) {
+            public void onSuccess(List<FoodItem> data) {
                 Log.d(TAG, "onSuccess: " + data);
                 itemList.clear();
                 itemList.addAll(data);

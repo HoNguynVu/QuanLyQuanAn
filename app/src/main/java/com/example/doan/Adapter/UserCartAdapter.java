@@ -10,19 +10,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.UserCartManager;
-import com.example.doan.UserItem;
 import com.example.doan.databinding.UserCartItemBinding;
 import com.example.doan.UserDetailsActivity;
 
 import java.util.List;
 
 public class UserCartAdapter extends RecyclerView.Adapter<UserCartAdapter.CartViewHolder> {
-    private final List<UserItem> cartList;
+    private final List<FoodItem> cartList;
     private final Context requireContext;
     static UserCartManager userCartManager = UserCartManager.getInstance();
 
-    public UserCartAdapter(List<UserItem> cartList, Context requireContext) {
+    public UserCartAdapter(List<FoodItem> cartList, Context requireContext) {
         this.cartList = cartList;
         this.requireContext = requireContext;
     }
@@ -58,10 +58,10 @@ public class UserCartAdapter extends RecyclerView.Adapter<UserCartAdapter.CartVi
 
         public void bind(int position) {
 
-            double price = cartList.get(position).getItemPrice();
+            double price = cartList.get(position).getPrice();
             final int[] quantity = {Integer.parseInt(cartList.get(position).getItemQuantity())};
             String total = (price * quantity[0]) + "$";
-            binding.tvName.setText(cartList.get(position).getItemName());
+            binding.tvName.setText(cartList.get(position).getName());
             binding.tvPrice.setText(total);
             String imageUrl = cartList.get(position).getImageUrl();
             Glide.with(binding.getRoot().getContext()).load(imageUrl).into(binding.imageView);
@@ -76,8 +76,8 @@ public class UserCartAdapter extends RecyclerView.Adapter<UserCartAdapter.CartVi
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
                         Intent intent = new Intent(requireContext, UserDetailsActivity.class);
-                        intent.putExtra("MenuItemName", cartList.get(position).getItemName());
-                        intent.putExtra("MenuItemPrice", cartList.get(position).getItemPrice());
+                        intent.putExtra("MenuItemName", cartList.get(position).getName());
+                        intent.putExtra("MenuItemPrice", cartList.get(position).getPrice());
                         intent.putExtra("MenuItemImageUrl", cartList.get(position).getImageUrl());
                         intent.putExtra("MenuItemQuantity", cartList.get(position).getItemQuantity());
                         requireContext.startActivity(intent);

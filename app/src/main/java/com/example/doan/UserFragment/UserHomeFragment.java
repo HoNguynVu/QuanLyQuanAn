@@ -23,9 +23,9 @@ import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.interfaces.ItemClickListener;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.doan.Adapter.UserHomePopularItemAdapter;
+import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.UserCartActivity;
 import com.example.doan.UserDataFetcher;
-import com.example.doan.UserItem;
 import com.example.doan.R;
 import com.example.doan.UserSpaceItemDecoration;
 import com.example.doan.databinding.UserHomeFragmentBinding;
@@ -37,7 +37,7 @@ public class UserHomeFragment extends Fragment {
 
     UserHomePopularItemAdapter adapter;
     private UserHomeFragmentBinding binding;
-    List<UserItem> itemList = new ArrayList<>();
+    List<FoodItem> itemList = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -103,7 +103,7 @@ public class UserHomeFragment extends Fragment {
         UserDataFetcher.fetchFoods(requireContext(), GETFOODS_URL, new UserDataFetcher.FetchCallBack() {
 
             @Override
-            public void onSuccess(List<UserItem> data) {
+            public void onSuccess(List<FoodItem> data) {
                 Log.d(TAG, "onSuccess: " + data);
                 itemList.clear();
                 itemList.addAll(data);
