@@ -12,12 +12,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.util.Log;
 
 import com.example.doan.Adapter.UserCartAdapter;
+import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.databinding.UserActivityCartBinding;
 
 import java.util.List;
 
 public class UserCartActivity extends AppCompatActivity {
-    List<UserItem> cartList = UserCartManager.getInstance().getCartItems();
+    List<FoodItem> cartList = UserCartManager.getInstance().getCartItems();
     UserCartAdapter adapter;
     private UserActivityCartBinding binding;
     @Override

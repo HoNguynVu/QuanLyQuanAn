@@ -19,9 +19,8 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.example.doan.Adapter.UserMenuAdapter;
+import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.UserDataFetcher;
-import com.example.doan.UserItem;
-import com.example.doan.R;
 import com.example.doan.UserSpaceItemDecoration;
 import com.example.doan.databinding.UserFragmentSearchBinding;
 
@@ -32,8 +31,8 @@ public class UserSearchFragment extends Fragment {
     private UserFragmentSearchBinding binding;
     private UserMenuAdapter adapter;
 
-    List<UserItem> itemList = new ArrayList<>();
-    List<UserItem> filteredList;
+    List<FoodItem> itemList = new ArrayList<>();
+    List<FoodItem> filteredList;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,7 +72,7 @@ public class UserSearchFragment extends Fragment {
         UserDataFetcher.fetchFoods(requireContext(), GETFOODS_URL, new UserDataFetcher.FetchCallBack() {
 
             @Override
-            public void onSuccess(List<UserItem> data) {
+            public void onSuccess(List<FoodItem> data) {
                 Log.d(TAG, "onSuccess: " + data);
                 itemList.clear();
                 itemList.addAll(data);
@@ -89,8 +88,8 @@ public class UserSearchFragment extends Fragment {
     private void filteredMenu(String newText) {
         filteredList.clear();
         if(newText != null && !newText.isEmpty()) {
-            for (UserItem item : itemList) {
-                if (item.getItemName().toLowerCase().contains(newText.toLowerCase())) {
+            for (FoodItem item : itemList) {
+                if (item.getName().toLowerCase().contains(newText.toLowerCase())) {
                     filteredList.add(item);
                 }
             }

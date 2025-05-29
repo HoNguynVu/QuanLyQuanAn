@@ -9,12 +9,13 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.doan.Adapter.UserCheckOutAdapter;
+import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.databinding.UserActivityCheckOutBinding;
 
 import java.util.List;
 
 public class UserCheckOutActivity extends AppCompatActivity {
-    List<UserItem> cartList = UserCartManager.getInstance().getCartItems();
+    List<FoodItem> cartList = UserCartManager.getInstance().getCartItems();
     UserCheckOutAdapter adapter;
     private UserActivityCheckOutBinding binding;
     @Override

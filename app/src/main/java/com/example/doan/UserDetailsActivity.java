@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.databinding.UserActivityDetailsBinding;
 
 import java.util.Objects;
@@ -67,7 +68,7 @@ public class UserDetailsActivity extends AppCompatActivity {
                     ? binding.textInput.getEditText().getText().toString()
                     : "";
             Log.d(TAG, "Note: " + note);
-            UserCartManager.getInstance().addItem(new UserItem(1, foodName, "", foodPrice, foodImageUrl, "", note, String.valueOf(quantity)));
+            UserCartManager.getInstance().addItem(new FoodItem(1, foodName, "", foodPrice, foodImageUrl, 1, "", 5, note,  String.valueOf(quantity)));
             binding.textInput.getEditText().setText("");
             Toast.makeText(this, "Đã thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
         });

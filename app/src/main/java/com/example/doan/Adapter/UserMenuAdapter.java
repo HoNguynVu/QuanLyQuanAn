@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.doan.UserItem;
+import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.UserDetailsActivity;
 import com.example.doan.databinding.UserMenuItemBinding;
 
@@ -22,9 +22,9 @@ import java.util.List;
 
 public class UserMenuAdapter extends RecyclerView.Adapter<UserMenuAdapter.myViewHolder> {
     private final Context requireContext;
-    private List<UserItem> itemList;
+    private List<FoodItem> itemList;
 
-    public UserMenuAdapter(Context requireContext, List<UserItem> itemList) {
+    public UserMenuAdapter(Context requireContext, List<FoodItem> itemList) {
         this.itemList = itemList;
         this.requireContext = requireContext;
     }
@@ -46,7 +46,7 @@ public class UserMenuAdapter extends RecyclerView.Adapter<UserMenuAdapter.myView
         return itemList.size();
     }
 
-    public void setFilteredList(List<UserItem> filteredList) {
+    public void setFilteredList(List<FoodItem> filteredList) {
         itemList = filteredList;
         notifyDataSetChanged();
     }
@@ -61,10 +61,10 @@ public class UserMenuAdapter extends RecyclerView.Adapter<UserMenuAdapter.myView
             this.requireContext = requireContext;
         }
 
-        public void bind(UserItem item) {
-            binding.tvName.setText(item.getItemName());
-            binding.tvPrice.setText(String.valueOf(item.getItemPrice()));
-            binding.tvDetail.setText(item.getDetail());
+        public void bind(FoodItem item) {
+            binding.tvName.setText(item.getName());
+            binding.tvPrice.setText(String.valueOf(item.getPrice()));
+            binding.tvDetail.setText(item.getDescription());
             String imageUrl = item.getImageUrl();
 
             Glide.with(binding.getRoot().getContext()).load(imageUrl).into(binding.imageView);
@@ -77,11 +77,11 @@ public class UserMenuAdapter extends RecyclerView.Adapter<UserMenuAdapter.myView
                     if (position != RecyclerView.NO_POSITION) {
                         Log.d(TAG, "Context class: " + requireContext.getClass().getName());
                         Intent intent = new Intent(requireContext, UserDetailsActivity.class);
-                        intent.putExtra("MenuItemName", item.getItemName());
-                        intent.putExtra("MenuItemPrice", item.getItemPrice());
+                        intent.putExtra("MenuItemName", item.getName());
+                        intent.putExtra("MenuItemPrice", item.getPrice());
                         intent.putExtra("MenuItemImageUrl", item.getImageUrl());
                         intent.putExtra("MenuItemQuantity", item.getItemQuantity());
-                        intent.putExtra("MenuItemDescription", item.getDetail());
+                        intent.putExtra("MenuItemDescription", item.getDescription());
                         requireContext.startActivity(intent);
                     }
 

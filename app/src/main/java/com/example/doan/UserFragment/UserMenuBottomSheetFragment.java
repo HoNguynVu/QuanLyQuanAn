@@ -16,11 +16,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.android.volley.VolleyError;
-import com.example.doan.Adapter.UserCartAdapter;
 import com.example.doan.Adapter.UserMenuAdapter;
+import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.UserDataFetcher;
-import com.example.doan.UserItem;
-import com.example.doan.R;
 import com.example.doan.UserSpaceItemDecoration;
 import com.example.doan.databinding.UserFragmentMenuBottomSheetBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -32,7 +30,7 @@ import static com.example.doan.UserConstants.GETFOODS_URL;
 public class UserMenuBottomSheetFragment extends BottomSheetDialogFragment {
     private UserFragmentMenuBottomSheetBinding binding;
     UserMenuAdapter adapter;
-    List<UserItem> itemList = new ArrayList<>();
+    List<FoodItem> itemList = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,7 +60,7 @@ public class UserMenuBottomSheetFragment extends BottomSheetDialogFragment {
         UserDataFetcher.fetchFoods(requireContext(), GETFOODS_URL, new UserDataFetcher.FetchCallBack() {
 
             @Override
-            public void onSuccess(List<UserItem> data) {
+            public void onSuccess(List<FoodItem> data) {
                 Log.d(TAG, "onSuccess: " + data);
                 itemList.clear();
                 itemList.addAll(data);

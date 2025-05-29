@@ -17,9 +17,8 @@ import android.view.ViewGroup;
 
 import com.android.volley.VolleyError;
 import com.example.doan.Adapter.UserMenuAdapter;
+import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.UserDataFetcher;
-import com.example.doan.UserItem;
-import com.example.doan.R;
 import com.example.doan.UserSpaceItemDecoration;
 import com.example.doan.databinding.UserShoppingDrinksFragmentBinding;
 
@@ -36,7 +35,7 @@ public class UserShoppingDrinksFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    List<UserItem> itemList = new ArrayList<>();
+    List<FoodItem> itemList = new ArrayList<>();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -58,7 +57,7 @@ public class UserShoppingDrinksFragment extends Fragment {
         UserDataFetcher.fetchFoods(requireContext(), GETFOODS_URL, new UserDataFetcher.FetchCallBack() {
 
             @Override
-            public void onSuccess(List<UserItem> data) {
+            public void onSuccess(List<FoodItem> data) {
                 Log.d(TAG, "onSuccess: " + data);
                 itemList.clear();
                 itemList.addAll(data);

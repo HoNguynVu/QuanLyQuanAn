@@ -11,6 +11,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.DatabaseClass.User;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -21,15 +22,15 @@ import java.util.List;
 
 public class UserDataFetcher {
     public interface FetchCallBack {
-        void onSuccess(List<UserItem> data);
+        void onSuccess(List<FoodItem> data);
         void onError(VolleyError error);
     }
 
     public static void fetchFoods(Context context, String url, FetchCallBack callBack) {
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, GETFOODS_URL,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
-                    Type itemListType = new TypeToken<List<UserItem>>(){}.getType();
-                    List<UserItem> newList = new Gson().fromJson(response, itemListType);
+                    Type itemListType = new TypeToken<List<FoodItem>>(){}.getType();
+                    List<FoodItem> newList = new Gson().fromJson(response, itemListType);
                     Log.d("foods", response);
                     callBack.onSuccess(newList);
                 },
