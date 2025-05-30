@@ -42,9 +42,7 @@
         <activity
             android:name=".Login.SplashActivity"
             android:exported="false" />
-        <activity
-            android:name=".Login.MainActivity"
-            android:exported="false" />
+        <activity android:name=".UserMainActivity"/>
         <activity android:name=".AdminActivity.AdminAddFoodItem" />
         <activity android:name=".AdminActivity.AdminEditFoodItem" />
         <activity
