@@ -77,6 +77,7 @@ public class UserMenuAdapter extends RecyclerView.Adapter<UserMenuAdapter.myView
                     if (position != RecyclerView.NO_POSITION) {
                         Log.d(TAG, "Context class: " + requireContext.getClass().getName());
                         Intent intent = new Intent(requireContext, UserDetailsActivity.class);
+                        intent.putExtra("MenuItemID", item.getId());
                         intent.putExtra("MenuItemName", item.getName());
                         intent.putExtra("MenuItemPrice", item.getPrice());
                         intent.putExtra("MenuItemImageUrl", item.getImageUrl());

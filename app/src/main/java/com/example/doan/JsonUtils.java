@@ -1,5 +1,7 @@
 package com.example.doan;
 
+import android.util.Log;
+
 import com.example.doan.DatabaseClass.FoodItem;
 
 import org.json.JSONArray;
@@ -15,6 +17,7 @@ public class JsonUtils {
             try {
                 JSONObject obj = new JSONObject();
                 obj.put("food_id", item.getId());
+                Log.d("FoodID", String.valueOf(item.getId()));
                 int qty = 1;
                 try {
                     qty = Integer.parseInt(item.getItemQuantity());
