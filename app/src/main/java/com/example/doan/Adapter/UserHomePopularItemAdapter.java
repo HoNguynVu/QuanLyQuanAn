@@ -13,18 +13,18 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.doan.UserItem;
+import com.bumptech.glide.Glide;
+import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.databinding.UserHomePopularItemBinding;
-import com.example.doan.UserDetailsActivity;
+import com.example.doan.UserActivity.UserDetailsActivity;
 
 import java.util.List;
 
 public class UserHomePopularItemAdapter extends RecyclerView.Adapter<UserHomePopularItemAdapter.myViewHolder> {
-    private UserHomePopularItemBinding binding;
     private final Context requireContext;
-    static List<UserItem> itemList;
+    private final List<FoodItem> itemList;
 
-    public UserHomePopularItemAdapter(Context requireContext, List<UserItem> itemList) {
+    public UserHomePopularItemAdapter(Context requireContext, List<FoodItem> itemList) {
         this.itemList = itemList;
         this.requireContext = requireContext;
     }
@@ -38,7 +38,7 @@ public class UserHomePopularItemAdapter extends RecyclerView.Adapter<UserHomePop
 
     @Override
     public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
-        holder.bind(position);
+        holder.bind(itemList.get(position));
     }
 
     @Override
@@ -56,10 +56,13 @@ public class UserHomePopularItemAdapter extends RecyclerView.Adapter<UserHomePop
             this.requireContext = requireContext;
         }
 
-        public void bind(int position) {
-            binding.tvName.setText(itemList.get(position).getItemName());
-            binding.tvPrice.setText(itemList.get(position).getItemPrice());
-            binding.imageView.setImageResource(itemList.get(position).getItemImage());
+        public void bind(FoodItem item) {
+            binding.tvName.setText(item.getName());
+            binding.tvPrice.setText(String.valueOf(item.getPrice()));
+            binding.tvDetail.setText(item.getDescription());
+            String imageUrl = item.getImageUrl();
+
+            Glide.with(binding.getRoot().getContext()).load(imageUrl).into(binding.imageView);
 
             binding.getRoot().setOnClickListener(new View.OnClickListener(){
 
@@ -69,10 +72,12 @@ public class UserHomePopularItemAdapter extends RecyclerView.Adapter<UserHomePop
                     if (position != RecyclerView.NO_POSITION) {
                         Log.d(TAG, "Context class: " + requireContext.getClass().getName());
                         Intent intent = new Intent(requireContext, UserDetailsActivity.class);
-                        intent.putExtra("MenuItemName", itemList.get(position).getItemName());
-                        intent.putExtra("MenuItemPrice", itemList.get(position).getItemPrice());
-                        intent.putExtra("MenuItemImage", itemList.get(position).getItemImage());
-                        intent.putExtra("MenuItemQuantity", itemList.get(position).getItemQuantity());
+                        intent.putExtra("MenuItemID", item.getId());
+                        intent.putExtra("MenuItemName", item.getName());
+                        intent.putExtra("MenuItemPrice", item.getPrice());
+                        intent.putExtra("MenuItemImageUrl", item.getImageUrl());
+                        intent.putExtra("MenuItemQuantity", item.getItemQuantity());
+                        intent.putExtra("MenuItemDescription", item.getDescription());
                         requireContext.startActivity(intent);
                     }
 

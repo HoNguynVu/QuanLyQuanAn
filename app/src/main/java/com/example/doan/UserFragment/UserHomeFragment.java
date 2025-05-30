@@ -1,5 +1,8 @@
 package com.example.doan.UserFragment;
 
+import static android.content.ContentValues.TAG;
+import static com.example.doan.User.UserConstants.GETFOODS_URL;
+
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -8,41 +11,40 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.interfaces.ItemClickListener;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.doan.Adapter.UserHomePopularItemAdapter;
-import com.example.doan.UserCartActivity;
-import com.example.doan.UserItem;
+import com.example.doan.DatabaseClass.FoodItem;
+import com.example.doan.UserActivity.UserCartActivity;
+import com.example.doan.User.UserDataFetcher;
 import com.example.doan.R;
-import com.example.doan.UserSpaceItemDecoration;
+import com.example.doan.User.UserSpaceItemDecoration;
 import com.example.doan.databinding.UserHomeFragmentBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserHomeFragment extends Fragment {
+
     UserHomePopularItemAdapter adapter;
     private UserHomeFragmentBinding binding;
+    List<FoodItem> itemList = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
-    List<UserItem> itemList = List.of(
-            new UserItem("Pizza", "10$", R.drawable.soup_celery, "1"),
-            new UserItem("Burger", "10$", R.drawable.soup_dimsum, "1"),
-            new UserItem("Hotdog", "10$", R.drawable.kale_soup, "1"),
-            new UserItem("Drink", "10$", R.drawable.soup_mushroom, "1")
-    );
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -97,5 +99,21 @@ public class UserHomeFragment extends Fragment {
         });
 
         binding.recyclerView.addItemDecoration(new UserSpaceItemDecoration(16));
+
+        UserDataFetcher.fetchFoods(requireContext(), GETFOODS_URL, new UserDataFetcher.FetchCallBack() {
+
+            @Override
+            public void onSuccess(List<FoodItem> data) {
+                Log.d(TAG, "onSuccess: " + data);
+                itemList.clear();
+                itemList.addAll(data);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+
+            }
+        });
     }
 }

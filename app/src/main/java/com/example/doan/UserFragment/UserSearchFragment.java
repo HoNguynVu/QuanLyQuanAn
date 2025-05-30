@@ -1,5 +1,8 @@
 package com.example.doan.UserFragment;
 
+import static android.content.ContentValues.TAG;
+import static com.example.doan.User.UserConstants.GETFOODS_URL;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -7,16 +10,18 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.example.doan.Adapter.UserMenuAdapter;
-import com.example.doan.UserItem;
-import com.example.doan.R;
-import com.example.doan.UserSpaceItemDecoration;
+import com.example.doan.DatabaseClass.FoodItem;
+import com.example.doan.User.UserDataFetcher;
+import com.example.doan.User.UserSpaceItemDecoration;
 import com.example.doan.databinding.UserFragmentSearchBinding;
 
 import java.util.ArrayList;
@@ -26,13 +31,8 @@ public class UserSearchFragment extends Fragment {
     private UserFragmentSearchBinding binding;
     private UserMenuAdapter adapter;
 
-    List<UserItem> cartList = List.of(
-            new UserItem("Pizza", "10$", R.drawable.soup_celery, "1"),
-            new UserItem("Burger", "10$", R.drawable.soup_dimsum, "1"),
-            new UserItem("Hotdog", "10$", R.drawable.kale_soup, "1"),
-            new UserItem("Drink", "10$", R.drawable.soup_mushroom, "1")
-    );
-    List<UserItem> filteredList;
+    List<FoodItem> itemList = new ArrayList<>();
+    List<FoodItem> filteredList;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,7 +51,7 @@ public class UserSearchFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         filteredList = new ArrayList<>();
-        adapter = new UserMenuAdapter(filteredList, requireContext());
+        adapter = new UserMenuAdapter(requireContext(), filteredList);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.addItemDecoration(new UserSpaceItemDecoration(16));
@@ -68,13 +68,28 @@ public class UserSearchFragment extends Fragment {
                 return true;
             }
         });
+
+        UserDataFetcher.fetchFoods(requireContext(), GETFOODS_URL, new UserDataFetcher.FetchCallBack() {
+
+            @Override
+            public void onSuccess(List<FoodItem> data) {
+                Log.d(TAG, "onSuccess: " + data);
+                itemList.clear();
+                itemList.addAll(data);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+            }
+        });
     }
 
     private void filteredMenu(String newText) {
         filteredList.clear();
         if(newText != null && !newText.isEmpty()) {
-            for (UserItem item : cartList) {
-                if (item.getItemName().toLowerCase().contains(newText.toLowerCase())) {
+            for (FoodItem item : itemList) {
+                if (item.getName().toLowerCase().contains(newText.toLowerCase())) {
                     filteredList.add(item);
                 }
             }
