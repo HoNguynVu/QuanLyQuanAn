@@ -1,7 +1,11 @@
 package com.example.doan.Adapter;
 
+import static android.content.ContentValues.TAG;
+
+
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,64 +14,59 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.doan.UserCartManager;
-import com.example.doan.UserItem;
+import com.example.doan.DatabaseClass.FoodItem;
+import com.example.doan.UserActivity.UserDetailsActivity;
 import com.example.doan.databinding.UserMenuItemBinding;
-import com.example.doan.UserDetailsActivity;
 
 import java.util.List;
 
-public class UserMenuAdapter extends RecyclerView.Adapter<UserMenuAdapter.MenuViewHolder> {
-    private static List<UserItem> cartList;
+public class UserMenuAdapter extends RecyclerView.Adapter<UserMenuAdapter.myViewHolder> {
     private final Context requireContext;
-    static UserCartManager userCartManager = UserCartManager.getInstance();
+    private List<FoodItem> itemList;
 
-    public UserMenuAdapter(List<UserItem> cartList, Context requireContext) {
-        this.cartList = cartList;
+    public UserMenuAdapter(Context requireContext, List<FoodItem> itemList) {
+        this.itemList = itemList;
         this.requireContext = requireContext;
-    }
-
-    public void setFilteredList(List<UserItem> filteredList) {
-        cartList = filteredList;
-        notifyDataSetChanged();
     }
 
     @NonNull
     @Override
-    public MenuViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         var binding = UserMenuItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-        return new MenuViewHolder(binding, requireContext);
+        return new myViewHolder(binding, requireContext);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MenuViewHolder holder, int position) {
-        holder.bind(position);
+    public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
+        holder.bind(itemList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return cartList.size();
+        return itemList.size();
     }
 
-    public static class MenuViewHolder extends RecyclerView.ViewHolder {
+    public void setFilteredList(List<FoodItem> filteredList) {
+        itemList = filteredList;
+        notifyDataSetChanged();
+    }
+
+    public static class myViewHolder extends RecyclerView.ViewHolder {
         private final UserMenuItemBinding binding;
         private final Context requireContext;
 
-        UserCartManager userCartManager = UserCartManager.getInstance();
-
-        public MenuViewHolder(UserMenuItemBinding binding, Context requireContext) {
+        public myViewHolder(UserMenuItemBinding binding, Context requireContext) {
             super(binding.getRoot());
             this.binding = binding;
             this.requireContext = requireContext;
         }
 
-        public void bind(int position) {
-            double price = cartList.get(position).getItemPrice();
-            final int[] quantity = {Integer.parseInt(cartList.get(position).getItemQuantity())};
-            String total = (price * quantity[0]) + "$";
-            binding.tvName.setText(cartList.get(position).getItemName());
-            binding.tvPrice.setText(total);
-            String imageUrl = cartList.get(position).getImageUrl();
+        public void bind(FoodItem item) {
+            binding.tvName.setText(item.getName());
+            binding.tvPrice.setText(String.valueOf(item.getPrice()));
+            binding.tvDetail.setText(item.getDescription());
+            String imageUrl = item.getImageUrl();
+
             Glide.with(binding.getRoot().getContext()).load(imageUrl).into(binding.imageView);
 
             binding.getRoot().setOnClickListener(new View.OnClickListener(){
@@ -76,22 +75,20 @@ public class UserMenuAdapter extends RecyclerView.Adapter<UserMenuAdapter.MenuVi
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
+                        Log.d(TAG, "Context class: " + requireContext.getClass().getName());
                         Intent intent = new Intent(requireContext, UserDetailsActivity.class);
-                        intent.putExtra("MenuItemName", cartList.get(position).getItemName());
-                        intent.putExtra("MenuItemPrice", cartList.get(position).getItemPrice());
-                        intent.putExtra("MenuItemImageUrl", cartList.get(position).getImageUrl());
-                        intent.putExtra("MenuItemQuantity", cartList.get(position).getItemQuantity());
+                        intent.putExtra("MenuItemID", item.getId());
+                        intent.putExtra("MenuItemName", item.getName());
+                        intent.putExtra("MenuItemPrice", item.getPrice());
+                        intent.putExtra("MenuItemImageUrl", item.getImageUrl());
+                        intent.putExtra("MenuItemQuantity", item.getItemQuantity());
+                        intent.putExtra("MenuItemDescription", item.getDescription());
                         requireContext.startActivity(intent);
                     }
 
                 }
             });
-
         }
 
-
-
     }
-
-
 }

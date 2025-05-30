@@ -61,28 +61,34 @@
             android:name=".Login.VerifyResetOtpActivity"
             android:exported="false" />
         <activity
-            android:name=".UserMainActivity"
-            android:exported="false">
-        </activity>
-
-        <activity
-            android:name=".UserCheckOutActivity"
-            android:exported="false" />
-        <activity
-            android:name=".UserCartActivity"
-            android:exported="false" />
-        <activity
-            android:name=".UserDetailsActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".Login.LoginActivity"
+            android:name=".UserActivity.UserMainActivity"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".UserActivity.UserCheckOutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserActivity.UserCartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserActivity.UserDetailsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".Login.LoginActivity"
+            android:exported="true">
+        </activity>
+
+        <activity
+            android:name=".UserActivity.UserOrderSuccessActivity"
+            android:exported="false">
         </activity>
     </application>
 

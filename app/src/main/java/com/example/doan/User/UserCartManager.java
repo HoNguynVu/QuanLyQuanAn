@@ -1,15 +1,17 @@
-package com.example.doan;
+package com.example.doan.User;
 
 import static android.content.ContentValues.TAG;
 
 import android.util.Log;
+
+import com.example.doan.DatabaseClass.FoodItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserCartManager {
     private static UserCartManager instance;
-    private final List<UserItem> cartItems;
+    private final List<FoodItem> cartItems;
     private double TotalOrder = 0;
     private OnTotalChangedListener listener;
 
@@ -40,13 +42,13 @@ public class UserCartManager {
         return instance;
     }
 
-    public void addItem(UserItem item) {
+    public void addItem(FoodItem item) {
         cartItems.add(item);
-        TotalOrder += item.getItemPrice() * Integer.parseInt(item.getItemQuantity());
+        TotalOrder += item.getPrice() * Integer.parseInt(item.getItemQuantity());
         notifyTotalChanged();
     }
 
-    public List<UserItem> getCartItems() {
+    public List<FoodItem> getCartItems() {
         return cartItems;
     }
 
