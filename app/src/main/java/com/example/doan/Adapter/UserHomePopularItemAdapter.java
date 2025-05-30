@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.databinding.UserHomePopularItemBinding;
-import com.example.doan.UserDetailsActivity;
+import com.example.doan.UserActivity.UserDetailsActivity;
 
 import java.util.List;
 

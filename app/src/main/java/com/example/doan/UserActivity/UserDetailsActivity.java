@@ -1,4 +1,4 @@
-package com.example.doan;
+package com.example.doan.UserActivity;
 
 import static android.content.ContentValues.TAG;
 
@@ -11,9 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.doan.DatabaseClass.FoodItem;
+import com.example.doan.User.UserCartManager;
 import com.example.doan.databinding.UserActivityDetailsBinding;
-
-import java.util.Objects;
 
 public class UserDetailsActivity extends AppCompatActivity {
     UserActivityDetailsBinding binding;

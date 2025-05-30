@@ -18,14 +18,14 @@ import android.widget.LinearLayout;
 import com.android.volley.VolleyError;
 import com.example.doan.Adapter.UserMenuAdapter;
 import com.example.doan.DatabaseClass.FoodItem;
-import com.example.doan.UserDataFetcher;
-import com.example.doan.UserSpaceItemDecoration;
+import com.example.doan.User.UserDataFetcher;
+import com.example.doan.User.UserSpaceItemDecoration;
 import com.example.doan.databinding.UserFragmentMenuBottomSheetBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
-import static com.example.doan.UserConstants.GETFOODS_URL;
+import static com.example.doan.User.UserConstants.GETFOODS_URL;
 
 public class UserMenuBottomSheetFragment extends BottomSheetDialogFragment {
     private UserFragmentMenuBottomSheetBinding binding;

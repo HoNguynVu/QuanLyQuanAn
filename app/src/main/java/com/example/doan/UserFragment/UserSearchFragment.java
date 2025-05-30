@@ -1,7 +1,7 @@
 package com.example.doan.UserFragment;
 
 import static android.content.ContentValues.TAG;
-import static com.example.doan.UserConstants.GETFOODS_URL;
+import static com.example.doan.User.UserConstants.GETFOODS_URL;
 
 import android.os.Bundle;
 
@@ -20,8 +20,8 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.example.doan.Adapter.UserMenuAdapter;
 import com.example.doan.DatabaseClass.FoodItem;
-import com.example.doan.UserDataFetcher;
-import com.example.doan.UserSpaceItemDecoration;
+import com.example.doan.User.UserDataFetcher;
+import com.example.doan.User.UserSpaceItemDecoration;
 import com.example.doan.databinding.UserFragmentSearchBinding;
 
 import java.util.ArrayList;

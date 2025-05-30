@@ -20,7 +20,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".UserOrderSuccessActivity"
+            android:name=".UserActivity.UserOrderSuccessActivity"
             android:exported="false" />
         <activity
             android:name=".ProfileUser.ChangePasswordActivity"
@@ -67,16 +67,16 @@
             android:name=".Login.LoginActivity"
             android:exported="false"></activity>
         <activity
-            android:name=".UserCheckOutActivity"
+            android:name=".UserActivity.UserCheckOutActivity"
             android:exported="false" />
         <activity
-            android:name=".UserCartActivity"
+            android:name=".UserActivity.UserCartActivity"
             android:exported="false" />
         <activity
-            android:name=".UserDetailsActivity"
+            android:name=".UserActivity.UserDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".UserMainActivity"
+            android:name=".UserActivity.UserMainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

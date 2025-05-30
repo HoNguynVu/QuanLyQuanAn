@@ -6,15 +6,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
-import android.util.Patterns;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.doan.AdminFragment.AdminHome;
@@ -24,7 +21,7 @@ import com.example.doan.DatabaseClass.CurrentUser;
 import com.example.doan.Network.APIService;
 import com.example.doan.Network.RetrofitClient;
 import com.example.doan.R;
-import com.example.doan.UserMainActivity;
+import com.example.doan.UserActivity.UserMainActivity;
 
 import retrofit2.Call;
 import retrofit2.Callback;

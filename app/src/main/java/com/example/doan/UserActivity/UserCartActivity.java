@@ -1,4 +1,4 @@
-package com.example.doan;
+package com.example.doan.UserActivity;
 
 import static android.content.ContentValues.TAG;
 
@@ -13,6 +13,8 @@ import android.util.Log;
 
 import com.example.doan.Adapter.UserCartAdapter;
 import com.example.doan.DatabaseClass.FoodItem;
+import com.example.doan.User.UserCartManager;
+import com.example.doan.User.UserSpaceItemDecoration;
 import com.example.doan.databinding.UserActivityCartBinding;
 
 import java.util.List;
