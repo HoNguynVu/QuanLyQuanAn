@@ -1,9 +1,6 @@
-package com.example.doan;
-
-import static android.content.ContentValues.TAG;
+package com.example.doan.UserActivity;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;

@@ -9,7 +9,7 @@
     android:paddingLeft="10dp"
     android:background="#EEEEEE"
     android:paddingRight="10dp"
-    tools:context=".UserMainActivity">
+    tools:context=".UserActivity.UserMainActivity">
 
     <TextView
         android:id="@+id/title"
