@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.doan.DatabaseClass.GenericResponse;
 import com.example.doan.Network.APIService;
 import com.example.doan.Network.RetrofitClient;
 import com.example.doan.R;
@@ -71,20 +72,19 @@ public class ChangePasswordActivity extends AppCompatActivity {
         }
 
         APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
-        Call<String> call = apiService.changePassword(email, currentPassword, newPassword);
-
-        call.enqueue(new Callback<String>() {
+        apiService.changePassword(email, currentPassword, newPassword).enqueue(new Callback<GenericResponse>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    String result = response.body().trim();
-                    if (result.equals("success")) {
-                        Toast.makeText(ChangePasswordActivity.this, "Đổi mật khẩu thành công", Toast.LENGTH_SHORT).show();
+                    GenericResponse result = response.body();
+
+                    if ("success".equalsIgnoreCase(result.status)) {
+                        Toast.makeText(ChangePasswordActivity.this, result.message, Toast.LENGTH_SHORT).show();
                         finish();
-                    } else if (result.equals("wrong_password")) {
+                    } else if ("wrong_password".equalsIgnoreCase(result.status)) {
                         Toast.makeText(ChangePasswordActivity.this, "Mật khẩu hiện tại không đúng", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(ChangePasswordActivity.this, "Đổi mật khẩu thất bại", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ChangePasswordActivity.this, result.message, Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(ChangePasswordActivity.this, "Lỗi server: " + response.code(), Toast.LENGTH_SHORT).show();
@@ -92,10 +92,11 @@ public class ChangePasswordActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<GenericResponse> call, Throwable t) {
                 Toast.makeText(ChangePasswordActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
 
     }
 
