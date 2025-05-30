@@ -18,8 +18,7 @@ import org.json.JSONObject;
 
 public class UserDataSendRequest {
 
-    private Context context;
-    private RequestQueue requestQueue;
+    private final RequestQueue requestQueue;
     private String url;
 
     public interface RespondListener {
@@ -29,7 +28,6 @@ public class UserDataSendRequest {
     }
 
     public UserDataSendRequest(Context context, String url) {
-        this.context = context;
         this.url = url;
         requestQueue = Volley.newRequestQueue(context);
     }
@@ -37,12 +35,12 @@ public class UserDataSendRequest {
     public void sendCreateOrderRequest(int userID, JSONArray items, String discountCode, String paymentMethod, RespondListener listener) {
         JSONObject requestBody = new JSONObject();
         try {
-            requestBody.put("userID", userID);
+            requestBody.put("user_id", userID);
             requestBody.put("items", items);
             if (discountCode != null)
-                requestBody.put("discountCode", discountCode);
+                requestBody.put("discount_code", discountCode);
             if (paymentMethod != null)
-                requestBody.put("paymentMethod", paymentMethod);
+                requestBody.put("payment_method", paymentMethod);
         } catch (JSONException e) {
             e.printStackTrace();
             listener.onError("Lỗi tạo JSON request: " + e.getMessage());

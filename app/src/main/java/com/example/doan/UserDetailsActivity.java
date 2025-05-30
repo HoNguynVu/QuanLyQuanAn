@@ -26,6 +26,7 @@ public class UserDetailsActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         Intent intent = getIntent();
+        int foodID = intent.getIntExtra("MenuItemID", -1);
         String foodName = intent.getStringExtra("MenuItemName");
         double foodPrice = intent.getDoubleExtra("MenuItemPrice", 0);
         String foodQuantity = intent.getStringExtra("MenuItemQuantity");
@@ -68,7 +69,7 @@ public class UserDetailsActivity extends AppCompatActivity {
                     ? binding.textInput.getEditText().getText().toString()
                     : "";
             Log.d(TAG, "Note: " + note);
-            UserCartManager.getInstance().addItem(new FoodItem(1, foodName, "", foodPrice, foodImageUrl, 1, "", 5, note,  String.valueOf(quantity)));
+            UserCartManager.getInstance().addItem(new FoodItem(foodID, foodName, "", foodPrice, foodImageUrl, 1, "", 5, note,  String.valueOf(quantity)));
             binding.textInput.getEditText().setText("");
             Toast.makeText(this, "Đã thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
         });
