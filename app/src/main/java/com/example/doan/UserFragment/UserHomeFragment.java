@@ -1,7 +1,7 @@
 package com.example.doan.UserFragment;
 
 import static android.content.ContentValues.TAG;
-import static com.example.doan.UserConstants.GETFOODS_URL;
+import static com.example.doan.User.UserConstants.GETFOODS_URL;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,10 +24,10 @@ import com.denzcoskun.imageslider.interfaces.ItemClickListener;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.doan.Adapter.UserHomePopularItemAdapter;
 import com.example.doan.DatabaseClass.FoodItem;
-import com.example.doan.UserCartActivity;
-import com.example.doan.UserDataFetcher;
+import com.example.doan.UserActivity.UserCartActivity;
+import com.example.doan.User.UserDataFetcher;
 import com.example.doan.R;
-import com.example.doan.UserSpaceItemDecoration;
+import com.example.doan.User.UserSpaceItemDecoration;
 import com.example.doan.databinding.UserHomeFragmentBinding;
 
 import java.util.ArrayList;

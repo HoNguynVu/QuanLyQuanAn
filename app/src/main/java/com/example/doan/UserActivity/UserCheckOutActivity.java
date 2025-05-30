@@ -1,4 +1,4 @@
-package com.example.doan;
+package com.example.doan.UserActivity;
 
 
 import android.content.Intent;
@@ -11,6 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.doan.Adapter.UserCheckOutAdapter;
 import com.example.doan.DatabaseClass.FoodItem;
+import com.example.doan.User.JsonUtils;
+import com.example.doan.User.UserCartManager;
+import com.example.doan.User.UserConstants;
+import com.example.doan.User.UserDataSendRequest;
 import com.example.doan.databinding.UserActivityCheckOutBinding;
 
 import org.json.JSONArray;

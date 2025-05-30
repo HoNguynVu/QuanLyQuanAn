@@ -1,4 +1,4 @@
-package com.example.doan;
+package com.example.doan.User;
 
 public class UserConstants {
     private static final String ROOT_URL = "http://192.168.1.23/restaurantapi/";

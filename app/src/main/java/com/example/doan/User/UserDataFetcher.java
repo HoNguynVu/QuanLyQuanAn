@@ -1,7 +1,4 @@
-package com.example.doan;
-
-import static android.content.ContentValues.TAG;
-import static com.example.doan.UserConstants.GETFOODS_URL;
+package com.example.doan.User;
 
 import android.content.Context;
 import android.util.Log;
@@ -12,12 +9,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.doan.DatabaseClass.FoodItem;
-import com.example.doan.DatabaseClass.User;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserDataFetcher {
