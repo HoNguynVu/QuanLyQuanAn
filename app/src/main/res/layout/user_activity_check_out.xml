@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="#EEEE"
     android:orientation="vertical"
-    tools:context=".UserCheckOutActivity">
+    tools:context=".UserActivity.UserCheckOutActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

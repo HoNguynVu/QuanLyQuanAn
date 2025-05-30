@@ -3,33 +3,37 @@ package com.example.doan.DatabaseClass;
 import com.google.gson.annotations.SerializedName;
 
 public class FoodItem {
-
     @SerializedName("id")
     private int id;
-
     @SerializedName("name")
     private String name;
-
     @SerializedName("category")
     private String category;
-
     @SerializedName("price")
     private double price;
-
-    @SerializedName("available")
-    private int available;
-
     @SerializedName("image_url")
     private String image_url;
-
     @SerializedName("description")
     private String description;
-
+    private final String note;
+    @SerializedName("available")
+    private int available;
     @SerializedName("rating_avg")
     private float ratingAvg;
+    private String itemQuantity;
 
-    public FoodItem() {}
-
+    public FoodItem(int id, String name, String category, double price, String image_url, int available, String description, float ratingAvg, String note, String itemQuantity) {
+        this.id = id;
+        this.name = name;
+        this.category = category;
+        this.price = price;
+        this.image_url = image_url;
+        this.description = description;
+        this.note = note;
+        this.itemQuantity = itemQuantity;
+        this.available = available;
+        this.ratingAvg = ratingAvg;
+    }
 
     public FoodItem(String name, String category, double price, String imageUrl, int available, String description, float ratingAvg) {
         this.name = name;
@@ -39,6 +43,7 @@ public class FoodItem {
         this.image_url = imageUrl;
         this.description = description;
         this.ratingAvg = ratingAvg;
+        note = "";
     }
 
     // Chỉ có getter cho id vì id tự sinh từ MySQL
@@ -47,7 +52,6 @@ public class FoodItem {
     }
 
     // Các getter và setter khác
-
     public String getName() {
         return name;
     }
@@ -90,13 +94,23 @@ public class FoodItem {
         this.description = description;
     }
 
-
     public float getRatingAvg() {
         return ratingAvg;
     }
     public void setRatingAvg(float ratingAvg) {
         this.ratingAvg = ratingAvg;
     }
+
+
+    public String getItemQuantity() {
+        return itemQuantity;
+    }
+
+    public void setItemQuantity(String newQuantity) {
+        itemQuantity = newQuantity;
+    }
+
+    public String getNote() {
+        return note;
+    }
 }
-
-

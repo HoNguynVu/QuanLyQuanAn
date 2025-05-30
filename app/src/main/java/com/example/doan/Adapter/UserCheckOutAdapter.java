@@ -8,16 +8,16 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.doan.UserItem;
+import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.databinding.UserCheckOutItemBinding;
 
 import java.util.List;
 
 public class UserCheckOutAdapter extends RecyclerView.Adapter<UserCheckOutAdapter.CheckOutViewHolder> {
-    private static List<UserItem> cartList;
+    private static List<FoodItem> cartList;
     private final Context requireContext;
 
-    public UserCheckOutAdapter(List<UserItem> cartList, Context requireContext) {
+    public UserCheckOutAdapter(List<FoodItem> cartList, Context requireContext) {
         this.cartList = cartList;
         this.requireContext = requireContext;
     }
@@ -52,11 +52,11 @@ public class UserCheckOutAdapter extends RecyclerView.Adapter<UserCheckOutAdapte
 
         public void bind(int position) {
 
-            int price = Integer.parseInt(cartList.get(position).getItemPrice().substring(0, cartList.get(position).getItemPrice().length() - 1));
+            double price = cartList.get(position).getPrice();
             final int[] quantity = {Integer.parseInt(cartList.get(position).getItemQuantity())};
             String total = (price * quantity[0]) + "$";
 
-            String foodName = cartList.get(position).getItemName() + "(" + cartList.get(position).getItemQuantity() + "x)";
+            String foodName = cartList.get(position).getName() + "(" + cartList.get(position).getItemQuantity() + "x)";
             binding.tvFoodName.setText(foodName);
             binding.tvPrice.setText(total);
         }

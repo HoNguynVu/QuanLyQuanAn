@@ -1,4 +1,4 @@
-package com.example.doan;
+package com.example.doan.UserActivity;
 
 import static android.content.ContentValues.TAG;
 
@@ -12,12 +12,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.util.Log;
 
 import com.example.doan.Adapter.UserCartAdapter;
+import com.example.doan.DatabaseClass.FoodItem;
+import com.example.doan.User.UserCartManager;
+import com.example.doan.User.UserSpaceItemDecoration;
 import com.example.doan.databinding.UserActivityCartBinding;
 
 import java.util.List;
 
 public class UserCartActivity extends AppCompatActivity {
-    List<UserItem> cartList = UserCartManager.getInstance().getCartItems();
+    List<FoodItem> cartList = UserCartManager.getInstance().getCartItems();
     UserCartAdapter adapter;
     private UserActivityCartBinding binding;
     @Override
@@ -29,7 +32,7 @@ public class UserCartActivity extends AppCompatActivity {
         UserCartManager userCartManager = UserCartManager.getInstance();
         userCartManager.setOnTotalChangedListener(new UserCartManager.OnTotalChangedListener() {
             @Override
-            public void onTotalChanged(int newTotal) {
+            public void onTotalChanged(double newTotal) {
                 // Cập nhật TextView mỗi khi total thay đổi
                 String total = newTotal + "$";
                 Log.d(TAG, "onTotalChanged: " + newTotal);
@@ -44,6 +47,7 @@ public class UserCartActivity extends AppCompatActivity {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.addItemDecoration(new UserSpaceItemDecoration(dpToPx(16)));
+
 
         binding.btnBack.setOnClickListener(v -> finish());
 
