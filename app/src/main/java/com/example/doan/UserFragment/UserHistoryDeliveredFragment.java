@@ -61,6 +61,6 @@ public class UserHistoryDeliveredFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.user_fragment_history_delivered, container, false);
+        return inflater.inflate(R.layout.user_history_delivered_fragment, container, false);
     }
 }

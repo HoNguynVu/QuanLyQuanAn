@@ -4,10 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.example.doan.UserFragment.UserHistoryCancelledFragment;
+import com.example.doan.UserFragment.UserHistoryDeliveredFragment;
 import com.example.doan.UserFragment.UserHistoryFragment;
-import com.example.doan.UserFragment.UserShoppingChipsFragment;
-import com.example.doan.UserFragment.UserShoppingDrinksFragment;
-import com.example.doan.UserFragment.UserShoppingSoupsFragment;
+import com.example.doan.UserFragment.UserHistoryWaitingFragment;
 
 public class UserHistoryPagerAdapter extends FragmentStateAdapter {
     public UserHistoryPagerAdapter(@NonNull UserHistoryFragment fragmentActivity) {
@@ -24,11 +24,11 @@ public class UserHistoryPagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position) {
             case 1:
-                return new UserShoppingChipsFragment();
+                return new UserHistoryWaitingFragment();
             case 2:
-                return new UserShoppingDrinksFragment();
+                return new UserHistoryDeliveredFragment();
             default:
-                return new UserShoppingSoupsFragment();
+                return new UserHistoryCancelledFragment();
         }
     }
 }
