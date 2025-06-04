@@ -33,5 +33,5 @@
         android:id="@+id/historyFragment"
         android:label="fragment_history"
         android:name="com.example.doan.UserFragment.UserHistoryFragment"
-        tools:layout="@layout/user_fragment_history" />
+        tools:layout="@layout/user_history_fragment" />
 </navigation>
