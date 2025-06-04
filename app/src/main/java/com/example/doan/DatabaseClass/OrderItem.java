@@ -16,6 +16,9 @@ public class OrderItem {
     @SerializedName("quantity")
     private int quantity;
 
+    @SerializedName("price")
+    private double price;
+
     public OrderItem() {}
 
     public OrderItem(String id, String orderId, String foodId, int quantity) {
@@ -23,6 +26,14 @@ public class OrderItem {
         this.orderId = orderId;
         this.foodId = foodId;
         this.quantity = quantity;
+    }
+
+    public OrderItem(String id, String orderId, String foodId, int quantity, double price) {
+        this.id = id;
+        this.orderId = orderId;
+        this.foodId = foodId;
+        this.quantity = quantity;
+        this.price = price;
     }
 
     // getter/setter
@@ -52,5 +63,12 @@ public class OrderItem {
     }
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+    public void setPrice(double price) {
+        this.price = price;
     }
 }

@@ -69,7 +69,7 @@ public class UserSearchFragment extends Fragment {
             }
         });
 
-        UserDataFetcher.fetchFoods(requireContext(), GETFOODS_URL, new UserDataFetcher.FetchCallBack() {
+        UserDataFetcher.fetchFoods(requireContext(), GETFOODS_URL, new UserDataFetcher.FetchCallBack<FoodItem>() {
 
             @Override
             public void onSuccess(List<FoodItem> data) {
