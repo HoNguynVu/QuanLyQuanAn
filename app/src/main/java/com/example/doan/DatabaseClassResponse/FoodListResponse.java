@@ -1,4 +1,6 @@
-package com.example.doan.DatabaseClass;
+package com.example.doan.DatabaseClassResponse;
+
+import com.example.doan.DatabaseClass.FoodItem;
 
 import java.util.List;
 

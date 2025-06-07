@@ -6,19 +6,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.doan.DatabaseClass.CurrentUser;
-import com.example.doan.DatabaseClass.GenericResponse;
+import com.example.doan.DatabaseClassResponse.GenericResponse;
 import com.example.doan.DatabaseClass.User;
-import com.example.doan.DatabaseClass.UserResponse;
+import com.example.doan.DatabaseClassResponse.UserResponse;
 import com.example.doan.Network.APIService;
 import com.example.doan.Network.RetrofitClient;
 import com.example.doan.R;

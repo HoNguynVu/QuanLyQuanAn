@@ -44,10 +44,12 @@ public class OrderItemAdapter extends ArrayAdapter<OrderItemWithFood> {
         TextView txtName = convertView.findViewById(R.id.txt_food_name);
         TextView txtQty = convertView.findViewById(R.id.txt_food_quantity);
         TextView txtPrice = convertView.findViewById(R.id.txt_food_price);
+        TextView txtNote = convertView.findViewById(R.id.txt_food_note);
 
         txtName.setText(food.getName());
         txtQty.setText("Số lượng: " + item.getOrderItem().getQuantity());
         txtPrice.setText("Giá: " + food.getPrice() + "đ");
+        txtNote.setText("Ghi chú: " + item.getOrderItem().getNote());
 
         // Load ảnh bằng Glide (thêm thư viện Glide vào project)
         Glide.with(context)

@@ -9,7 +9,7 @@ public class Order {
     private int userId;
 
     @SerializedName("final_amount")
-    private int finalAmount;
+    private double finalAmount;
 
     @SerializedName("status")
     private String status;
@@ -27,11 +27,11 @@ public class Order {
         this.orderId = orderId;
     }
 
-    public int getFinalAmount() {
+    public double getFinalAmount() {
         return finalAmount;
     }
 
-    public void setFinalAmount(int finalAmount) {
+    public void setFinalAmount(double finalAmount) {
         this.finalAmount = finalAmount;
     }
 
