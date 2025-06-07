@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.doan.DatabaseClass.CurrentUser;
 import com.example.doan.Login.LoginActivity;
 import com.example.doan.ProfileUser.ChangePasswordActivity;
 import com.example.doan.ProfileUser.MyOrdersActivity;
@@ -55,12 +56,11 @@ public class ProfileFragment extends Fragment {
         usernameTextView = view.findViewById(R.id.usernameTextView);
         emailTextView = view.findViewById(R.id.emailTextView);
         profileRecyclerView = view.findViewById(R.id.profileRecyclerView);
-        sharedPreferences = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
     }
 
     private void loadUserInfo() {
-        String username = sharedPreferences.getString("username", null);
-        String email = sharedPreferences.getString("email", null);
+        String username = CurrentUser.getInstance().getName();
+        String email = CurrentUser.getInstance().getEmail();
 
         if (username != null && email != null) {
             usernameTextView.setText(username);
@@ -90,10 +90,6 @@ public class ProfileFragment extends Fragment {
 
                 case "My Profile":
                     Intent intentProfile = new Intent(getContext(), MyProfileActivity.class);
-                    intentProfile.putExtra("username", sharedPreferences.getString("username", ""));
-                    intentProfile.putExtra("email", sharedPreferences.getString("email", ""));
-                    intentProfile.putExtra("phone", sharedPreferences.getString("phone", ""));
-                    intentProfile.putExtra("dob", sharedPreferences.getString("dob", ""));
                     editProfileLauncher.launch(intentProfile);
                     break;
 
