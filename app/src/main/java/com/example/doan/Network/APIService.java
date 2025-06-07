@@ -1,17 +1,17 @@
 package com.example.doan.Network;
 
 import com.example.doan.DatabaseClass.FoodItem;
-import com.example.doan.DatabaseClass.FoodListResponse;
-import com.example.doan.DatabaseClass.GenericResponse;
-import com.example.doan.DatabaseClass.LoginResponse;
+import com.example.doan.DatabaseClassResponse.FoodListResponse;
+import com.example.doan.DatabaseClassResponse.GenericResponse;
+import com.example.doan.DatabaseClassResponse.LoginResponse;
 import com.example.doan.DatabaseClass.Order;
 import com.example.doan.DatabaseClass.OrderItem;
 import com.example.doan.DatabaseClass.Review;
-import com.example.doan.DatabaseClass.StatisticsResponse;
-import com.example.doan.DatabaseClass.StatusResponse;
-import com.example.doan.DatabaseClass.UploadResponse;
+import com.example.doan.DatabaseClassResponse.StatisticsResponse;
+import com.example.doan.DatabaseClassResponse.StatusResponse;
+import com.example.doan.DatabaseClassResponse.UploadResponse;
 import com.example.doan.DatabaseClass.User;
-import com.example.doan.DatabaseClass.UserResponse;
+import com.example.doan.DatabaseClassResponse.UserResponse;
 
 import java.util.List;
 
@@ -20,7 +20,6 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface APIService {

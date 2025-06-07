@@ -25,8 +25,7 @@ import com.bumptech.glide.Glide;
 import com.example.doan.Network.APIService;
 import com.example.doan.Network.RetrofitClient;
 import com.example.doan.R;
-import com.example.doan.DatabaseClass.GenericResponse;
-import com.example.doan.AdminActivity.ImageUploadCallback;
+import com.example.doan.DatabaseClassResponse.GenericResponse;
 import com.google.gson.Gson;
 
 import org.json.JSONException;

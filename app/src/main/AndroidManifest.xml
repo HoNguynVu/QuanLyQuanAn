@@ -34,6 +34,9 @@
             android:name=".ProfileUser.DetailOrderActivity"
             android:exported="false" />
         <activity
+            android:name=".ProfileUser.DetailFoodActivity"
+            android:exported="false" />
+        <activity
             android:name=".Login.ForgotPasswordActivity"
             android:exported="false" />
         <activity
@@ -43,8 +46,12 @@
             android:name=".Login.SplashActivity"
             android:exported="false" />
 
-        <activity android:name=".AdminActivity.AdminAddFoodItem"/>
-        <activity android:name=".AdminActivity.AdminEditFoodItem"/>
+        <activity
+            android:name=".AdminActivity.AdminAddFoodItem"
+            android:exported="false"/>
+        <activity
+            android:name=".AdminActivity.AdminEditFoodItem"
+            android:exported="false"/>
         <activity
             android:name=".AdminFragment.AdminHome"
             android:exported="false" />
@@ -61,17 +68,6 @@
             android:name=".Login.VerifyResetOtpActivity"
             android:exported="false" />
         <activity
-            android:name=".UserActivity.UserMainActivity"
-            android:exported="true">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <activity
             android:name=".UserActivity.UserCheckOutActivity"
             android:exported="false" />
         <activity
@@ -82,13 +78,23 @@
             android:exported="false" />
 
         <activity
-            android:name=".Login.LoginActivity"
-            android:exported="true">
+            android:name=".UserActivity.UserMainActivity"
+            android:exported="false">
         </activity>
 
         <activity
             android:name=".UserActivity.UserOrderSuccessActivity"
             android:exported="false">
+        </activity>
+        <activity
+            android:name=".Login.LoginActivity"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

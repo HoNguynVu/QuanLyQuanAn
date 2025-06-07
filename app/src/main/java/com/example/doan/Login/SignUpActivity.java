@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.util.Patterns;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -17,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.doan.Network.APIService;
 import com.example.doan.Network.RetrofitClient;
-import com.example.doan.DatabaseClass.GenericResponse;
+import com.example.doan.DatabaseClassResponse.GenericResponse;
 import com.example.doan.R;
 import com.google.gson.Gson;
 

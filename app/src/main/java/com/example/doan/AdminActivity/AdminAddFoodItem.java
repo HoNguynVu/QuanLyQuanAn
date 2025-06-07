@@ -21,11 +21,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.example.doan.DatabaseClass.GenericResponse;
+import com.example.doan.DatabaseClassResponse.GenericResponse;
 import com.example.doan.Network.APIService;
 import com.example.doan.Network.RetrofitClient;
 import com.example.doan.R;
-import com.example.doan.AdminActivity.ImageUploadCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
