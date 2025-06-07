@@ -1,6 +1,7 @@
 package com.example.doan.Network;
 
 import com.example.doan.DatabaseClass.FoodItem;
+import com.example.doan.DatabaseClass.Notification;
 import com.example.doan.DatabaseClassResponse.FoodListResponse;
 import com.example.doan.DatabaseClassResponse.GenericResponse;
 import com.example.doan.DatabaseClassResponse.LoginResponse;
@@ -162,4 +163,8 @@ public interface APIService {
 
     @GET("get_reviews_by_food_id.php")
     Call<List<Review>> getReviewsByFoodId(@Query("food_id") String foodId);
+
+    @GET("get_notifications.php")
+    Call<List<Notification>> getNotifications(@Query("user_id") int userId);
+
 }

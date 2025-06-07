@@ -71,7 +71,6 @@ public class MyProfileActivity extends AppCompatActivity {
             return;
         }
 
-        CurrentUser user = CurrentUser.getInstance();
         String email = user.getEmail();
 
         if (email == null || email.isEmpty()) {
