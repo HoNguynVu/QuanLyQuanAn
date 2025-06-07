@@ -1,7 +1,6 @@
 package com.example.doan.UserFragment;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,7 +12,6 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,7 +29,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProfileFragment extends Fragment {
+public class User_Profile_Fragment extends Fragment {
 
     private static final int REQUEST_EDIT_PROFILE = 1001;
 
@@ -40,7 +38,7 @@ public class ProfileFragment extends Fragment {
     private RecyclerView profileRecyclerView;
     private SharedPreferences sharedPreferences;
 
-    public ProfileFragment() {}
+    public User_Profile_Fragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
