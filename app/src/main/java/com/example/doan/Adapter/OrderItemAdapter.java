@@ -58,11 +58,7 @@ public class OrderItemAdapter extends ArrayAdapter<OrderItemWithFood> {
                 .into(imgFood);
         convertView.setOnClickListener(v -> {
             Intent intent = new Intent(context, DetailFoodActivity.class);
-            intent.putExtra("id", food.getId());
-            intent.putExtra("name", food.getName());
-            intent.putExtra("price", food.getPrice());
-            intent.putExtra("imageUrl", food.getImageUrl());
-            intent.putExtra("description", food.getDescription());
+            intent.putExtra("id", String.valueOf(food.getId()));
             context.startActivity(intent);
         });
         return convertView;
