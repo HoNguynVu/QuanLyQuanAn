@@ -75,7 +75,6 @@ public class DetailOrderActivity extends AppCompatActivity {
 
                     int total = orderItems.size();
                     int[] count = {0};
-                    int[] totalPrice = {0};
 
                     for (OrderItem item : orderItems) {
                         apiService.getFoodByID(item.getFoodId()).enqueue(new Callback<FoodItem>() {
@@ -84,7 +83,6 @@ public class DetailOrderActivity extends AppCompatActivity {
                                 if (responseFood.isSuccessful() && responseFood.body() != null) {
                                     FoodItem food = responseFood.body();
                                     itemList.add(new OrderItemWithFood(item, food));
-                                    totalPrice[0] += food.getPrice() * item.getQuantity();
                                     Log.d("API", "Thêm món: " + food.getName() + ", SL: " + item.getQuantity());
                                 } else {
                                     Log.e("API", "Không tìm thấy thông tin món ăn cho ID: " + item.getFoodId());
@@ -92,7 +90,7 @@ public class DetailOrderActivity extends AppCompatActivity {
 
                                 count[0]++;
                                 if (count[0] == total) {
-                                    updateUI(totalPrice[0]);
+                                    updateUIFromIntent();
                                 }
                             }
 
@@ -101,7 +99,7 @@ public class DetailOrderActivity extends AppCompatActivity {
                                 Log.e("API", "Lỗi khi lấy món ăn: " + t.getMessage());
                                 count[0]++;
                                 if (count[0] == total) {
-                                    updateUI(totalPrice[0]);
+                                    updateUIFromIntent();
                                 }
                             }
                         });
@@ -121,12 +119,14 @@ public class DetailOrderActivity extends AppCompatActivity {
         });
     }
 
-    private void updateUI(int totalPrice) {
-        String formattedPrice = String.format("%,d", totalPrice);
+    private void updateUIFromIntent() {
+        double amount = getIntent().getDoubleExtra("final_amount", 0.0);
+        String formattedAmount = String.format("%,.2f", amount);
+
+        if (formattedAmount == null) formattedAmount= "0";
 
         txtOrderId.setText("Mã đơn: " + orderId);
 
-        // Nhận status và date từ Intent nếu có
         String status = getIntent().getStringExtra("status");
         String createdAt = getIntent().getStringExtra("created_at");
 
@@ -135,7 +135,7 @@ public class DetailOrderActivity extends AppCompatActivity {
 
         txtStatus.setText("Trạng thái: " + status);
         txtDate.setText("Ngày tạo: " + createdAt);
-        txtTotal.setText("Tổng tiền: " + formattedPrice + "đ");
+        txtTotal.setText("Tổng tiền: " + formattedAmount + "đ");
 
         adapter = new OrderItemAdapter(this, itemList);
         listView.setAdapter(adapter);

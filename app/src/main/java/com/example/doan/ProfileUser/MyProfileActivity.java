@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.doan.DatabaseClass.CurrentUser;
 import com.example.doan.Network.APIService;
 import com.example.doan.Network.RetrofitClient;
 import com.example.doan.R;
@@ -22,6 +23,7 @@ import retrofit2.Response;
 public class MyProfileActivity extends AppCompatActivity {
 
     private EditText edtName, edtEmail, edtPhone, edtbirth;
+    private CurrentUser user;
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -31,7 +33,7 @@ public class MyProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_my_profile);
 
         initViews();
-        loadIntentData();
+        loadData();
         setupListeners();
     }
 
@@ -41,15 +43,14 @@ public class MyProfileActivity extends AppCompatActivity {
         edtPhone = findViewById(R.id.edtPhone);
         edtbirth = findViewById(R.id.edtbirth);
 
-        sharedPreferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
+        user = CurrentUser.getInstance();
     }
 
-    private void loadIntentData() {
-        Intent intent = getIntent();
-        edtName.setText(intent.getStringExtra("username"));
-        edtEmail.setText(intent.getStringExtra("email"));
-        edtPhone.setText(intent.getStringExtra("phone"));
-        edtbirth.setText(intent.getStringExtra("dob"));
+    private void loadData() {
+        edtName.setText(user.getName());
+        edtEmail.setText(user.getEmail());
+        edtPhone.setText(user.getPhone());
+        edtbirth.setText(user.getDateBirth());
     }
 
     private void setupListeners() {
@@ -64,7 +65,13 @@ public class MyProfileActivity extends AppCompatActivity {
         String newName = edtName.getText().toString().trim();
         String newPhone = edtPhone.getText().toString().trim();
         String newDob = edtbirth.getText().toString().trim();
-        String email = sharedPreferences.getString("email", null);
+
+        if (newName.isEmpty() || newPhone.isEmpty() || newDob.isEmpty()) {
+            Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String email = user.getEmail();
 
         if (email == null || email.isEmpty()) {
             Toast.makeText(this, "Không tìm thấy email người dùng!", Toast.LENGTH_SHORT).show();
@@ -77,17 +84,12 @@ public class MyProfileActivity extends AppCompatActivity {
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                if (response.isSuccessful() && "success".equalsIgnoreCase(response.body().trim())) {
-                    // Lưu lại SharedPreferences
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("username", newName);
-                    editor.putString("phone", newPhone);
-                    editor.putString("dob", newDob);
-                    editor.apply();
+                if (response.isSuccessful() && response.body() != null && response.body().trim().equalsIgnoreCase("success")) {
+                    // Cập nhật dữ liệu trong CurrentUser
+                    user.setUser(user.getId(), user.getEmail(), newName, newPhone, newDob, user.getRole());
 
                     Toast.makeText(MyProfileActivity.this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
-                    setResult(RESULT_OK);  // để ProfileFragment biết reload
-                    finish();
+                    finish(); // hoặc cập nhật UI
                 } else {
                     Toast.makeText(MyProfileActivity.this, "Cập nhật thất bại!", Toast.LENGTH_SHORT).show();
                 }
@@ -99,4 +101,5 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
     }
+
 }
