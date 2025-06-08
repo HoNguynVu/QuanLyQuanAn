@@ -49,7 +49,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         holder.tvCreatedAt.setText(notification.getCreated_at());
 
         // Ví dụ đổi màu tiêu đề nếu đã đọc hay chưa
-        if (notification.isIs_read()) {
+        if (notification.Is_read()) {
             holder.tvTitle.setTextColor(Color.GRAY);
         } else {
             holder.tvTitle.setTextColor(Color.BLACK);
