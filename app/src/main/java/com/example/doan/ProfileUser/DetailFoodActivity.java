@@ -2,6 +2,7 @@ package com.example.doan.ProfileUser;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -15,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
 import com.example.doan.Adapter.ReviewAdapter;
+import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.DatabaseClass.Review;
 import com.example.doan.Network.APIService;
 import com.example.doan.Network.RetrofitClient;
@@ -49,22 +51,40 @@ public class DetailFoodActivity extends AppCompatActivity {
         reviewAdapter = new ReviewAdapter(this, reviewList);
         listReviews.setAdapter(reviewAdapter);
 
-        // Nhận dữ liệu từ Intent
-        Intent intent = getIntent();
-        foodId = intent.getStringExtra("id");
-        String name = intent.getStringExtra("name");
-        int price = intent.getIntExtra("price", 0);
-        String imageUrl = intent.getStringExtra("imageUrl");
-        String description = intent.getStringExtra("description");
 
-        txtName.setText(name);
-        txtPrice.setText(price + "đ");
-        txtDescription.setText(description);
-        Glide.with(this).load(imageUrl).into(imgFood);
+        foodId = getIntent().getStringExtra("id");
 
+        getFoodById(foodId);
         // Gọi API lấy danh sách review
         getReviewsByFoodId(foodId);
     }
+    private void getFoodById(String foodId) {
+        APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
+
+        Call<FoodItem> call = apiService.getFoodByID(foodId);
+        call.enqueue(new Callback<FoodItem>() {
+            @Override
+            public void onResponse(Call<FoodItem> call, Response<FoodItem> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    FoodItem food = response.body();
+
+                    Log.d("API", "Tên món: " + food.getName());
+                    txtName.setText(food.getName());
+                    txtPrice.setText(food.getPrice() + "đ");
+                    txtDescription.setText(food.getDescription());
+                    Glide.with(DetailFoodActivity.this).load(food.getImageUrl()).into(imgFood);
+                } else {
+                    Log.e("API", "Không tìm thấy món ăn với ID: " + foodId);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FoodItem> call, Throwable t) {
+                Log.e("API", "Lỗi kết nối: " + t.getMessage());
+            }
+        });
+    }
+
 
     private void getReviewsByFoodId(String foodId) {
         APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
@@ -79,7 +99,6 @@ public class DetailFoodActivity extends AppCompatActivity {
                     reviewAdapter.notifyDataSetChanged();
                 }
             }
-
             @Override
             public void onFailure(Call<List<Review>> call, Throwable t) {
                 Toast.makeText(DetailFoodActivity.this, "Không tải được đánh giá", Toast.LENGTH_SHORT).show();
