@@ -14,13 +14,13 @@
     <fragment
         android:id="@+id/notificationFragment"
         android:label="fragment_notification"
-        android:name="com.example.doan.UserFragment.UserHomeFragment"
+        android:name="com.example.doan.UserFragment.User_Notification_Fragment"
         tools:layout="@layout/notification_fragment" />
 
     <fragment
         android:id="@+id/profileFragment"
         android:label="fragment_profile"
-        android:name="com.example.doan.UserFragment.ProfileFragment"
+        android:name="com.example.doan.UserFragment.User_Profile_Fragment"
         tools:layout="@layout/activity_my_profile" />
 
     <fragment

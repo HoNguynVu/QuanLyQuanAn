@@ -263,14 +263,14 @@ public class AdminOrdersFragment extends Fragment {
             case "price_high":
                 // Sắp xếp theo giá từ cao đến thấp
                 filteredOrderList.sort((order1, order2) -> 
-                    Integer.compare(order2.getFinalAmount(), order1.getFinalAmount())
+                    Double.compare(order2.getFinalAmount(), order1.getFinalAmount())
                 );
                 break;
                 
             case "price_low":
                 // Sắp xếp theo giá từ thấp đến cao
                 filteredOrderList.sort((order1, order2) -> 
-                    Integer.compare(order1.getFinalAmount(), order2.getFinalAmount())
+                    Double.compare(order1.getFinalAmount(), order2.getFinalAmount())
                 );
                 break;
         }

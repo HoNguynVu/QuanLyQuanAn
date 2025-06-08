@@ -16,13 +16,17 @@ public class OrderItem {
     @SerializedName("quantity")
     private int quantity;
 
+    @SerializedName("note")
+    private String note;
+
     public OrderItem() {}
 
-    public OrderItem(String id, String orderId, String foodId, int quantity) {
+    public OrderItem(String id, String orderId, String foodId, int quantity, String note) {
         this.id = id;
         this.orderId = orderId;
         this.foodId = foodId;
         this.quantity = quantity;
+        this.note = note;
     }
 
     // getter/setter
@@ -53,4 +57,9 @@ public class OrderItem {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    public String getNote() {
+        return note;
+    }
+    public void setNote(String note) { this.note = note; }
 }

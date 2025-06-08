@@ -1,7 +1,6 @@
 package com.example.doan.UserFragment;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,11 +12,11 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.doan.DatabaseClass.CurrentUser;
 import com.example.doan.Login.LoginActivity;
 import com.example.doan.ProfileUser.ChangePasswordActivity;
 import com.example.doan.ProfileUser.MyOrdersActivity;
@@ -30,7 +29,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProfileFragment extends Fragment {
+public class User_Profile_Fragment extends Fragment {
 
     private static final int REQUEST_EDIT_PROFILE = 1001;
 
@@ -39,7 +38,7 @@ public class ProfileFragment extends Fragment {
     private RecyclerView profileRecyclerView;
     private SharedPreferences sharedPreferences;
 
-    public ProfileFragment() {}
+    public User_Profile_Fragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,12 +54,11 @@ public class ProfileFragment extends Fragment {
         usernameTextView = view.findViewById(R.id.usernameTextView);
         emailTextView = view.findViewById(R.id.emailTextView);
         profileRecyclerView = view.findViewById(R.id.profileRecyclerView);
-        sharedPreferences = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
     }
 
     private void loadUserInfo() {
-        String username = sharedPreferences.getString("username", null);
-        String email = sharedPreferences.getString("email", null);
+        String username = CurrentUser.getInstance().getName();
+        String email = CurrentUser.getInstance().getEmail();
 
         if (username != null && email != null) {
             usernameTextView.setText(username);
@@ -90,10 +88,6 @@ public class ProfileFragment extends Fragment {
 
                 case "My Profile":
                     Intent intentProfile = new Intent(getContext(), MyProfileActivity.class);
-                    intentProfile.putExtra("username", sharedPreferences.getString("username", ""));
-                    intentProfile.putExtra("email", sharedPreferences.getString("email", ""));
-                    intentProfile.putExtra("phone", sharedPreferences.getString("phone", ""));
-                    intentProfile.putExtra("dob", sharedPreferences.getString("dob", ""));
                     editProfileLauncher.launch(intentProfile);
                     break;
 

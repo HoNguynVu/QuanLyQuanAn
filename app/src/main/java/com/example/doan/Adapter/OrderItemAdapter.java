@@ -1,6 +1,7 @@
 package com.example.doan.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
 import com.example.doan.DatabaseClass.FoodItem;
+import com.example.doan.ProfileUser.DetailFoodActivity;
 import com.example.doan.ProfileUser.OrderItemWithFood;
 import com.example.doan.R;
 
@@ -42,17 +44,23 @@ public class OrderItemAdapter extends ArrayAdapter<OrderItemWithFood> {
         TextView txtName = convertView.findViewById(R.id.txt_food_name);
         TextView txtQty = convertView.findViewById(R.id.txt_food_quantity);
         TextView txtPrice = convertView.findViewById(R.id.txt_food_price);
+        TextView txtNote = convertView.findViewById(R.id.txt_food_note);
 
         txtName.setText(food.getName());
         txtQty.setText("Số lượng: " + item.getOrderItem().getQuantity());
         txtPrice.setText("Giá: " + food.getPrice() + "đ");
+        txtNote.setText("Ghi chú: " + item.getOrderItem().getNote());
 
         // Load ảnh bằng Glide (thêm thư viện Glide vào project)
         Glide.with(context)
                 .load(food.getImageUrl())
                 .placeholder(R.drawable.ic_launcher_background)  // ảnh mặc định nếu chưa load được
                 .into(imgFood);
-
+        convertView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, DetailFoodActivity.class);
+            intent.putExtra("id", String.valueOf(food.getId()));
+            context.startActivity(intent);
+        });
         return convertView;
     }
 }
