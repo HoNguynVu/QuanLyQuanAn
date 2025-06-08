@@ -16,6 +16,7 @@ import com.example.doan.DatabaseClassResponse.UserResponse;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -166,5 +167,14 @@ public interface APIService {
 
     @GET("get_notifications.php")
     Call<List<Notification>> getNotifications(@Query("user_id") int userId);
+
+    @FormUrlEncoded
+    @POST("create_notification.php")
+    Call<ResponseBody> createNotification(
+            @Field("user_id") int userId,
+            @Field("order_id") int orderId,
+            @Field("title") String title,
+            @Field("message") String message
+    );
 
 }
