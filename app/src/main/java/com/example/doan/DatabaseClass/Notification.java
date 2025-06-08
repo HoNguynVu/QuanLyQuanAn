@@ -59,7 +59,7 @@ public class Notification {
         this.created_at = created_at;
     }
 
-    public boolean isIs_read() {
+    public boolean Is_read() {
         return is_read;
     }
 
