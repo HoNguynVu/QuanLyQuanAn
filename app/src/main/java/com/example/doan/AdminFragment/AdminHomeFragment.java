@@ -98,6 +98,12 @@ public class AdminHomeFragment extends Fragment {
                 return mFormat.format(value);
             }
         });
+        //Tắt tương tác
+        barChart.setTouchEnabled(false);
+        barChart.setHighlightPerTapEnabled(false);
+        barChart.setDragEnabled(false);
+        barChart.setScaleEnabled(false);
+        barChart.setDoubleTapToZoomEnabled(false);
 
         barChart.getDescription().setEnabled(false);
         barChart.getAxisRight().setEnabled(false);
@@ -107,6 +113,7 @@ public class AdminHomeFragment extends Fragment {
         barChart.getXAxis().setGranularity(1f);
         barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(new String[]{"Hôm nay", "Tháng này"}));
         barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        barChart.getXAxis().setTextSize(10f);
         barChart.animateY(1000);
         barChart.invalidate();
     }
