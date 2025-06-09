@@ -46,7 +46,6 @@ public class DetailOrderActivity extends AppCompatActivity {
             finish();
             return;
         }
-
         loadOrderDetails(orderId);
     }
 
