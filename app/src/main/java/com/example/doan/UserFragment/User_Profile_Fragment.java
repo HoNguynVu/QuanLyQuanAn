@@ -2,7 +2,6 @@ package com.example.doan.UserFragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,12 +30,9 @@ import java.util.List;
 
 public class User_Profile_Fragment extends Fragment {
 
-    private static final int REQUEST_EDIT_PROFILE = 1001;
-
     private TextView usernameTextView;
     private TextView emailTextView;
     private RecyclerView profileRecyclerView;
-    private SharedPreferences sharedPreferences;
 
     public User_Profile_Fragment() {}
 
@@ -50,12 +46,14 @@ public class User_Profile_Fragment extends Fragment {
         return view;
     }
 
+    // Khởi tạo các View trong layout
     private void initViews(View view) {
         usernameTextView = view.findViewById(R.id.usernameTextView);
         emailTextView = view.findViewById(R.id.emailTextView);
         profileRecyclerView = view.findViewById(R.id.profileRecyclerView);
     }
 
+    // Lấy thông tin người dùng từ CurrentUser và hiển thị lên UI
     private void loadUserInfo() {
         String username = CurrentUser.getInstance().getName();
         String email = CurrentUser.getInstance().getEmail();
@@ -68,6 +66,7 @@ public class User_Profile_Fragment extends Fragment {
         }
     }
 
+    // Thiết lập RecyclerView với danh sách các tùy chọn trong profile
     private void setupRecyclerView() {
         profileRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -78,41 +77,48 @@ public class User_Profile_Fragment extends Fragment {
         options.add(new ProfileOption(R.drawable.ic_logout, "Log Out"));
 
         ProfileOptionAdapter adapter = new ProfileOptionAdapter(options, option -> {
-            switch (option.getTitle()) {
-                case "Log Out":
-                    FirebaseAuth.getInstance().signOut();
-                    Toast.makeText(getContext(), "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getContext(), LoginActivity.class));
-                    getActivity().finish();
-                    break;
-
-                case "My Profile":
-                    Intent intentProfile = new Intent(getContext(), MyProfileActivity.class);
-                    editProfileLauncher.launch(intentProfile);
-                    break;
-
-                case "Change Password":
-                    startActivity(new Intent(getContext(), ChangePasswordActivity.class));
-                    break;
-
-                case "My Orders":
-                    Toast.makeText(getContext(), "Điều hướng đến My Orders", Toast.LENGTH_SHORT).show();
-                    Intent intentOrders = new Intent(getContext(), MyOrdersActivity.class);
-                    startActivity(intentOrders);
-                    break;
-            }
+            handleProfileOptionClick(option.getTitle());
         });
 
         profileRecyclerView.setAdapter(adapter);
     }
 
+    // Xử lý các sự kiện click trên từng mục tùy chọn profile
+    private void handleProfileOptionClick(String optionTitle) {
+        switch (optionTitle) {
+            case "Log Out":
+                FirebaseAuth.getInstance().signOut();
+                Toast.makeText(getContext(), "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getContext(), LoginActivity.class));
+                getActivity().finish();
+                break;
+
+            case "My Profile":
+                Intent intentProfile = new Intent(getContext(), MyProfileActivity.class);
+                editProfileLauncher.launch(intentProfile);
+                break;
+
+            case "Change Password":
+                startActivity(new Intent(getContext(), ChangePasswordActivity.class));
+                break;
+
+            case "My Orders":
+                Toast.makeText(getContext(), "Điều hướng đến My Orders", Toast.LENGTH_SHORT).show();
+                Intent intentOrders = new Intent(getContext(), MyOrdersActivity.class);
+                startActivity(intentOrders);
+                break;
+        }
+    }
+
+    // Reload lại thông tin người dùng khi Fragment được hiển thị lại
     @Override
     public void onResume() {
         super.onResume();
-        loadUserInfo();  // luôn reload để đảm bảo hiển thị đúng SharedPreferences
+        loadUserInfo();
     }
 
-    private ActivityResultLauncher<Intent> editProfileLauncher = registerForActivityResult(
+    // Launcher để nhận kết quả khi chỉnh sửa profile xong, reload thông tin user
+    private final ActivityResultLauncher<Intent> editProfileLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {

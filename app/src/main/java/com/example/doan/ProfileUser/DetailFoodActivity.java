@@ -1,6 +1,5 @@
 package com.example.doan.ProfileUser;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -10,9 +9,6 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
 import com.example.doan.Adapter.ReviewAdapter;
@@ -30,6 +26,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class DetailFoodActivity extends AppCompatActivity {
+
     private ImageView imgFood;
     private TextView txtName, txtPrice, txtDescription;
     private ListView listReviews;
@@ -37,45 +34,56 @@ public class DetailFoodActivity extends AppCompatActivity {
     private List<Review> reviewList = new ArrayList<>();
 
     private String foodId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-
         setContentView(R.layout.activity_detail_food);
+
+        initViews();
+        initAdapter();
+        getFoodIdFromIntent();
+        loadFoodDetails(foodId);
+        loadFoodReviews(foodId);
+    }
+
+    // Khởi tạo các view từ layout
+    private void initViews() {
         imgFood = findViewById(R.id.img_food_detail);
         txtName = findViewById(R.id.txt_food_name_detail);
         txtPrice = findViewById(R.id.txt_food_price_detail);
         txtDescription = findViewById(R.id.txt_food_description);
         listReviews = findViewById(R.id.list_reviews);
+    }
 
+    // Khởi tạo adapter cho list đánh giá
+    private void initAdapter() {
         reviewAdapter = new ReviewAdapter(this, reviewList);
         listReviews.setAdapter(reviewAdapter);
-
-
-        foodId = getIntent().getStringExtra("id");
-
-        getFoodById(foodId);
-        // Gọi API lấy danh sách review
-        getReviewsByFoodId(foodId);
     }
-    private void getFoodById(String foodId) {
-        APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
 
-        Call<FoodItem> call = apiService.getFoodByID(foodId);
+    // Lấy ID món ăn từ Intent truyền vào
+    private void getFoodIdFromIntent() {
+        foodId = getIntent().getStringExtra("id");
+    }
+
+    // Gọi API để lấy thông tin chi tiết món ăn
+    private void loadFoodDetails(String id) {
+        if (id == null || id.isEmpty()) {
+            showError("Không có ID món ăn");
+            return;
+        }
+
+        APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
+        Call<FoodItem> call = apiService.getFoodByID(id);
         call.enqueue(new Callback<FoodItem>() {
             @Override
             public void onResponse(Call<FoodItem> call, Response<FoodItem> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    FoodItem food = response.body();
-
-                    Log.d("API", "Tên món: " + food.getName());
-                    txtName.setText(food.getName());
-                    txtPrice.setText(food.getPrice() + "đ");
-                    txtDescription.setText(food.getDescription());
-                    Glide.with(DetailFoodActivity.this).load(food.getImageUrl()).into(imgFood);
+                    bindFoodData(response.body());
                 } else {
-                    Log.e("API", "Không tìm thấy món ăn với ID: " + foodId);
+                    Log.e("API", "Không tìm thấy món ăn với ID: " + id);
                 }
             }
 
@@ -86,24 +94,47 @@ public class DetailFoodActivity extends AppCompatActivity {
         });
     }
 
+    // Hiển thị thông tin món ăn lên UI
+    private void bindFoodData(FoodItem food) {
+        txtName.setText(food.getName());
+        txtPrice.setText(food.getPrice() + "đ");
+        txtDescription.setText(food.getDescription());
+        Glide.with(this).load(food.getImageUrl()).into(imgFood);
+    }
 
-    private void getReviewsByFoodId(String foodId) {
+    // Gọi API để lấy danh sách đánh giá món ăn
+    private void loadFoodReviews(String id) {
+        if (id == null || id.isEmpty()) {
+            showError("Không có ID món ăn để tải đánh giá");
+            return;
+        }
+
         APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
-        Call<List<Review>> call = apiService.getReviewsByFoodId(foodId);
-
+        Call<List<Review>> call = apiService.getReviewsByFoodId(id);
         call.enqueue(new Callback<List<Review>>() {
             @Override
             public void onResponse(Call<List<Review>> call, Response<List<Review>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    reviewList.clear();
-                    reviewList.addAll(response.body());
-                    reviewAdapter.notifyDataSetChanged();
+                    updateReviewList(response.body());
                 }
             }
+
             @Override
             public void onFailure(Call<List<Review>> call, Throwable t) {
-                Toast.makeText(DetailFoodActivity.this, "Không tải được đánh giá", Toast.LENGTH_SHORT).show();
+                showError("Không tải được đánh giá");
             }
         });
+    }
+
+    // Cập nhật danh sách review và thông báo adapter
+    private void updateReviewList(List<Review> reviews) {
+        reviewList.clear();
+        reviewList.addAll(reviews);
+        reviewAdapter.notifyDataSetChanged();
+    }
+
+    // Hiển thị Toast thông báo lỗi
+    private void showError(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

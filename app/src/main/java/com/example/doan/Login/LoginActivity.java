@@ -29,101 +29,129 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText txt_email, txt_password;
-    private Button btn_login;
-    private TextView txt_sign_up, txt_forgot_pass;
+    private EditText edtEmail, edtPassword;
+    private Button btnLogin;
+    private TextView txtSignUp, txtForgotPassword;
     private ImageView ivTogglePassword;
-    private final boolean[] isPassVisible = {false};
+    private boolean isPasswordVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        txt_email = findViewById(R.id.txt_email);
-        txt_password = findViewById(R.id.txt_password);
-        btn_login = findViewById(R.id.btn_login);
-        txt_sign_up = findViewById(R.id.txt_sign_up_nagivate);
-        txt_forgot_pass = findViewById(R.id.txt_forgot_password_navigate);
+        initViews();
+        setupListeners();
+    }
+
+    private void initViews() {
+        edtEmail = findViewById(R.id.txt_email);
+        edtPassword = findViewById(R.id.txt_password);
+        btnLogin = findViewById(R.id.btn_login);
+        txtSignUp = findViewById(R.id.txt_sign_up_nagivate);
+        txtForgotPassword = findViewById(R.id.txt_forgot_password_navigate);
         ivTogglePassword = findViewById(R.id.iv_toggle_password);
+    }
 
-        ivTogglePassword.setOnClickListener(v -> {
-            if (isPassVisible[0]) {
-                txt_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                ivTogglePassword.setImageResource(R.drawable.ic_eye_closed);
-            } else {
-                txt_password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                ivTogglePassword.setImageResource(R.drawable.ic_eye_open);
-            }
-            txt_password.setSelection(txt_password.getText().length());
-            isPassVisible[0] = !isPassVisible[0];
+    private void setupListeners() {
+        btnLogin.setOnClickListener(view -> loginUser());
+
+        txtSignUp.setOnClickListener(view -> {
+            startActivity(new Intent(this, SignUpActivity.class));
         });
 
-        txt_sign_up.setOnClickListener(view -> {
-            Intent intent = new Intent(this, SignUpActivity.class);
-            startActivity(intent);
-        });
-
-        txt_forgot_pass.setOnClickListener(view -> {
-            Intent intent = new Intent(this, ForgotPasswordActivity.class);
-            startActivity(intent);
+        txtForgotPassword.setOnClickListener(view -> {
+            startActivity(new Intent(this, ForgotPasswordActivity.class));
             finish();
         });
 
-        btn_login.setOnClickListener(view -> Login());
+        ivTogglePassword.setOnClickListener(view -> togglePasswordVisibility());
     }
 
-    public void Login() {
-        String email = txt_email.getText().toString().trim();
-        String password = txt_password.getText().toString().trim();
+    private void togglePasswordVisibility() {
+        if (isPasswordVisible) {
+            edtPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            ivTogglePassword.setImageResource(R.drawable.ic_eye_closed);
+        } else {
+            edtPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            ivTogglePassword.setImageResource(R.drawable.ic_eye_open);
+        }
+        edtPassword.setSelection(edtPassword.getText().length());
+        isPasswordVisible = !isPasswordVisible;
+    }
+
+    private void loginUser() {
+        String email = edtEmail.getText().toString().trim();
+        String password = edtPassword.getText().toString().trim();
 
         if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
+            showToast("Vui lòng nhập đầy đủ thông tin!");
             return;
         }
 
         APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
         Call<LoginResponse> call = apiService.login(email, password);
+
         call.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     LoginResponse loginResponse = response.body();
-                    if ("success".equals(loginResponse.status)) {
-                        User u = loginResponse.data;
 
-                        // Lưu vào Singleton
-                        CurrentUser.getInstance().setUser(u.id, u.email, u.name, u.phone, u.date_birth, u.role);
+                    if ("success".equalsIgnoreCase(loginResponse.status)) {
+                        User user = loginResponse.data;
 
-                        // SharedPreferences nếu muốn lưu thêm
-                        SharedPreferences sharedPreferences = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("username", u.name);
-                        editor.putString("email", u.email);
-                        editor.putString("phone", u.phone);
-                        editor.putString("dob", u.date_birth);
-                        editor.putString("role", u.role);
-                        editor.apply();
+                        // Gán vào Singleton
+                        CurrentUser.getInstance().setUser(
+                                user.id,
+                                user.email,
+                                user.name,
+                                user.phone,
+                                user.date_birth,
+                                user.role
+                        );
 
-                        if ("admin".equalsIgnoreCase(u.role)) {
-                            startActivity(new Intent(LoginActivity.this, AdminHome.class));
-                        } else {
-                            startActivity(new Intent(LoginActivity.this, UserMainActivity.class));
-                        }
-                        finish();
+                        // Ghi thêm vào SharedPreferences nếu cần dùng sau này
+                        saveUserToPreferences(user);
+
+                        // Điều hướng theo vai trò
+                        navigateToHome(user.role);
                     } else {
-                        Toast.makeText(LoginActivity.this, loginResponse.message, Toast.LENGTH_SHORT).show();
+                        showToast(loginResponse.message);
                     }
                 } else {
-                    Toast.makeText(LoginActivity.this, "Lỗi phản hồi từ server", Toast.LENGTH_SHORT).show();
+                    showToast("Lỗi phản hồi từ server");
                 }
             }
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
-                Toast.makeText(LoginActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_LONG).show();
-                Log.d("loi", t.getMessage());
+                showToast("Lỗi kết nối: " + t.getMessage());
+                Log.e("LoginError", t.getMessage());
             }
         });
+    }
+
+    private void saveUserToPreferences(User user) {
+        SharedPreferences prefs = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("email", user.email);
+        editor.putString("username", user.name);
+        editor.putString("phone", user.phone);
+        editor.putString("dob", user.date_birth);
+        editor.putString("role", user.role);
+        editor.apply();
+    }
+
+    private void navigateToHome(String role) {
+        Intent intent = "admin".equalsIgnoreCase(role)
+                ? new Intent(this, AdminHome.class)
+                : new Intent(this, UserMainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 }
