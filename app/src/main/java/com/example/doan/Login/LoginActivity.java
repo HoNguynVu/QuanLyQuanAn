@@ -40,6 +40,15 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        init();
+        CheckLogged();
+        initClick();
+
+        btn_login.setOnClickListener(view -> Login());
+    }
+
+    public void init()
+    {
         txt_email = findViewById(R.id.txt_email);
         txt_password = findViewById(R.id.txt_password);
         btn_login = findViewById(R.id.btn_login);
@@ -47,6 +56,10 @@ public class LoginActivity extends AppCompatActivity {
         txt_forgot_pass = findViewById(R.id.txt_forgot_password_navigate);
         ivTogglePassword = findViewById(R.id.iv_toggle_password);
 
+    }
+
+    public void initClick()
+    {
         ivTogglePassword.setOnClickListener(v -> {
             if (isPassVisible[0]) {
                 txt_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -69,8 +82,23 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
-
         btn_login.setOnClickListener(view -> Login());
+    }
+
+    public void CheckLogged()
+    {
+        SharedPreferences sharedPreferences = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+        boolean isLogged = sharedPreferences.getBoolean("is_Logged", false);
+        if(isLogged)
+        {
+            if ("admin".equalsIgnoreCase(sharedPreferences.getString("role", ""))) {
+                startActivity(new Intent(LoginActivity.this, AdminHome.class));
+            } else {
+                startActivity(new Intent(LoginActivity.this, UserMainActivity.class));
+            }
+            finish();
+        }
+        else return;
     }
 
     public void Login() {
@@ -82,12 +110,15 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
+        btn_login.setEnabled(false);
+
         APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
         Call<LoginResponse> call = apiService.login(email, password);
         call.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
+                    btn_login.setEnabled(true);
                     LoginResponse loginResponse = response.body();
                     if ("success".equals(loginResponse.status)) {
                         User u = loginResponse.data;
@@ -103,6 +134,7 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("phone", u.phone);
                         editor.putString("dob", u.date_birth);
                         editor.putString("role", u.role);
+                        editor.putBoolean("is_Logged", true);
                         editor.apply();
 
                         if ("admin".equalsIgnoreCase(u.role)) {
@@ -121,9 +153,11 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
+                btn_login.setEnabled(true);
                 Toast.makeText(LoginActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 Log.d("loi", t.getMessage());
             }
         });
+
     }
 }
