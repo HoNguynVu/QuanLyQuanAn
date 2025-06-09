@@ -30,13 +30,23 @@ public class VerifyResetOtpActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_verify_reset_otp);
 
+        init();
+        initClick();
+    }
+
+    public void init()
+    {
         edtOtp = findViewById(R.id.edt_otp);
         btnVerify = findViewById(R.id.btn_verify_otp);
 
         email = getIntent().getStringExtra("email");
+    }
 
+    public void initClick()
+    {
         btnVerify.setOnClickListener(v -> verifyOtp());
     }
+
     public void verifyOtp()
     {
         String otp = edtOtp.getText().toString().trim();
@@ -46,12 +56,15 @@ public class VerifyResetOtpActivity extends AppCompatActivity {
             return;
         }
 
+        btnVerify.setEnabled(false);
+
         APIService api = RetrofitClient.getRetrofitInstance().create(APIService.class);
         Call<GenericResponse> call = api.verifyResetOtp(email, otp);
 
         call.enqueue(new Callback<GenericResponse>() {
             @Override
             public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
+                btnVerify.setEnabled(true);
                 if (response.isSuccessful() && response.body() != null) {
                     GenericResponse res = response.body();
                     Toast.makeText(VerifyResetOtpActivity.this, res.message, Toast.LENGTH_SHORT).show();
@@ -69,6 +82,7 @@ public class VerifyResetOtpActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<GenericResponse> call, Throwable t) {
+                btnVerify.setEnabled(true);
                 Toast.makeText(VerifyResetOtpActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
