@@ -53,11 +53,11 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
     // Xử lý logic đổi mật khẩu khi người dùng nhấn nút "Đổi mật khẩu"
     private void handleChangePassword() {
-        String currentPassword = edtCurrentPassword.getText().toString().trim();
+        String oldPassword = edtCurrentPassword.getText().toString().trim();
         String newPassword = edtNewPassword.getText().toString().trim();
         String confirmPassword = edtConfirmPassword.getText().toString().trim();
 
-        if (!validateInput(currentPassword, newPassword, confirmPassword)) return;
+        if (!validateInput(oldPassword, newPassword, confirmPassword)) return;
 
         String email = getUserEmail();
         if (email.isEmpty()) {
@@ -66,7 +66,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         }
 
         APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
-        Call<GenericResponse> call = apiService.changePassword(email, currentPassword, newPassword);
+        Call<GenericResponse> call = apiService.changePassword(email, oldPassword, newPassword);
 
         call.enqueue(new Callback<GenericResponse>() {
             @Override
@@ -84,6 +84,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
             }
         });
     }
+
 
     // Kiểm tra dữ liệu đầu vào (mật khẩu cũ, mới, xác nhận)
     private boolean validateInput(String current, String newPass, String confirm) {

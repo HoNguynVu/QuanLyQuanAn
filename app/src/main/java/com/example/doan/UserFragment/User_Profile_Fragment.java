@@ -1,8 +1,11 @@
 package com.example.doan.UserFragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,8 +58,10 @@ public class User_Profile_Fragment extends Fragment {
 
     // Lấy thông tin người dùng từ CurrentUser và hiển thị lên UI
     private void loadUserInfo() {
-        String username = CurrentUser.getInstance().getName();
-        String email = CurrentUser.getInstance().getEmail();
+
+        SharedPreferences prefs = requireActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+        String username = prefs.getString("username", "");
+        String email = prefs.getString("email", "");
 
         if (username != null && email != null) {
             usernameTextView.setText(username);
@@ -95,7 +100,7 @@ public class User_Profile_Fragment extends Fragment {
 
             case "My Profile":
                 Intent intentProfile = new Intent(getContext(), MyProfileActivity.class);
-                editProfileLauncher.launch(intentProfile);
+                startActivity(intentProfile);
                 break;
 
             case "Change Password":
@@ -103,7 +108,6 @@ public class User_Profile_Fragment extends Fragment {
                 break;
 
             case "My Orders":
-                Toast.makeText(getContext(), "Điều hướng đến My Orders", Toast.LENGTH_SHORT).show();
                 Intent intentOrders = new Intent(getContext(), MyOrdersActivity.class);
                 startActivity(intentOrders);
                 break;
@@ -117,13 +121,4 @@ public class User_Profile_Fragment extends Fragment {
         loadUserInfo();
     }
 
-    // Launcher để nhận kết quả khi chỉnh sửa profile xong, reload thông tin user
-    private final ActivityResultLauncher<Intent> editProfileLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                    loadUserInfo();
-                }
-            }
-    );
 }

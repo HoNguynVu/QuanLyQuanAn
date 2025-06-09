@@ -1,5 +1,7 @@
 package com.example.doan.ProfileUser;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,10 +47,11 @@ public class MyProfileActivity extends AppCompatActivity {
 
     //Load thông tin người dùng vào giao diện
     private void loadUserData() {
-        edtName.setText(currentUser.getName());
-        edtEmail.setText(currentUser.getEmail());
-        edtPhone.setText(currentUser.getPhone());
-        edtBirth.setText(currentUser.getDateBirth());
+        SharedPreferences prefs = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+        edtName.setText(prefs.getString("username", ""));
+        edtEmail.setText(prefs.getString("email", ""));
+        edtPhone.setText(prefs.getString("phone", ""));
+        edtBirth.setText(prefs.getString("dob", ""));
     }
 
     //Gán sự kiện click cho nút lưu và nút quay lại
@@ -92,15 +95,13 @@ public class MyProfileActivity extends AppCompatActivity {
                         response.body() != null &&
                         response.body().trim().equalsIgnoreCase("success")) {
 
-                    // Cập nhật dữ liệu người dùng trong ứng dụng
-                    currentUser.setUser(
-                            currentUser.getId(),
-                            currentUser.getEmail(),
-                            newName,
-                            newPhone,
-                            newDob,
-                            currentUser.getRole()
-                    );
+                    // Lưu thông tin mới vào SharedPreferences
+                    SharedPreferences prefs = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putString("username", newName);
+                    editor.putString("phone", newPhone);
+                    editor.putString("dob", newDob);
+                    editor.apply();
 
                     showToast("Cập nhật thành công!");
                     finish();
