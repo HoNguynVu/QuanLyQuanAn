@@ -32,10 +32,19 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_forgot_password);
 
+       init();
+       initClick();
+    }
+
+    public void init()
+    {
         txtEmail = findViewById(R.id.txt_email_forgot_password);
         btnSendOtp = findViewById(R.id.btn_fgpass);
         btnBack = findViewById(R.id.btn_arrow_back_FG);
+    }
 
+    public void initClick()
+    {
         btnBack.setOnClickListener(v -> {
             startActivity(new Intent(ForgotPasswordActivity.this, LoginActivity.class));
             finish();

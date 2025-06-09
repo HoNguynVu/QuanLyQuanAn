@@ -32,37 +32,56 @@ public class AdminProfileFragment extends Fragment {
     private TextView txtUsername, txtEmail;
     private RecyclerView ProfileRecyclerView;
     private ProfileOptionAdapter adapter;
+    String username;
+    String email;
+    String phone;
+    String dob;
+    List<ProfileOption> items;
 
     public AdminProfileFragment() {
         // Required empty public constructor
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile_admin, container, false);
-        
+
+        init(view);
+
+        return view;
+    }
+
+    public void init(View view)
+    {
         txtUsername = view.findViewById(R.id.usernameTextView);
         txtEmail = view.findViewById(R.id.emailTextView);
         ProfileRecyclerView = view.findViewById(R.id.profileRecyclerView);
-        
+
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
-        String username = sharedPreferences.getString("username", null);
-        String email = sharedPreferences.getString("email", null);
-        String phone = sharedPreferences.getString("phone", null);
-        String dob = sharedPreferences.getString("dob", null);
-        
+        username = sharedPreferences.getString("username", null);
+        email = sharedPreferences.getString("email", null);
+        phone = sharedPreferences.getString("phone", null);
+        dob = sharedPreferences.getString("dob", null);
+
         ProfileRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        
-        List<ProfileOption> items = new ArrayList<>();
+
+        items = new ArrayList<>();
         items.add(new ProfileOption(R.drawable.ic_person, "My Profile"));
         items.add(new ProfileOption(R.drawable.ic_settings, "Settings"));
         items.add(new ProfileOption(R.drawable.ic_logout, "Log Out"));
-        
+
+        setAdapter(sharedPreferences);
+        ProfileRecyclerView.setAdapter(adapter);
+    }
+
+    public void setAdapter(SharedPreferences sharedPreferences) {
         adapter = new ProfileOptionAdapter(items, option-> {
             switch (option.getTitle()) {
                 case "Log Out":
                     Toast.makeText(getContext(), "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.clear();
+                    editor.apply();
                     AdminProfileFragment.this.getActivity().finish();
                     Intent intent = new Intent(getContext(), LoginActivity.class);
                     startActivity(intent);
@@ -83,9 +102,8 @@ public class AdminProfileFragment extends Fragment {
                     break;
             }
         });
-        ProfileRecyclerView.setAdapter(adapter);
-        return view;
     }
+
     @Override
     public void onResume() {
         super.onResume();
