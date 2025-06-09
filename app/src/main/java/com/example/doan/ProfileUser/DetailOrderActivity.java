@@ -37,8 +37,21 @@ public class DetailOrderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_order);
 
-        orderId = getIntent().getStringExtra("order_id");
+        initViews();
+        setupBackButton();
 
+        orderId = getIntent().getStringExtra("order_id");
+        if (orderId == null || orderId.isEmpty()) {
+            showToast("Không có mã đơn hàng");
+            finish();
+            return;
+        }
+
+        loadOrderDetails(orderId);
+    }
+
+    // Khởi tạo view
+    private void initViews() {
         txtHeader = findViewById(R.id.txt_header);
         txtOrderId = findViewById(R.id.txt_order_id);
         txtDate = findViewById(R.id.txt_order_date);
@@ -46,16 +59,14 @@ public class DetailOrderActivity extends AppCompatActivity {
         txtTotal = findViewById(R.id.txt_total_amount);
         listView = findViewById(R.id.lv_order_items);
         btnBack = findViewById(R.id.btn_back);
-        btnBack.setOnClickListener(v -> finish());
-
-        if (orderId == null || orderId.isEmpty()) {
-            Toast.makeText(this, "Không có mã đơn hàng", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        loadOrderDetails(orderId);
     }
 
+    // Thiết lập sự kiện nút Back
+    private void setupBackButton() {
+        btnBack.setOnClickListener(v -> finish());
+    }
+
+    // Gọi API lấy chi tiết đơn hàng (list món)
     private void loadOrderDetails(String orderId) {
         APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
 
@@ -65,65 +76,78 @@ public class DetailOrderActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<OrderItem>> call, Response<List<OrderItem>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<OrderItem> orderItems = response.body();
-                    Log.d("API", "Số món ăn trong đơn hàng: " + orderItems.size());
-
-                    if (orderItems.isEmpty()) {
-                        Toast.makeText(DetailOrderActivity.this, "Đơn hàng không có món nào", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    int total = orderItems.size();
-                    int[] count = {0};
-
-                    for (OrderItem item : orderItems) {
-                        apiService.getFoodByID(item.getFoodId()).enqueue(new Callback<FoodItem>() {
-                            @Override
-                            public void onResponse(Call<FoodItem> call, Response<FoodItem> responseFood) {
-                                if (responseFood.isSuccessful() && responseFood.body() != null) {
-                                    FoodItem food = responseFood.body();
-                                    itemList.add(new OrderItemWithFood(item, food));
-                                    Log.d("API", "Thêm món: " + food.getName() + ", SL: " + item.getQuantity());
-                                } else {
-                                    Log.e("API", "Không tìm thấy thông tin món ăn cho ID: " + item.getFoodId());
-                                }
-
-                                count[0]++;
-                                if (count[0] == total) {
-                                    updateUIFromIntent();
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<FoodItem> call, Throwable t) {
-                                Log.e("API", "Lỗi khi lấy món ăn: " + t.getMessage());
-                                count[0]++;
-                                if (count[0] == total) {
-                                    updateUIFromIntent();
-                                }
-                            }
-                        });
-                    }
-
+                    handleOrderItemsResponse(response.body());
                 } else {
-                    Log.e("API", "Lỗi lấy đơn hàng. Code: " + response.code());
-                    Toast.makeText(DetailOrderActivity.this, "Không lấy được dữ liệu đơn hàng", Toast.LENGTH_SHORT).show();
+                    handleOrderItemsError(response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<List<OrderItem>> call, Throwable t) {
-                Log.e("API", "Lỗi kết nối: " + t.getMessage());
-                Toast.makeText(DetailOrderActivity.this, "Lỗi kết nối", Toast.LENGTH_SHORT).show();
+                handleOrderItemsFailure(t);
             }
         });
     }
 
+    // Xử lý dữ liệu món ăn lấy về từ API đơn hàng
+    private void handleOrderItemsResponse(List<OrderItem> orderItems) {
+        if (orderItems.isEmpty()) {
+            showToast("Đơn hàng không có món nào");
+            return;
+        }
+
+        itemList.clear();
+
+        final int totalItems = orderItems.size();
+        final int[] processedCount = {0};
+
+        APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
+
+        for (OrderItem item : orderItems) {
+            apiService.getFoodByID(item.getFoodId()).enqueue(new Callback<FoodItem>() {
+                @Override
+                public void onResponse(Call<FoodItem> call, Response<FoodItem> responseFood) {
+                    if (responseFood.isSuccessful() && responseFood.body() != null) {
+                        itemList.add(new OrderItemWithFood(item, responseFood.body()));
+                        Log.d("API", "Thêm món: " + responseFood.body().getName() + ", SL: " + item.getQuantity());
+                    } else {
+                        Log.e("API", "Không tìm thấy thông tin món ăn cho ID: " + item.getFoodId());
+                    }
+                    checkIfAllItemsProcessed(++processedCount[0], totalItems);
+                }
+
+                @Override
+                public void onFailure(Call<FoodItem> call, Throwable t) {
+                    Log.e("API", "Lỗi khi lấy món ăn: " + t.getMessage());
+                    checkIfAllItemsProcessed(++processedCount[0], totalItems);
+                }
+            });
+        }
+    }
+
+    // Kiểm tra xem đã xử lý xong tất cả món hay chưa, sau đó cập nhật UI
+    private void checkIfAllItemsProcessed(int processedCount, int totalItems) {
+        if (processedCount == totalItems) {
+            updateUIFromIntent();
+        }
+    }
+
+    // Xử lý lỗi khi gọi API đơn hàng
+    private void handleOrderItemsError(int code) {
+        Log.e("API", "Lỗi lấy đơn hàng. Code: " + code);
+        showToast("Không lấy được dữ liệu đơn hàng");
+    }
+
+    // Xử lý thất bại kết nối API đơn hàng
+    private void handleOrderItemsFailure(Throwable t) {
+        Log.e("API", "Lỗi kết nối: " + t.getMessage());
+        showToast("Lỗi kết nối");
+    }
+
+    // Cập nhật UI dựa trên dữ liệu intent và danh sách món
     private void updateUIFromIntent() {
         double amount = getIntent().getDoubleExtra("final_amount", 0.0);
         String formattedAmount = String.format("%,.2f", amount);
-
-        if (formattedAmount == null) formattedAmount= "0";
 
         txtOrderId.setText("Mã đơn: " + orderId);
 
@@ -141,5 +165,8 @@ public class DetailOrderActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
     }
 
-
+    // Hiển thị Toast đơn giản
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
 }
