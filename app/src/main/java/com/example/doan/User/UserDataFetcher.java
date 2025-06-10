@@ -9,6 +9,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.doan.DatabaseClass.FoodItem;
+import com.example.doan.DatabaseClass.Order;
 import com.example.doan.DatabaseClass.OrderItem;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -37,13 +38,19 @@ public class UserDataFetcher {
         queue.add(stringRequest);
     }
 
-    public static void FetchOrderItems(Context context, String url, FetchCallBack<OrderItem> callBack) {
+    public static void FetchOrderItems(Context context, String url, FetchCallBack<Order> callBack) {
         StringRequest request = new StringRequest(Request.Method.GET, url,
                 response -> {
-
+                    Log.d("Order Items: ", response);
+                    Type orderItemListType = new TypeToken<List<Order>>(){}.getType();
+                    List<Order> newList = new Gson().fromJson(response, orderItemListType);
+                    callBack.onSuccess(newList);
                 },
                 error -> {
-
+                    Log.d("Order Items Error: ", error.toString());
                 });
+
+        RequestQueue queue = Volley.newRequestQueue(context.getApplicationContext());
+        queue.add(request);
     }
 }

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.doan.DatabaseClass.FoodItem;
+import com.example.doan.DatabaseClass.OrderItem;
 import com.example.doan.UserActivity.UserDetailsActivity;
 import com.example.doan.databinding.UserHistoryItemBinding;
 import com.example.doan.databinding.UserHomePopularItemBinding;
@@ -23,11 +24,17 @@ import java.util.List;
 public class UserHistoryAdapter extends RecyclerView.Adapter<UserHistoryAdapter.myViewHolder> {
 
     private final Context requireContext;
-    private final List<FoodItem> itemList;
+    private final List<OrderItem> itemList;
 
-    public UserHistoryAdapter(Context requireContext, List<FoodItem> itemList) {
+    public UserHistoryAdapter(Context requireContext, List<OrderItem> itemList) {
         this.itemList = itemList;
         this.requireContext = requireContext;
+    }
+
+    public void updateData(List<OrderItem> newItems) {
+        this.itemList.clear();
+        this.itemList.addAll(newItems);
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -57,7 +64,7 @@ public class UserHistoryAdapter extends RecyclerView.Adapter<UserHistoryAdapter.
             this.requireContext = requireContext;
         }
 
-        public void bind(FoodItem item) {
+        public void bind(OrderItem item) {
             binding.itemName.setText(item.getName());
             binding.itemPrice.setText(String.valueOf(item.getPrice()));
             binding.itemDetail.setText(item.getDescription());
