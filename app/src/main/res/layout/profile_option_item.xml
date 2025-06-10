@@ -6,7 +6,7 @@
     android:orientation="horizontal"
     android:gravity="center_vertical"
     android:paddingHorizontal="16dp"
-    android:background="?attr/selectableItemBackground">
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/optionIcon"
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="Option Title"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:paddingStart="16dp"
         android:textColor="@android:color/black" />
 
