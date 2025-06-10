@@ -56,6 +56,15 @@ public class AdminOrdersFragment extends Fragment {
         super(R.layout.activity_admin_orders);
     }    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        init(view);
+        
+        setupSearchFunctionality();
+        setupFilterFunctionality();
+        loadOrdersFromServer();
+    }
+
+    public void init(View view)
+    {
         orderListView = view.findViewById(R.id.orderListView);
         tvNoResults = view.findViewById(R.id.tvNoResults);
         editTextSearch = view.findViewById(R.id.editTextSearch);
@@ -64,17 +73,13 @@ public class AdminOrdersFragment extends Fragment {
         statusRadioGroup = view.findViewById(R.id.statusRadioGroup);
         sortRadioGroup = view.findViewById(R.id.sortRadioGroup);
         btnApplyFilter = view.findViewById(R.id.btnApplyFilter);
-        
+
         orderList = new ArrayList<>();
         filteredOrderList = new ArrayList<>();
         orderAdapter = new OrderAdapter(getContext(), filteredOrderList);
         orderListView.setAdapter(orderAdapter);
-        
-        setupSearchFunctionality();
-        setupFilterFunctionality();
-        loadOrdersFromServer();
     }
-    
+
     private void setupFilterFunctionality() {
         // Xử lý hiển thị/ẩn bộ lọc
         btnFilter.setOnClickListener(v -> {
