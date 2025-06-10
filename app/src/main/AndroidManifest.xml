@@ -43,9 +43,10 @@
         <activity
             android:name=".Login.SplashActivity"
             android:exported="false" />
-
         <activity android:name=".AdminActivity.AdminAddFoodItem"/>
         <activity android:name=".AdminActivity.AdminEditFoodItem"/>
+        <activity android:name=".AdminActivity.AdminOrderDetailActivity"
+            android:exported="false" />
         <activity
             android:name=".AdminFragment.AdminHome"
             android:exported="false" />
