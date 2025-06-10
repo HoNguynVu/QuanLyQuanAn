@@ -17,7 +17,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.doan.AdminFragment.AdminProfileFragment;
 import com.example.doan.DatabaseClass.CurrentUser;
 import com.example.doan.Login.LoginActivity;
 import com.example.doan.ProfileUser.ChangePasswordActivity;
@@ -26,7 +25,7 @@ import com.example.doan.ProfileUser.MyProfileActivity;
 import com.example.doan.ProfileUser.ProfileOption;
 import com.example.doan.ProfileUser.ProfileOptionAdapter;
 import com.example.doan.R;
-import com.google.firebase.auth.FirebaseAuth;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,16 +58,13 @@ public class User_Profile_Fragment extends Fragment {
     }
 
     private void loadUserInfo() {
-        SharedPreferences prefs = requireContext().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
-        String username = prefs.getString("username", "Tên người dùng");
-        String email = prefs.getString("email", "Email");
+        String username = CurrentUser.getInstance().getName();
+        String email = CurrentUser.getInstance().getEmail();
 
         if (username != null && email != null) {
             usernameTextView.setText(username);
             emailTextView.setText(email);
-        }
-        else
-        {
+        } else {
             Toast.makeText(getContext(), "Không tìm thấy thông tin người dùng", Toast.LENGTH_SHORT).show();
         }
     }
@@ -86,12 +82,12 @@ public class User_Profile_Fragment extends Fragment {
             switch (option.getTitle()) {
                 case "Log Out":
                     Toast.makeText(getContext(), "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
+                    SharedPreferences sharedPreferences = requireContext().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.clear();
                     editor.apply();
-                    Intent intent = new Intent(getContext(), LoginActivity.class);
-                    startActivity(intent);
-                    User_Profile_Fragment.this.getActivity().finish();
+                    startActivity(new Intent(getContext(), LoginActivity.class));
+                    getActivity().finish();
                     break;
 
                 case "My Profile":
