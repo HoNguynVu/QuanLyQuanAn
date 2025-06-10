@@ -1,6 +1,7 @@
 package com.example.doan.UserFragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -24,7 +25,7 @@ import com.example.doan.ProfileUser.MyProfileActivity;
 import com.example.doan.ProfileUser.ProfileOption;
 import com.example.doan.ProfileUser.ProfileOptionAdapter;
 import com.example.doan.R;
-import com.google.firebase.auth.FirebaseAuth;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,8 +81,11 @@ public class User_Profile_Fragment extends Fragment {
         ProfileOptionAdapter adapter = new ProfileOptionAdapter(options, option -> {
             switch (option.getTitle()) {
                 case "Log Out":
-                    FirebaseAuth.getInstance().signOut();
                     Toast.makeText(getContext(), "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
+                    SharedPreferences sharedPreferences = requireContext().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.clear();
+                    editor.apply();
                     startActivity(new Intent(getContext(), LoginActivity.class));
                     getActivity().finish();
                     break;
