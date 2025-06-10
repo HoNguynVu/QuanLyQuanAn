@@ -33,19 +33,29 @@ public class AdminHomeFragment extends Fragment {
     private TextView txtTotalOrders, txtTodayRevenue, txtMonthlyRevenue;
     private BarChart barChart;
 
+    private DecimalFormat formatter;
     public AdminHomeFragment(){
         super(R.layout.fragment_home);
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        init(view);
+        Statistics();
+    }
+
+    public void init(View view)
+    {
         txtTotalOrders = view.findViewById(R.id.txtTotalOrders);
         txtTodayRevenue = view.findViewById(R.id.txtTodayRevenue);
         txtMonthlyRevenue = view.findViewById(R.id.txtMonthlyRevenue);
         barChart = view.findViewById(R.id.barChart);
 
-        DecimalFormat formatter = new DecimalFormat("#,###");
+        formatter = new DecimalFormat("#,###");
+    }
 
+    public void Statistics()
+    {
         // Gọi API lấy thống kê
         APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
         apiService.getStatistics().enqueue(new Callback<StatisticsResponse>() {
@@ -117,6 +127,7 @@ public class AdminHomeFragment extends Fragment {
         barChart.animateY(1000);
         barChart.invalidate();
     }
+
 
 
 }

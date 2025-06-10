@@ -63,14 +63,20 @@ public class FoodByCategory extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        init(view);
+
+        loadMenuFromServer();
+    }
+
+    public void init(View view)
+    {
         recyclerView = view.findViewById(R.id.recyclerViewMenu);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
 
         menuAdapter = new MenuAdapter(getContext(), itemList);
         recyclerView.setAdapter(menuAdapter);
-
-        loadMenuFromServer();
     }
 
     private void loadMenuFromServer() {
