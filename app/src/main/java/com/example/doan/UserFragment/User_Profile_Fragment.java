@@ -1,6 +1,7 @@
 package com.example.doan.UserFragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.doan.AdminFragment.AdminProfileFragment;
 import com.example.doan.DatabaseClass.CurrentUser;
 import com.example.doan.Login.LoginActivity;
 import com.example.doan.ProfileUser.ChangePasswordActivity;
@@ -57,13 +59,16 @@ public class User_Profile_Fragment extends Fragment {
     }
 
     private void loadUserInfo() {
-        String username = CurrentUser.getInstance().getName();
-        String email = CurrentUser.getInstance().getEmail();
+        SharedPreferences prefs = requireContext().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+        String username = prefs.getString("username", "Tên người dùng");
+        String email = prefs.getString("email", "Email");
 
         if (username != null && email != null) {
             usernameTextView.setText(username);
             emailTextView.setText(email);
-        } else {
+        }
+        else
+        {
             Toast.makeText(getContext(), "Không tìm thấy thông tin người dùng", Toast.LENGTH_SHORT).show();
         }
     }
@@ -80,10 +85,13 @@ public class User_Profile_Fragment extends Fragment {
         ProfileOptionAdapter adapter = new ProfileOptionAdapter(options, option -> {
             switch (option.getTitle()) {
                 case "Log Out":
-                    FirebaseAuth.getInstance().signOut();
                     Toast.makeText(getContext(), "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getContext(), LoginActivity.class));
-                    getActivity().finish();
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.clear();
+                    editor.apply();
+                    Intent intent = new Intent(getContext(), LoginActivity.class);
+                    startActivity(intent);
+                    User_Profile_Fragment.this.getActivity().finish();
                     break;
 
                 case "My Profile":
