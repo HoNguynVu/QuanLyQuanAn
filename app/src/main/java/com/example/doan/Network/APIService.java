@@ -1,5 +1,6 @@
 package com.example.doan.Network;
 
+import com.example.doan.DatabaseClass.CreateOrderRequest;
 import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.DatabaseClass.FoodListResponse;
 import com.example.doan.DatabaseClass.GenericResponse;
@@ -15,6 +16,7 @@ import com.example.doan.DatabaseClass.UserResponse;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -159,4 +161,8 @@ public interface APIService {
             @Field("phone") String phone,
             @Field("dob") String dob
     );
+
+
+    @POST("create_order.php")
+    Call<GenericResponse> createOrder(@Body CreateOrderRequest request);
 }

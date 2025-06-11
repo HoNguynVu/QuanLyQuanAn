@@ -51,11 +51,12 @@
         android:layout_marginEnd="80dp">
 
         <Button
+            android:id="@+id/backToHome"
             android:textAllCaps="false"
             android:textSize="16sp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Check order status"
+            android:text="Back to Home"
             android:backgroundTint="#F44336"/>
 
     </androidx.cardview.widget.CardView>

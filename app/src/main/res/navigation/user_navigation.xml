@@ -28,10 +28,4 @@
         android:label="fragment_shopping"
         android:name="com.example.doan.UserFragment.UserShoppingFragment"
         tools:layout="@layout/user_shopping_fragment" />
-
-    <fragment
-        android:id="@+id/historyFragment"
-        android:label="fragment_history"
-        android:name="com.example.doan.UserFragment.UserHistoryFragment"
-        tools:layout="@layout/user_history_fragment" />
 </navigation>
