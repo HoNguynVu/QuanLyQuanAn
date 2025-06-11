@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.doan.AdminFragment.AdminProfileFragment;
 import com.example.doan.DatabaseClass.CurrentUser;
 import com.example.doan.Login.LoginActivity;
 import com.example.doan.ProfileUser.ChangePasswordActivity;
@@ -92,10 +93,13 @@ public class User_Profile_Fragment extends Fragment {
     private void handleProfileOptionClick(String optionTitle) {
         switch (optionTitle) {
             case "Log Out":
-                FirebaseAuth.getInstance().signOut();
                 Toast.makeText(getContext(), "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getContext(), LoginActivity.class));
-                getActivity().finish();
+                SharedPreferences.Editor editor = requireActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE).edit();
+                editor.clear();
+                editor.apply();
+                User_Profile_Fragment.this.getActivity().finish();
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                startActivity(intent);
                 break;
 
             case "My Profile":
