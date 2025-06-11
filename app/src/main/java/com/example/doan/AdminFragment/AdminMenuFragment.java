@@ -47,12 +47,21 @@ public class AdminMenuFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        init(view);
+        initClick();
+    }
+
+    public void init(View view)
+    {
         // Gán CardView
         cardKhaiVi = view.findViewById(R.id.cardKhaiVi);
         cardMonChinh = view.findViewById(R.id.cardMonChinh);
         cardTrangMieng = view.findViewById(R.id.cardTrangMieng);
         cardThucUong = view.findViewById(R.id.cardThucUong);
+    }
 
+    public void initClick()
+    {
         // Set OnClickListener cho từng CardView
         cardKhaiVi.setOnClickListener(v -> openCategory("Khai vị"));
         cardMonChinh.setOnClickListener(v -> openCategory("Món chính"));

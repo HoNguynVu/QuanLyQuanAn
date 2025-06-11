@@ -6,19 +6,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.doan.DatabaseClass.CurrentUser;
-import com.example.doan.DatabaseClass.GenericResponse;
+import com.example.doan.DatabaseClassResponse.GenericResponse;
 import com.example.doan.DatabaseClass.User;
-import com.example.doan.DatabaseClass.UserResponse;
+import com.example.doan.DatabaseClassResponse.UserResponse;
 import com.example.doan.Network.APIService;
 import com.example.doan.Network.RetrofitClient;
 import com.example.doan.R;
@@ -37,7 +35,7 @@ public class AdminSetting extends AppCompatActivity {
     private EditText edtName, edtPhone, edtEmail, edtDob;
     private TextView txtChangePassword;
     private String currentEmail;
-
+    private Toolbar toolbar;
     private final SimpleDateFormat displayFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
     private final SimpleDateFormat serverFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
@@ -46,7 +44,14 @@ public class AdminSetting extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_setting);
 
-        Toolbar toolbar = findViewById(R.id.topAppBar);
+        init();
+        initClick();
+        loadUserData();
+    }
+
+    public void init()
+    {
+        toolbar = findViewById(R.id.topAppBar);
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
         toolbar.inflateMenu(R.menu.menu_save_setting);
         toolbar.setOnMenuItemClickListener(item -> {
@@ -71,8 +76,10 @@ public class AdminSetting extends AppCompatActivity {
             Toast.makeText(this, "Không có email người dùng", Toast.LENGTH_SHORT).show();
             finish();
         }
+    }
 
-        loadUserData();
+    public void initClick()
+    {
         txtChangePassword.setOnClickListener(v -> showChangePasswordDialog());
     }
 

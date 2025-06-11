@@ -9,7 +9,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.doan.Network.APIService;
-import com.example.doan.DatabaseClass.GenericResponse;
+import com.example.doan.DatabaseClassResponse.GenericResponse;
 import com.example.doan.Network.RetrofitClient;
 import com.example.doan.R;
 
@@ -27,11 +27,21 @@ public class OTPVerifyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verify_otp);
 
+        init();
+        initClick();
+    }
+
+    public void init()
+    {
         edtOtp = findViewById(R.id.edt_otp);
         btnVerify = findViewById(R.id.btn_verify_otp);
+    }
 
+    public void initClick()
+    {
         btnVerify.setOnClickListener(v -> verifyOtp());
     }
+
     public void verifyOtp()
     {
         String otp = edtOtp.getText().toString().trim();
@@ -41,12 +51,15 @@ public class OTPVerifyActivity extends AppCompatActivity {
             return;
         }
 
+        btnVerify.setEnabled(false);
+
         APIService api = RetrofitClient.getRetrofitInstance().create(APIService.class);
         Call<GenericResponse> call = api.verifyOtp(otp);
 
         call.enqueue(new Callback<GenericResponse>() {
             @Override
             public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
+                btnVerify.setEnabled(true);
                 if (response.isSuccessful() && response.body() != null) {
                     GenericResponse res = response.body();
                     Toast.makeText(OTPVerifyActivity.this, res.message, Toast.LENGTH_SHORT).show();
@@ -61,6 +74,7 @@ public class OTPVerifyActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<GenericResponse> call, Throwable t) {
+                btnVerify.setEnabled(true);
                 Toast.makeText(OTPVerifyActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

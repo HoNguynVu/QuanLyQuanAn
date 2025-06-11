@@ -2,7 +2,6 @@ package com.example.doan.Adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.net.http.UrlRequest;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +13,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.doan.DatabaseClass.Order;
-import com.example.doan.DatabaseClass.StatusResponse;
+import com.example.doan.DatabaseClassResponse.StatusResponse;
 import com.example.doan.Network.APIService;
 import com.example.doan.Network.RetrofitClient;
 import com.example.doan.R;
 
 import java.text.DecimalFormat;
-import java.util.Calendar;
 import java.util.List;
 
 import retrofit2.Call;

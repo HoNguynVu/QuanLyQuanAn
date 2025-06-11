@@ -28,6 +28,8 @@ public class OrderItem {
     @SerializedName("image_url")
     private String imageUrl;
 
+    @SerializedName("note")
+    private String note;
     public OrderItem() {}
 
     public OrderItem(String id, String orderId, String foodId, int quantity) {
@@ -37,7 +39,7 @@ public class OrderItem {
         this.quantity = quantity;
     }
 
-    public OrderItem(String id, String orderId, String foodId, int quantity, double price, String name, String description, String imageUrl) {
+    public OrderItem(String id, String orderId, String foodId, int quantity, double price, String name, String description, String imageUrl, String note) {
         this.id = id;
         this.orderId = orderId;
         this.foodId = foodId;
@@ -46,6 +48,7 @@ public class OrderItem {
         this.name = name;
         this.description = description;
         this.imageUrl = imageUrl;
+        this.note = note;
     }
 
     // getter/setter
@@ -99,5 +102,13 @@ public class OrderItem {
     }
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }
