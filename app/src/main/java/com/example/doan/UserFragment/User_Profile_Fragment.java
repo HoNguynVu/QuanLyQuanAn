@@ -77,10 +77,10 @@ public class User_Profile_Fragment extends Fragment {
         profileRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         List<ProfileOption> options = new ArrayList<>();
-        options.add(new ProfileOption(R.drawable.ic_person, "My Profile"));
-        options.add(new ProfileOption(R.drawable.ic_orders, "My Orders"));
-        options.add(new ProfileOption(R.drawable.ic_password, "Change Password"));
-        options.add(new ProfileOption(R.drawable.ic_logout, "Log Out"));
+        options.add(new ProfileOption(R.drawable.ic_person, "Hồ sơ của tôi"));
+        options.add(new ProfileOption(R.drawable.ic_orders, "Lịch sử đặt hàng"));
+        options.add(new ProfileOption(R.drawable.ic_password, "Thay đổi mật khẩu"));
+        options.add(new ProfileOption(R.drawable.ic_logout, "Đăng xuất"));
 
         ProfileOptionAdapter adapter = new ProfileOptionAdapter(options, option -> {
             handleProfileOptionClick(option.getTitle());
@@ -92,7 +92,7 @@ public class User_Profile_Fragment extends Fragment {
     // Xử lý các sự kiện click trên từng mục tùy chọn profile
     private void handleProfileOptionClick(String optionTitle) {
         switch (optionTitle) {
-            case "Log Out":
+            case "Đăng xuất":
                 Toast.makeText(getContext(), "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
                 SharedPreferences.Editor editor = requireActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE).edit();
                 editor.clear();
@@ -102,16 +102,16 @@ public class User_Profile_Fragment extends Fragment {
                 startActivity(intent);
                 break;
 
-            case "My Profile":
+            case "Hồ sơ của tôi":
                 Intent intentProfile = new Intent(getContext(), MyProfileActivity.class);
                 startActivity(intentProfile);
                 break;
 
-            case "Change Password":
+            case "Thay đổi mật khẩu":
                 startActivity(new Intent(getContext(), ChangePasswordActivity.class));
                 break;
 
-            case "My Orders":
+            case "Lịch sử đặt hàng":
                 Intent intentOrders = new Intent(getContext(), MyOrdersActivity.class);
                 startActivity(intentOrders);
                 break;
