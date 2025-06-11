@@ -17,9 +17,9 @@ public class UserDataFetcher {
         void onError(String message);
     }
 
-    public static void fetchFoods(FetchCallBack<FoodItem> callBack) {
+    public static void fetchFoods(FetchCallBack<FoodItem> callBack, String category) {
         APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
-        Call<FoodListResponse> call = apiService.getFoodsByCategory("all");
+        Call<FoodListResponse> call = apiService.getFoodsByCategory(category);
 
         call.enqueue(new retrofit2.Callback<FoodListResponse>() {
             @Override

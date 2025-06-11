@@ -1,8 +1,6 @@
 package com.example.doan.UserActivity;
 
 
-import static android.content.ContentValues.TAG;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,29 +10,15 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.doan.Adapter.UserCheckOutAdapter;
-import com.example.doan.DatabaseClass.CurrentUser;
 import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.DatabaseClassResponse.OrderRequest;
 import com.example.doan.DatabaseClassResponse.OrderResponse;
-import com.example.doan.Network.APIService;
-import com.example.doan.Network.RetrofitClient;
-import com.example.doan.User.JsonUtils;
 import com.example.doan.User.OrderUtils;
 import com.example.doan.User.UserCartManager;
-import com.example.doan.User.UserConstants;
 import com.example.doan.User.UserDataSendRequest;
 import com.example.doan.databinding.UserActivityCheckOutBinding;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.List;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class UserCheckOutActivity extends AppCompatActivity {
     List<FoodItem> cartList = UserCartManager.getInstance().getCartItems();

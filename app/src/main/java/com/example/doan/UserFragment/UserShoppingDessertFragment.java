@@ -1,7 +1,6 @@
 package com.example.doan.UserFragment;
 
 import static android.content.ContentValues.TAG;
-import static com.example.doan.User.UserConstants.GETFOODS_URL;
 
 import android.os.Bundle;
 
@@ -15,20 +14,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.volley.VolleyError;
 import com.example.doan.Adapter.UserMenuAdapter;
 import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.User.UserDataFetcher;
 import com.example.doan.User.UserSpaceItemDecoration;
-import com.example.doan.databinding.UserShoppingChipsFragmentBinding;
+import com.example.doan.databinding.UserShoppingDessertFragmentBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class UserShoppingChipsFragment extends Fragment {
+public class UserShoppingDessertFragment extends Fragment {
     UserMenuAdapter adapter;
-    private UserShoppingChipsFragmentBinding binding;
+    private UserShoppingDessertFragmentBinding binding;
 
     List<FoodItem> itemList = new ArrayList<>();
 
@@ -41,7 +39,7 @@ public class UserShoppingChipsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = UserShoppingChipsFragmentBinding.inflate(inflater, container, false);
+        binding = UserShoppingDessertFragmentBinding.inflate(inflater, container, false);
 
         adapter = new UserMenuAdapter(requireContext(), itemList);
 

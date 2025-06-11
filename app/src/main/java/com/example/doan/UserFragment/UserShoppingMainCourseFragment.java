@@ -1,7 +1,6 @@
 package com.example.doan.UserFragment;
 
 import static android.content.ContentValues.TAG;
-import static com.example.doan.User.UserConstants.GETFOODS_URL;
 
 import android.os.Bundle;
 
@@ -15,19 +14,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.volley.VolleyError;
 import com.example.doan.Adapter.UserMenuAdapter;
 import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.User.UserDataFetcher;
 import com.example.doan.User.UserSpaceItemDecoration;
-import com.example.doan.databinding.UserShoppingSoupsFragmentBinding;
+import com.example.doan.databinding.UserShoppingMainCourseFragmentBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserShoppingSoupsFragment extends Fragment {
+public class UserShoppingMainCourseFragment extends Fragment {
     UserMenuAdapter adapter;
-    private UserShoppingSoupsFragmentBinding binding;
+    private UserShoppingMainCourseFragmentBinding binding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,7 +38,7 @@ public class UserShoppingSoupsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = UserShoppingSoupsFragmentBinding.inflate(inflater, container, false);
+        binding = UserShoppingMainCourseFragmentBinding.inflate(inflater, container, false);
 
         adapter = new UserMenuAdapter(requireContext(), itemList);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

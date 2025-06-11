@@ -83,7 +83,7 @@ public interface APIService {
             @Field("new_password") String newPassword
     );
 
-    @GET("get_foods.php")
+    @GET("get_foods_by_category.php")
     Call<FoodListResponse> getFoodsByCategory(@Query("category") String category);
 
     @FormUrlEncoded

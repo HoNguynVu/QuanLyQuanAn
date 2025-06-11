@@ -114,6 +114,6 @@ public class UserHomeFragment extends Fragment {
             public void onError(String message) {
                 Log.d("Lỗi Retrofit: ", message);
             }
-        });
+        }, "all");
     }
 }
