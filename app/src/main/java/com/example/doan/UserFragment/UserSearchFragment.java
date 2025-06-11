@@ -83,7 +83,7 @@ public class UserSearchFragment extends Fragment {
             public void onError(String message) {
                 Log.d("Lỗi Retrofit: ", message);
             }
-        });
+        }, "all");
     }
 
     private void filteredMenu(String newText) {

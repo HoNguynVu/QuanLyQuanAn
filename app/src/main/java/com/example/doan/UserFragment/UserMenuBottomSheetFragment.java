@@ -71,6 +71,6 @@ public class UserMenuBottomSheetFragment extends BottomSheetDialogFragment {
             public void onError(String message) {
                 Log.d("Lỗi Retrofit: ", message);
             }
-        });
+        }, "all");
     }
 }

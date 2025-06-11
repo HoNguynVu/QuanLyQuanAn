@@ -68,6 +68,6 @@ public class UserShoppingAppetizerFragment extends Fragment {
             public void onError(String message) {
                 Log.d("Lỗi Retrofit: ", message);
             }
-        });
+        }, "Khai vị");
     }
 }
