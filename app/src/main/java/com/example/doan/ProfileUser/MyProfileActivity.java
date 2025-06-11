@@ -73,7 +73,8 @@ public class MyProfileActivity extends AppCompatActivity {
         String newName = edtName.getText().toString().trim();
         String newPhone = edtPhone.getText().toString().trim();
         String newDob = edtBirth.getText().toString().trim();
-        String email = currentUser.getEmail();
+        SharedPreferences prefs = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+        String email = prefs.getString("email", "");
 
         if (!isInputValid(newName, newPhone, newDob)) {
             showToast("Vui lòng nhập đầy đủ thông tin!");
