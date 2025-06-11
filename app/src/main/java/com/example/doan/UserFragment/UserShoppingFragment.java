@@ -56,15 +56,19 @@ public class UserShoppingFragment extends Fragment {
             TextView tabText = tabView.findViewById(R.id.tabText);
             switch (position) {
                 case 1:
-                    tabText.setText("Chips");
+                    tabText.setText("Appetizer");
                     tabIcon.setImageResource(R.drawable.ic_chips);
                     break;
                 case 2:
-                    tabText.setText("Drinks");
+                    tabText.setText("Drink");
+                    tabIcon.setImageResource(R.drawable.ic_tea_cup);
+                    break;
+                case 3:
+                    tabText.setText("Dessert");
                     tabIcon.setImageResource(R.drawable.ic_tea_cup);
                     break;
                 default:
-                    tabText.setText("Soups");
+                    tabText.setText("Main Course");
                     tabIcon.setImageResource(R.drawable.ic_soup);
             }
 
