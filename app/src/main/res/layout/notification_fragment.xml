@@ -6,15 +6,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
+    android:background="#F5F5F5"
     tools:context=".UserFragment.User_Notification_Fragment">
 
-    <!-- Icon và tiêu đề -->
+    <!-- Tiêu đề với biểu tượng -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@drawable/button_item_menu"
-        android:gravity="center_vertical">
+        android:padding="12dp"
+        android:background="@drawable/bg_header_notification"
+        android:elevation="4dp"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="16dp">
 
         <ImageView
             android:layout_width="40dp"
@@ -26,18 +30,19 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Notifications"
-            android:textSize="24sp"
+            android:text="Thông báo"
+            android:textSize="30sp"
             android:textColor="@color/black"
             android:textStyle="bold" />
     </LinearLayout>
 
-    <!-- RecyclerView hiển thị danh sách thông báo -->
+    <!-- RecyclerView danh sách thông báo -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/notificationRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:paddingTop="16dp" />
+        android:clipToPadding="false"
+        android:scrollbars="vertical" />
 
 </LinearLayout>

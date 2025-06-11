@@ -73,7 +73,7 @@ public class DetailFoodActivity extends AppCompatActivity {
     // Đặt sự kiện cho các nút
     private void setButton() {
         btnAddReview.setOnClickListener(v -> {
-            // Xử lý khi nhấn nút "Đánh giá món ăn"
+
         });
         btnBack.setOnClickListener(v -> {
             finish();
@@ -112,8 +112,8 @@ public class DetailFoodActivity extends AppCompatActivity {
 
     // Hiển thị thông tin món ăn lên UI
     private void bindFoodData(FoodItem food) {
-        txtName.setText(food.getName());
-        txtPrice.setText(food.getPrice() + "đ");
+        txtName.setText("Tên món ăn : "+ food.getName());
+        txtPrice.setText("Giá món ăn : " + food.getPrice() + "đ");
         txtDescription.setText(food.getDescription());
         Glide.with(this).load(food.getImageUrl()).into(imgFood);
     }
