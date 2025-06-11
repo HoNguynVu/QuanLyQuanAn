@@ -69,7 +69,7 @@ public class UserSearchFragment extends Fragment {
             }
         });
 
-        UserDataFetcher.fetchFoods(requireContext(), GETFOODS_URL, new UserDataFetcher.FetchCallBack<FoodItem>() {
+        UserDataFetcher.fetchFoods(new UserDataFetcher.FetchCallBack<FoodItem>() {
 
             @Override
             public void onSuccess(List<FoodItem> data) {
@@ -80,7 +80,8 @@ public class UserSearchFragment extends Fragment {
             }
 
             @Override
-            public void onError(VolleyError error) {
+            public void onError(String message) {
+                Log.d("Lỗi Retrofit: ", message);
             }
         });
     }

@@ -1,6 +1,8 @@
 package com.example.doan.UserActivity;
 
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -70,6 +72,10 @@ public class UserCheckOutActivity extends AppCompatActivity {
                         }
                     }
             );
+
+            UserCartManager userCartManager = UserCartManager.getInstance();
+            userCartManager.deleteItem();
+
             Intent intent = new Intent(UserCheckOutActivity.this, UserOrderSuccessActivity.class);
             startActivity(intent);
         });
