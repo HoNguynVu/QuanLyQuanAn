@@ -66,6 +66,7 @@ dependencies {
 
     // Glide (sử dụng phiên bản mới nhất, không trùng lặp)
     implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation(libs.androidx.appcompat)
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 
     // MPAndroidChart

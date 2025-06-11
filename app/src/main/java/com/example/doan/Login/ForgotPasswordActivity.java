@@ -2,7 +2,6 @@ package com.example.doan.Login;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,7 +11,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.doan.DatabaseClass.GenericResponse;
+import com.example.doan.DatabaseClassResponse.GenericResponse;
 import com.example.doan.Network.APIService;
 import com.example.doan.Network.RetrofitClient;
 import com.example.doan.R;
@@ -33,10 +32,19 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_forgot_password);
 
+       init();
+       initClick();
+    }
+
+    public void init()
+    {
         txtEmail = findViewById(R.id.txt_email_forgot_password);
         btnSendOtp = findViewById(R.id.btn_fgpass);
         btnBack = findViewById(R.id.btn_arrow_back_FG);
+    }
 
+    public void initClick()
+    {
         btnBack.setOnClickListener(v -> {
             startActivity(new Intent(ForgotPasswordActivity.this, LoginActivity.class));
             finish();

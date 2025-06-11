@@ -22,8 +22,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.doan.DatabaseClass.FoodItem;
-import com.example.doan.DatabaseClass.FoodListResponse;
-import com.example.doan.DatabaseClass.GenericResponse;
+import com.example.doan.DatabaseClassResponse.FoodListResponse;
+import com.example.doan.DatabaseClassResponse.GenericResponse;
 import com.example.doan.Network.APIService;
 import com.example.doan.Network.RetrofitClient;
 import com.example.doan.R;
@@ -63,14 +63,20 @@ public class FoodByCategory extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        init(view);
+
+        loadMenuFromServer();
+    }
+
+    public void init(View view)
+    {
         recyclerView = view.findViewById(R.id.recyclerViewMenu);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
 
         menuAdapter = new MenuAdapter(getContext(), itemList);
         recyclerView.setAdapter(menuAdapter);
-
-        loadMenuFromServer();
     }
 
     private void loadMenuFromServer() {

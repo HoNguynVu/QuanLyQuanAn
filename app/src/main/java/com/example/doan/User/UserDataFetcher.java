@@ -1,23 +1,12 @@
 package com.example.doan.User;
 
-import android.content.Context;
 import android.util.Log;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.doan.DatabaseClass.FoodItem;
-import com.example.doan.DatabaseClass.FoodListResponse;
-import com.example.doan.DatabaseClass.Order;
-import com.example.doan.DatabaseClass.OrderItem;
+import com.example.doan.DatabaseClassResponse.FoodListResponse;
 import com.example.doan.Network.APIService;
 import com.example.doan.Network.RetrofitClient;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 import retrofit2.Call;
@@ -35,6 +24,7 @@ public class UserDataFetcher {
         call.enqueue(new retrofit2.Callback<FoodListResponse>() {
             @Override
             public void onResponse(Call<FoodListResponse> call, retrofit2.Response<FoodListResponse> response) {
+                Log.d("Response", response.toString());
                 if (response.isSuccessful() && response.body() != null) {
                     callBack.onSuccess(response.body().data);
                 } else {

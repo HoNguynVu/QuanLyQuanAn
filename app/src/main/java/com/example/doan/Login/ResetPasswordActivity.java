@@ -11,7 +11,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.doan.DatabaseClass.GenericResponse;
+import com.example.doan.DatabaseClassResponse.GenericResponse;
 import com.example.doan.Network.APIService;
 import com.example.doan.Network.RetrofitClient;
 import com.example.doan.R;
@@ -35,13 +35,22 @@ public class ResetPasswordActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_reset_password);
 
+        init();
+        initClick();
+    }
+
+    public void init()
+    {
         edtNewPassword = findViewById(R.id.edt_new_password);
         edtConfirmPassword = findViewById(R.id.edt_confirm_password);
         btnReset = findViewById(R.id.btn_reset_password);
         ivTogglePassword = findViewById(R.id.iv_toggle_new_pass);
         ivToggleConfirmPassword = findViewById(R.id.iv_toggle_confirm_pass);
+        email = getIntent().getStringExtra("email");
+    }
 
-
+    public void initClick()
+    {
         ivTogglePassword.setOnClickListener(v ->
         {
             if (showNew[0])
@@ -73,8 +82,6 @@ public class ResetPasswordActivity extends AppCompatActivity {
             showConfirm[0] = !showConfirm[0];
         });
 
-        email = getIntent().getStringExtra("email");
-
         btnReset.setOnClickListener(v -> resetPassword());
     }
 
@@ -93,10 +100,11 @@ public class ResetPasswordActivity extends AppCompatActivity {
             return;
         }
 
-        if (pass.length() < 9 || !pass.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{9,}$")) {
-            edtNewPassword.setError("Mật khẩu phải có ít nhất 9 ký tự, bao gồm chữ và số");
+        if (pass.length() < 8 || !pass.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{9,}$")) {
+            edtNewPassword.setError("Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ và số");
             return;
         }
+        btnReset.setEnabled(false);
 
         APIService api = RetrofitClient.getRetrofitInstance().create(APIService.class);
         Call<GenericResponse> call = api.resetPassword(email, pass);
@@ -104,6 +112,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
         call.enqueue(new Callback<GenericResponse>() {
             @Override
             public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
+                btnReset.setEnabled(true);
                 if (response.isSuccessful() && response.body() != null) {
                     GenericResponse res = response.body();
                     Toast.makeText(ResetPasswordActivity.this, res.message, Toast.LENGTH_SHORT).show();
@@ -119,6 +128,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<GenericResponse> call, Throwable t) {
+                btnReset.setEnabled(true);
                 Toast.makeText(ResetPasswordActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

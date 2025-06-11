@@ -1,27 +1,30 @@
 package com.example.doan.Network;
 
-import com.example.doan.DatabaseClass.CreateOrderRequest;
 import com.example.doan.DatabaseClass.FoodItem;
-import com.example.doan.DatabaseClass.FoodListResponse;
-import com.example.doan.DatabaseClass.GenericResponse;
-import com.example.doan.DatabaseClass.LoginResponse;
+import com.example.doan.DatabaseClass.Notification;
+import com.example.doan.DatabaseClassResponse.FoodListResponse;
+import com.example.doan.DatabaseClassResponse.GenericResponse;
+import com.example.doan.DatabaseClassResponse.LoginResponse;
 import com.example.doan.DatabaseClass.Order;
 import com.example.doan.DatabaseClass.OrderItem;
-import com.example.doan.DatabaseClass.StatisticsResponse;
-import com.example.doan.DatabaseClass.StatusResponse;
-import com.example.doan.DatabaseClass.UploadResponse;
+import com.example.doan.DatabaseClass.Review;
+import com.example.doan.DatabaseClassResponse.OrderRequest;
+import com.example.doan.DatabaseClassResponse.OrderResponse;
+import com.example.doan.DatabaseClassResponse.StatisticsResponse;
+import com.example.doan.DatabaseClassResponse.StatusResponse;
+import com.example.doan.DatabaseClassResponse.UploadResponse;
 import com.example.doan.DatabaseClass.User;
-import com.example.doan.DatabaseClass.UserResponse;
+import com.example.doan.DatabaseClassResponse.UserResponse;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface APIService {
@@ -74,7 +77,7 @@ public interface APIService {
     );
 
     @FormUrlEncoded
-    @POST("reset_password.php")
+    @POST("reset_password.php") 
     Call<GenericResponse> resetPassword(
             @Field("email") String email,
             @Field("new_password") String newPassword
@@ -162,7 +165,22 @@ public interface APIService {
             @Field("dob") String dob
     );
 
+    @GET("get_reviews_by_food_id.php")
+    Call<List<Review>> getReviewsByFoodId(@Query("food_id") String foodId);
+
+    @GET("get_notifications.php")
+    Call<List<Notification>> getNotifications(@Query("user_id") int userId);
+
+    @FormUrlEncoded
+    @POST("create_notification.php")
+    Call<ResponseBody> createNotification(
+            @Field("user_id") int userId,
+            @Field("order_id") int orderId,
+            @Field("title") String title,
+            @Field("message") String message
+    );
 
     @POST("create_order.php")
-    Call<GenericResponse> createOrder(@Body CreateOrderRequest request);
+    Call<OrderResponse> createOrder(@Body OrderRequest orderRequest);
+
 }

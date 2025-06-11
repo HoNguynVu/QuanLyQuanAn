@@ -19,23 +19,18 @@ import com.example.doan.UserFragment.UserHomeFragment;
 import com.example.doan.databinding.UserActivityOrderSuccessBinding;
 
 public class UserOrderSuccessActivity extends AppCompatActivity {
-
+    private UserActivityOrderSuccessBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.user_activity_order_success);
-    }
+        binding = UserActivityOrderSuccessBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-    @Nullable
-    @Override
-    public View onCreateView(@Nullable View parent, @NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
-        UserActivityOrderSuccessBinding binding = UserActivityOrderSuccessBinding.inflate(getLayoutInflater());
         binding.backToHome.setOnClickListener(v -> {
-            Intent intent = new Intent(this, UserHomeFragment.class);
+            Intent intent = new Intent(this, UserMainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+            finish();
         });
-
-        return binding.getRoot();
     }
 }

@@ -100,7 +100,7 @@ public class UserSearchFragment extends Fragment {
         }
 
         if(filteredList.isEmpty()) {
-            Toast.makeText(getContext(), "No Data Found", Toast.LENGTH_SHORT).show();
+
         } else {
             adapter.setFilteredList(filteredList);
         }

@@ -1,4 +1,4 @@
-package com.example.doan.DatabaseClass;
+package com.example.doan.DatabaseClassResponse;
 
 public class UploadResponse {
     public boolean success;
