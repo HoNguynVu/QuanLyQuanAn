@@ -25,7 +25,7 @@ import retrofit2.Response;
 
 public class DetailOrderActivity extends AppCompatActivity {
 
-    private TextView txtHeader, txtOrderId, txtDate, txtStatus, txtTotal;
+    private TextView txtHeader, txtOrderId, txtDate, txtStatus, txtTotal,txtDiscount;
     private ListView listView;
     private List<OrderItemWithFood> itemList = new ArrayList<>();
     private OrderItemAdapter adapter;
@@ -53,6 +53,7 @@ public class DetailOrderActivity extends AppCompatActivity {
     private void initViews() {
         txtHeader = findViewById(R.id.txt_header);
         txtOrderId = findViewById(R.id.txt_order_id);
+        txtDiscount = findViewById(R.id.txt_discount);
         txtDate = findViewById(R.id.txt_order_date);
         txtStatus = findViewById(R.id.txt_order_status);
         txtTotal = findViewById(R.id.txt_total_amount);
@@ -159,6 +160,11 @@ public class DetailOrderActivity extends AppCompatActivity {
         txtStatus.setText("Trạng thái: " + status);
         txtDate.setText("Ngày tạo: " + createdAt);
         txtTotal.setText("Tổng tiền: " + formattedAmount + "đ");
+
+        int discount = getIntent().getIntExtra("discount_percent", 0);
+        if (discount != 0) {
+            txtDiscount.setText("Giảm giá: " + discount + "%");
+        }
 
         adapter = new OrderItemAdapter(this, itemList);
         listView.setAdapter(adapter);

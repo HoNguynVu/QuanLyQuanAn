@@ -1,5 +1,7 @@
 package com.example.doan.UserFragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,7 +50,9 @@ public class User_Notification_Fragment extends Fragment {
 
     // Gửi request lấy danh sách thông báo của user hiện tại
     private void loadNotifications() {
-        int userId = CurrentUser.getInstance().getId();
+        SharedPreferences prefs = requireContext().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+        int userId = prefs.getInt("id",-1);
+        Log.d("NotificationFragment", "User ID: " + userId);
         APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
 
         apiService.getNotifications(userId).enqueue(new Callback<List<Notification>>() {
