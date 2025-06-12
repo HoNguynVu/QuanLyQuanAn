@@ -27,6 +27,7 @@
         android:paddingEnd="12dp"
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
+        android:background="@color/white"
         android:layout_alignParentEnd="true"/>
     <!-- Mã đơn hàng -->
         <TextView
@@ -35,20 +36,19 @@
         android:layout_height="wrap_content"
         android:text="Mã đơn:"
         android:textSize="19sp"
-        android:textColor="#333333"
+        android:textColor="#1A202C"
         android:layout_marginBottom="10dp"
         android:layout_marginEnd="130dp"
         android:fontFamily="sans-serif-medium"/>
-          <!-- Divider -->
+        <!-- Divider -->
     <View
         android:id="@+id/divider1"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#E0E0E0"
+        android:background="#E2E8F0"
         android:layout_below="@id/tvOrderId"/>
 
-    <!-- Tên khách hàng -->
-        <ImageView
+    <!-- Tên khách hàng -->        <ImageView
         android:id="@+id/iconCustomer"
         android:layout_width="24dp"
         android:layout_height="24dp"
@@ -56,14 +56,14 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="8dp"
         android:src="@drawable/ic_customer"
-        app:tint="@color/black" />
+        app:tint="#3182CE" />
           <TextView
         android:id="@+id/tvCustomerName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Tên khách:"
         android:textSize="16sp"
-        android:textColor="#444444"
+        android:textColor="#2D3748"
         android:layout_marginBottom="8dp"
         android:layout_below="@id/divider1"
         android:layout_marginTop="10dp"
@@ -76,14 +76,14 @@
         android:layout_below="@id/tvCustomerName"
         android:layout_marginEnd="8dp"
         android:src="@drawable/ic_clock"
-        app:tint="@color/black" />
+        app:tint="#3182CE" />
         <TextView
         android:id="@+id/tvOrderTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Thời gian:"
         android:textSize="16sp"
-        android:textColor="#444444"
+        android:textColor="#2D3748"
         android:layout_marginBottom="8dp"
         android:layout_below="@id/tvCustomerName"
         android:layout_toEndOf="@id/iconClock"/>
@@ -92,7 +92,7 @@
         android:id="@+id/divider2"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#E0E0E0"
+        android:background="#E2E8F0"
         android:layout_below="@id/tvOrderTime"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="8dp"/>
@@ -104,7 +104,7 @@
         android:layout_height="24dp"
         android:layout_below="@id/divider2"
         android:layout_marginEnd="8dp"
-        app:tint="@color/black"
+        app:tint="#C53030"
         android:src="@drawable/ic_wallet"/>
           <TextView
         android:id="@+id/tvTotalAmount"
@@ -112,7 +112,7 @@
         android:layout_height="wrap_content"
         android:text="Tổng tiền:"
         android:textSize="18sp"
-        android:textColor="@color/red"
+        android:textColor="#C53030"
         android:layout_marginBottom="12dp"
         android:fontFamily="sans-serif-medium"
         android:textAlignment="textStart"
@@ -125,7 +125,7 @@
         android:layout_height="48dp"
         android:text="Cập nhật trạng thái"
         android:textColor="#FFFFFF"
-        android:backgroundTint="@color/black"
+        android:backgroundTint="#3182CE"
         android:drawablePadding="8dp"
         android:elevation="2dp"
         android:textAllCaps="false"

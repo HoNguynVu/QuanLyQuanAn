@@ -50,13 +50,14 @@ public class OrderAdapter extends ArrayAdapter<Order> {
         TextView tvAmount = convertView.findViewById(R.id.tvTotalAmount);
         TextView tvStatus = convertView.findViewById(R.id.tvStatus);
         TextView tvCustomerName = convertView.findViewById(R.id.tvCustomerName);
-        Button btnUpdate = convertView.findViewById(R.id.btnUpdateStatus);        tvId.setText("Mã đơn: " + order.getOrderId());
+        Button btnUpdate = convertView.findViewById(R.id.btnUpdateStatus);
+        tvId.setText("Mã đơn: " + order.getOrderId());
         tvTime.setText("Thời gian: " + order.getCreatedAt());
         tvAmount.setText("Tổng tiền: " + formatCurrency(order.getFinalAmount()) + " VND");
         tvStatus.setText("Trạng thái: " + order.getStatus());
         tvCustomerName.setText("Khách hàng: " + (order.getCustomerName() != null ? order.getCustomerName() : "Không xác định"));
         setStatusColor(tvStatus, order.getStatus());btnUpdate.setOnClickListener(v -> {
-            String[] statuses = {"Đang chuẩn bị", "Đã giao", "Hủy"};
+            String[] statuses = {"Đang chờ", "Đang chuẩn bị", "Đã giao", "Hủy"};
 
             new AlertDialog.Builder(context)
                     .setTitle("Chọn trạng thái mới")
@@ -115,6 +116,9 @@ public class OrderAdapter extends ArrayAdapter<Order> {
     private void setStatusColor(TextView tvStatus, String status) {
         int color;
         switch (status) {
+            case "Đang chờ":
+                color = 0xFFFFC107; // Vàng
+                break;
             case "Đang chuẩn bị":
                 color = 0xFFFF9800; // Cam
                 break;
