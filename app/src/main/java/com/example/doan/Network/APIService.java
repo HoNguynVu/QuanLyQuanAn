@@ -177,4 +177,14 @@ public interface APIService {
             @Field("message") String message
     );
 
+    @FormUrlEncoded
+    @POST("add_review.php")
+    Call<ResponseBody> addReview(
+            @Field("food_id") String foodId,
+            @Field("user_id") int userId,
+            @Field("rating") int rating,
+            @Field("comment") String comment
+    );
+
+
 }
