@@ -123,8 +123,9 @@ public class AdminOrdersFragment extends Fragment {
                 selectedStatus = "Đã giao";
             } else if (statusId == R.id.radioCancelled) {
                 selectedStatus = "Hủy";
-            }
-            
+            } else if (statusId == R.id.radioWaiting)
+                selectedStatus = "Đang chờ";
+
             // Lấy kiểu sắp xếp được chọn
             int sortId = sortRadioGroup.getCheckedRadioButtonId();
             if (sortId == R.id.radioNewest) {

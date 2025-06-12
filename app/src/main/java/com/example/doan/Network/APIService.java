@@ -30,10 +30,6 @@ public interface APIService {
     Call<User> getUserInfo(@Field("email") String email);
 
     @FormUrlEncoded
-    @POST("get_user_by_id.php")
-    Call<UserResponse> getUserById(@Field("user_id") int userId);
-
-    @FormUrlEncoded
     @POST("login.php")
     Call<LoginResponse> login(@Field("email") String email, @Field("password") String password);
 

@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:padding="16dp">    <!-- Thanh tìm kiếm -->
+    android:padding="16dp">
+    <!-- Thanh tìm kiếm -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -45,7 +46,7 @@
                 android:padding="12dp"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:src="@android:drawable/ic_menu_sort_by_size"
-                android:tint="#666666" />
+                app:tint="#666666" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
     
@@ -63,9 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="8dp">
-            
-            <TextView
+            android:padding="8dp">            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Lọc theo trạng thái:"
@@ -76,7 +75,7 @@
                 android:id="@+id/statusRadioGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical">
                 
                 <RadioButton
                     android:id="@+id/radioAll"
@@ -84,6 +83,12 @@
                     android:layout_height="wrap_content"
                     android:text="Tất cả"
                     android:checked="true"/>
+
+                <RadioButton
+                    android:id="@+id/radioWaiting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đang chờ"/>
                     
                 <RadioButton
                     android:id="@+id/radioPreparing"
@@ -102,9 +107,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Hủy"/>
-            </RadioGroup>
-            
-            <TextView
+            </RadioGroup>            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Sắp xếp theo:"
@@ -116,7 +119,7 @@
                 android:id="@+id/sortRadioGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical">
                 
                 <RadioButton
                     android:id="@+id/radioNewest"
