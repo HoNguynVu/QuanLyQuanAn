@@ -32,7 +32,7 @@ import retrofit2.Response;
 public class DetailFoodActivity extends AppCompatActivity {
 
     private ImageView imgFood;
-    private TextView txtName, txtPrice, txtDescription;
+    private TextView txtName, txtPrice, txtDescription,txtRatingAvg;
     private RecyclerView recyclerView;
     private ReviewAdapter reviewAdapter;
     private Button btnAddReview, btnBack;
@@ -60,6 +60,7 @@ public class DetailFoodActivity extends AppCompatActivity {
         txtName = findViewById(R.id.txt_food_name_detail);
         txtPrice = findViewById(R.id.txt_food_price_detail);
         txtDescription = findViewById(R.id.txt_food_description);
+        txtRatingAvg = findViewById(R.id.txt_rating_avg);
         btnAddReview = findViewById(R.id.btn_add_review);
         btnBack = findViewById(R.id.btn_back);
         recyclerView = findViewById(R.id.recycler_reviews);
@@ -118,6 +119,7 @@ public class DetailFoodActivity extends AppCompatActivity {
         txtName.setText("Tên món ăn : "+ food.getName());
         txtPrice.setText("Giá món ăn : " + food.getPrice() + "đ");
         txtDescription.setText(food.getDescription());
+        txtRatingAvg.setText("Đánh giá  trung bình : " + food.getRatingAvg() + "★");
         Glide.with(this).load(food.getImageUrl()).into(imgFood);
     }
 
