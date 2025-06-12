@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/imgBackMyOrder"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:src="@drawable/ic_chevron_left"
         android:contentDescription="Back"
         android:layout_gravity="start"
@@ -19,8 +19,8 @@
     <!-- Tiêu đề -->
     <TextView
         android:id="@+id/tvTitle"
-        android:text="Đơn hàng của tôi"
-        android:textSize="20sp"
+        android:text="Lịch sử đặt hàng"
+        android:textSize="30sp"
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="12dp"
@@ -33,5 +33,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@android:color/darker_gray"
+        android:layout_marginTop="30dp"
         android:dividerHeight="1dp" />
 </LinearLayout>
