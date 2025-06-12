@@ -1,5 +1,6 @@
 package com.example.doan.ProfileUser;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -73,7 +74,9 @@ public class DetailFoodActivity extends AppCompatActivity {
     // Đặt sự kiện cho các nút
     private void setButton() {
         btnAddReview.setOnClickListener(v -> {
-
+            Intent intent = new Intent(DetailFoodActivity.this, AddReviewActivity.class);
+            intent.putExtra("food_id", foodId);
+            startActivity(intent);
         });
         btnBack.setOnClickListener(v -> {
             finish();
