@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doan.Adapter.NotificationAdapter;
 import com.example.doan.DatabaseClass.Notification;
-import com.example.doan.DatabaseClass.CurrentUser;
 import com.example.doan.Network.APIService;
 import com.example.doan.Network.RetrofitClient;
 import com.example.doan.R;
@@ -26,7 +25,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class User_Notification_Fragment extends Fragment {
+public class UserNotificationFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private NotificationAdapter adapter;
