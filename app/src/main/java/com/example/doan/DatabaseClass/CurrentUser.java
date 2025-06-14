@@ -3,7 +3,7 @@ package com.example.doan.DatabaseClass;
 public class CurrentUser {
     private static CurrentUser instance;
 
-    private int id;
+    private static int id;
     private String email;
     private String name;
     private String phone;
@@ -28,7 +28,7 @@ public class CurrentUser {
         this.role = role;
     }
 
-    public int getId() { return id; }
+    public static int getId() { return id; }
     public String getEmail() { return email; }
     public String getName() { return name; }
     public String getPhone() { return phone; }

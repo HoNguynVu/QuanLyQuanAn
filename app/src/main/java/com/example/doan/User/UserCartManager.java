@@ -48,6 +48,12 @@ public class UserCartManager {
         notifyTotalChanged();
     }
 
+    public void deleteItem() {
+        cartItems.clear();
+        TotalOrder = 0;
+        notifyTotalChanged();
+    }
+
     public List<FoodItem> getCartItems() {
         return cartItems;
     }

@@ -29,35 +29,42 @@ public class UserCartActivity extends AppCompatActivity {
         binding = UserActivityCartBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        ChangeOnCartManager();
+        setRecyclerView();
+        setBtnBack();
+        setBtnCheckOut();
+    }
+
+    public void ChangeOnCartManager() {
         UserCartManager userCartManager = UserCartManager.getInstance();
         userCartManager.setOnTotalChangedListener(new UserCartManager.OnTotalChangedListener() {
             @Override
             public void onTotalChanged(double newTotal) {
                 // Cập nhật TextView mỗi khi total thay đổi
-                String total = newTotal + "$";
+                String total = newTotal + "";
                 Log.d(TAG, "onTotalChanged: " + newTotal);
                 binding.totalOrder.setText(total);
             }
         });
-
         userCartManager.notifyTotalChanged();
+    }
 
+    public void setRecyclerView() {
         adapter = new UserCartAdapter(cartList, this);
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setAdapter(adapter);
-        binding.recyclerView.addItemDecoration(new UserSpaceItemDecoration(dpToPx(16)));
-
-
-        binding.btnBack.setOnClickListener(v -> finish());
-
-        binding.btnCheckout.setOnClickListener(v -> {
-                Intent intent = new Intent(this, UserCheckOutActivity.class);
-                startActivity(intent);
-        });
+        binding.recyclerView.addItemDecoration(new UserSpaceItemDecoration(16));
     }
 
-    private int dpToPx(int dp) {
-        return Math.round(dp * getResources().getDisplayMetrics().density);
+    public void setBtnBack() {
+        binding.btnBack.setOnClickListener(v -> finish());
+    }
+
+    public void setBtnCheckOut() {
+        binding.btnCheckout.setOnClickListener(v -> {
+            Intent intent = new Intent(this, UserCheckOutActivity.class);
+            startActivity(intent);
+        });
     }
 }

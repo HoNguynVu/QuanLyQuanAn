@@ -1,7 +1,6 @@
 package com.example.doan.UserFragment;
 
 import static android.content.ContentValues.TAG;
-import static com.example.doan.User.UserConstants.GETFOODS_URL;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,8 +9,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,49 +47,60 @@ public class UserHomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = UserHomeFragmentBinding.inflate(inflater, container, false);
-
-        adapter = new UserHomePopularItemAdapter(requireContext(), itemList);
-
-        binding.recyclerView.setAdapter(adapter);
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        binding.viewall.setOnClickListener(v -> {
-            UserMenuBottomSheetFragment bottomSheetDialog = new UserMenuBottomSheetFragment();
-            bottomSheetDialog.show(getParentFragmentManager(), "Test");
-        });
-
-        binding.cartFragment.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), UserCartActivity.class);
-            startActivity(intent);
-        });
-
-        binding.searchView.setOnQueryTextFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus) {
-                FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragmentContainerView, new UserSearchFragment());
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        });
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setBtnCartFragment();
+        setViewAll();
+        setRecyclerView();
+        setSearchView();
+        setImageSlider();
+        getFoodData();
+    }
 
+    public void setSearchView() {
+        binding.searchView.setOnQueryTextFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.fragmentContainerView);
+                navController.navigate(R.id.searchFragment);
+            }
+        });
+    }
+
+    public void setRecyclerView() {
+        adapter = new UserHomePopularItemAdapter(requireContext(), itemList);
+        binding.recyclerView.setAdapter(adapter);
+        binding.recyclerView.addItemDecoration(new UserSpaceItemDecoration(16));
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+    }
+
+    public void setViewAll() {
+        binding.viewall.setOnClickListener(v -> {
+            UserMenuBottomSheetFragment bottomSheetDialog = new UserMenuBottomSheetFragment();
+            bottomSheetDialog.show(getParentFragmentManager(), "Test");
+        });
+    }
+
+    public void setBtnCartFragment() {
+        binding.cartFragment.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), UserCartActivity.class);
+            startActivity(intent);
+        });
+    }
+
+    public void setImageSlider() {
         ArrayList<SlideModel> imageList = new ArrayList<>();
         imageList.add(new SlideModel(R.drawable.banner1, ScaleTypes.FIT));
         imageList.add(new SlideModel(R.drawable.banner2, ScaleTypes.FIT));
         imageList.add(new SlideModel(R.drawable.banner3, ScaleTypes.FIT));
-
         binding.imageSlider.setImageList(imageList, ScaleTypes.FIT);
-
         binding.imageSlider.setItemClickListener(new ItemClickListener() {
             @Override
             public void onItemSelected(int position) {
@@ -97,10 +111,10 @@ public class UserHomeFragment extends Fragment {
 
             }
         });
+    }
 
-        binding.recyclerView.addItemDecoration(new UserSpaceItemDecoration(16));
-
-        UserDataFetcher.fetchFoods(requireContext(), GETFOODS_URL, new UserDataFetcher.FetchCallBack() {
+    public void getFoodData() {
+        UserDataFetcher.fetchFoods(new UserDataFetcher.FetchCallBack<FoodItem>() {
 
             @Override
             public void onSuccess(List<FoodItem> data) {
@@ -111,9 +125,9 @@ public class UserHomeFragment extends Fragment {
             }
 
             @Override
-            public void onError(VolleyError error) {
-
+            public void onError(String message) {
+                Log.d("Lỗi Retrofit: ", message);
             }
-        });
+        }, "all");
     }
 }
