@@ -105,7 +105,6 @@ public class OrderAdapter extends ArrayAdapter<Order> {
             intent.putExtra("user_id", order.getUser_id());
             context.startActivity(intent);
         });
-
         return convertView;
     }
 
