@@ -1,25 +1,19 @@
 package com.example.doan.UserFragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.doan.AdminFragment.AdminProfileFragment;
-import com.example.doan.DatabaseClass.CurrentUser;
 import com.example.doan.Login.LoginActivity;
 import com.example.doan.ProfileUser.ChangePasswordActivity;
 import com.example.doan.ProfileUser.MyOrdersActivity;
@@ -27,18 +21,17 @@ import com.example.doan.ProfileUser.MyProfileActivity;
 import com.example.doan.ProfileUser.ProfileOption;
 import com.example.doan.ProfileUser.ProfileOptionAdapter;
 import com.example.doan.R;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class User_Profile_Fragment extends Fragment {
+public class UserProfileFragment extends Fragment {
 
     private TextView usernameTextView;
     private TextView emailTextView;
     private RecyclerView profileRecyclerView;
 
-    public User_Profile_Fragment() {}
+    public UserProfileFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -97,7 +90,7 @@ public class User_Profile_Fragment extends Fragment {
                 SharedPreferences.Editor editor = requireActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE).edit();
                 editor.clear();
                 editor.apply();
-                User_Profile_Fragment.this.getActivity().finish();
+                UserProfileFragment.this.getActivity().finish();
                 Intent intent = new Intent(getContext(), LoginActivity.class);
                 startActivity(intent);
                 break;
