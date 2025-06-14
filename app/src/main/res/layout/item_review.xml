@@ -1,41 +1,31 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:padding="12dp"
-    android:orientation="vertical"
-    android:layout_marginBottom="10dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:background="#FAFAFA">
 
-    <!-- User và Rating -->
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/txt_review_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Người dùng: 123"
+        android:textStyle="bold"
+        android:textColor="#333" />
 
-        <TextView
-            android:id="@+id/txt_review_user"
-            android:textStyle="bold"
-            android:textColor="#333333"
-            android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/txt_review_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Đánh giá : ★ 5"
+        android:textColor="#FFC107"
+        android:textSize="16sp"
+        android:layout_marginTop="4dp"/>
 
-        <TextView
-            android:id="@+id/txt_review_rating"
-            android:textColor="#FF9800"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <!-- Comment -->
     <TextView
         android:id="@+id/txt_review_comment"
-        android:layout_marginTop="4dp"
-        android:textColor="#555555"
-        android:textSize="14sp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nhận xét : Món ăn rất ngon và đậm đà."
+        android:layout_marginTop="4dp" />
 </LinearLayout>
-

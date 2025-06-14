@@ -5,26 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:padding="16dp">    <!-- Thanh tìm kiếm -->
+    android:padding="12dp"
+    android:background="#F5F7FA">
+    <!-- Thanh tìm kiếm -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="2dp">
+        android:layout_marginBottom="12dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="@android:color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical">
-
             <ImageView
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:padding="12dp"
                 android:src="@android:drawable/ic_menu_search"
-                android:tint="#666666" />
+                app:tint="#3182CE" />
 
             <EditText
                 android:id="@+id/editTextSearch"
@@ -33,11 +35,14 @@
                 android:layout_height="48dp"
                 android:background="@null"
                 android:hint="Tìm kiếm đơn hàng..."
-                android:inputType="text"
+                android:inputType="text|textCapWords"
                 android:imeOptions="actionSearch"
                 android:padding="8dp"
-                android:textSize="16sp" />
-                
+                android:textSize="16sp"
+                android:textColor="#2D3748"
+                android:textColorHint="#718096"
+                android:drawableEnd="@drawable/ic_delete"
+                />
             <ImageButton
                 android:id="@+id/btnFilter"
                 android:layout_width="48dp"
@@ -45,38 +50,48 @@
                 android:padding="12dp"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:src="@android:drawable/ic_menu_sort_by_size"
-                android:tint="#666666" />
+                app:tint="#3182CE" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-    
-    <!-- Bộ lọc mở rộng (ẩn mặc định) -->
+      <!-- Bộ lọc mở rộng (ẩn mặc định) -->
     <androidx.cardview.widget.CardView
         android:id="@+id/filterCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="2dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="@android:color/white"
         android:visibility="gone">
-        
-        <LinearLayout
+          <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="8dp">
+            android:padding="16dp">
             
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Bộ lọc và sắp xếp"
+                android:textSize="18sp"
+                android:textColor="#3182CE"
+                android:textStyle="bold"
+                android:layout_marginBottom="12dp"/>
+                
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Lọc theo trạng thái:"
                 android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="#2D3748"
                 android:padding="4dp"/>
                 
             <RadioGroup
                 android:id="@+id/statusRadioGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical">
                 
                 <RadioButton
                     android:id="@+id/radioAll"
@@ -84,12 +99,24 @@
                     android:layout_height="wrap_content"
                     android:text="Tất cả"
                     android:checked="true"/>
-                    
+
                 <RadioButton
-                    android:id="@+id/radioPreparing"
+                    android:id="@+id/radioWaiting"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Đang chuẩn bị"/>
+                    android:text="Đang chờ"/>
+                    
+                <RadioButton
+                    android:id="@+id/radioReceived"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đã tiếp nhận"/>
+
+                <RadioButton
+                    android:id="@+id/radioDelivering"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đang giao"/>
                     
                 <RadioButton
                     android:id="@+id/radioDelivered"
@@ -102,21 +129,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Hủy"/>
-            </RadioGroup>
-            
-            <TextView
+            </RadioGroup>            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Sắp xếp theo:"
                 android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="#2D3748"
                 android:padding="4dp"
-                android:layout_marginTop="4dp"/>
+                android:layout_marginTop="8dp"/>
                 
             <RadioGroup
                 android:id="@+id/sortRadioGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical">
                 
                 <RadioButton
                     android:id="@+id/radioNewest"
@@ -143,31 +170,47 @@
                     android:layout_height="wrap_content"
                     android:text="Giá thấp nhất"/>
             </RadioGroup>
-            
-            <Button
+              <Button
                 android:id="@+id/btnApplyFilter"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Áp dụng"
-                android:layout_marginTop="8dp"
-                android:backgroundTint="#4CAF50"
-                android:textColor="#FFFFFF"/>
+                android:layout_height="56dp"
+                android:text="Áp dụng bộ lọc"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="#3182CE"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:textSize="16sp"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
     <!-- Hiển thị khi không có kết quả -->
-    <TextView
-        android:id="@+id/tvNoResults"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/noResultsCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Không tìm thấy đơn hàng nào"
-        android:textSize="16sp"
-        android:gravity="center"
-        android:layout_marginTop="32dp"
-        android:visibility="gone" />
+        android:layout_marginBottom="12dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="@android:color/white"
+        android:visibility="gone">
 
+        <TextView
+            android:id="@+id/tvNoResults"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Không tìm thấy đơn hàng nào"
+            android:textSize="16sp"
+            android:textColor="#718096"
+            android:gravity="center"
+            android:padding="32dp" />
+
+    </androidx.cardview.widget.CardView>
     <ListView
         android:id="@+id/orderListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="8dp"
+        android:clipToPadding="false"
+        android:scrollbarStyle="outsideOverlay" />
 </LinearLayout>

@@ -17,7 +17,7 @@
             android:orientation="vertical"
             android:gravity="center"
             android:padding="24dp"
-            android:background="@drawable/bg_header_admin">
+            android:background="@drawable/bg_profile_layout">
 
             <ImageView
                 android:id="@+id/avatarImageView"
@@ -63,6 +63,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/profileRecyclerView"
             android:layout_width="match_parent"
+            android:background="@drawable/bg_item_profile"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:orientation="vertical"/>

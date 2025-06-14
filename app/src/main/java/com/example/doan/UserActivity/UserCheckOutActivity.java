@@ -1,7 +1,9 @@
 package com.example.doan.UserActivity;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -10,6 +12,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.doan.Adapter.UserCheckOutAdapter;
+import com.example.doan.DatabaseClass.CurrentUser;
 import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.DatabaseClassRequest.OrderRequest;
 import com.example.doan.DatabaseClassResponse.OrderResponse;
@@ -60,11 +63,13 @@ public class UserCheckOutActivity extends AppCompatActivity {
     }
     public void setBtnCheckOut() {
         binding.btnCheckout.setOnClickListener(v -> {
-            int userID = 1;
+            int userID;
+            SharedPreferences sharedPreferences = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+            userID = sharedPreferences.getInt("id", 0);
+            Log.d("UserID: ", String.valueOf(userID));
             List<OrderRequest.Item> items = OrderUtils.convertFoodItemsToOrderItems(cartList);
             String discountCode = null; // nếu có
             String paymentMethod = "cash"; // hoặc "momo", "card"
-            Log.d("DEBUG", "UserID gửi lên: " + userID);
 
             UserDataSendRequest.sendCreateOrderRequest(userID, items, discountCode, paymentMethod,
                     new UserDataSendRequest.RespondListener() {

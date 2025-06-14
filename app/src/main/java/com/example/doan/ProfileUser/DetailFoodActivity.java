@@ -1,7 +1,9 @@
 package com.example.doan.ProfileUser;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -9,6 +11,8 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.doan.Adapter.ReviewAdapter;
@@ -28,9 +32,10 @@ import retrofit2.Response;
 public class DetailFoodActivity extends AppCompatActivity {
 
     private ImageView imgFood;
-    private TextView txtName, txtPrice, txtDescription;
-    private ListView listReviews;
+    private TextView txtName, txtPrice, txtDescription,txtRatingAvg;
+    private RecyclerView recyclerView;
     private ReviewAdapter reviewAdapter;
+    private Button btnAddReview, btnBack;
     private List<Review> reviewList = new ArrayList<>();
 
     private String foodId;
@@ -43,6 +48,7 @@ public class DetailFoodActivity extends AppCompatActivity {
 
         initViews();
         initAdapter();
+        setButton();
         getFoodIdFromIntent();
         loadFoodDetails(foodId);
         loadFoodReviews(foodId);
@@ -54,15 +60,29 @@ public class DetailFoodActivity extends AppCompatActivity {
         txtName = findViewById(R.id.txt_food_name_detail);
         txtPrice = findViewById(R.id.txt_food_price_detail);
         txtDescription = findViewById(R.id.txt_food_description);
-        listReviews = findViewById(R.id.list_reviews);
+        txtRatingAvg = findViewById(R.id.txt_rating_avg);
+        btnAddReview = findViewById(R.id.btn_add_review);
+        btnBack = findViewById(R.id.btn_back);
+        recyclerView = findViewById(R.id.recycler_reviews);
     }
 
     // Khởi tạo adapter cho list đánh giá
     private void initAdapter() {
-        reviewAdapter = new ReviewAdapter(this, reviewList);
-        listReviews.setAdapter(reviewAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        reviewAdapter = new ReviewAdapter(reviewList);
+        recyclerView.setAdapter(reviewAdapter);
     }
-
+    // Đặt sự kiện cho các nút
+    private void setButton() {
+        btnAddReview.setOnClickListener(v -> {
+            Intent intent = new Intent(DetailFoodActivity.this, AddReviewActivity.class);
+            intent.putExtra("food_id", foodId);
+            startActivity(intent);
+        });
+        btnBack.setOnClickListener(v -> {
+            finish();
+        });
+    }
     // Lấy ID món ăn từ Intent truyền vào
     private void getFoodIdFromIntent() {
         foodId = getIntent().getStringExtra("id");
@@ -96,9 +116,10 @@ public class DetailFoodActivity extends AppCompatActivity {
 
     // Hiển thị thông tin món ăn lên UI
     private void bindFoodData(FoodItem food) {
-        txtName.setText(food.getName());
-        txtPrice.setText(food.getPrice() + "đ");
+        txtName.setText("Tên món ăn : "+ food.getName());
+        txtPrice.setText("Giá món ăn : " + food.getPrice() + "đ");
         txtDescription.setText(food.getDescription());
+        txtRatingAvg.setText("Đánh giá  trung bình : " + food.getRatingAvg() + "★");
         Glide.with(this).load(food.getImageUrl()).into(imgFood);
     }
 

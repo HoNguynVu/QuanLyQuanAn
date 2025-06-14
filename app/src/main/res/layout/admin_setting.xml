@@ -21,173 +21,205 @@
         app:titleTextColor="@color/primary_black"
         app:navigationIcon="@drawable/ic_back"
         android:outlineProvider="none" />
-
     <!-- Nội dung -->
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:orientation="vertical"
         android:padding="20dp"
-        android:scrollbarThumbVertical="@android:color/darker_gray"
-        android:scrollbarSize="4dp"
-        android:fadeScrollbars="false"
-        android:overScrollMode="ifContentScrolls"
-        android:clipToPadding="false"
-        android:clipChildren="false">        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingBottom="20dp"
-            android:animateLayoutChanges="true">
+        android:paddingBottom="20dp"
+        android:animateLayoutChanges="true">
 
-            <!-- Tiêu đề Họ tên -->
-            <TextView
-                android:id="@+id/txtNameLabel"
+            <!-- CardView cho thông tin cá nhân -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Họ tên"
-                android:textColor="@android:color/black"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="4dp"
-                android:paddingStart="4dp"
-                android:fontFamily="sans-serif-medium" />
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardUseCompatPadding="true">
 
-            <!-- Họ tên -->
-            <EditText
-                android:id="@+id/edtName"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- Tiêu đề section -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Thông tin cá nhân"
+                        android:textColor="#2196F3"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="16dp"
+                        android:fontFamily="sans-serif-medium" />
+
+                    <!-- Tiêu đề Họ tên -->
+                    <TextView
+                        android:id="@+id/txtNameLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Họ tên"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="4dp"
+                        android:paddingStart="4dp"
+                        android:fontFamily="sans-serif-medium" />
+
+                    <!-- Họ tên -->
+                    <EditText
+                        android:id="@+id/edtName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Họ tên"
+                        android:padding="18dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/edittext_log"
+                        android:textColorHint="#757575"
+                        android:textColor="@color/primary_black"
+                        android:textSize="16sp"
+                        android:elevation="2dp"
+                        android:fontFamily="sans-serif-medium" />
+
+                    <!-- Tiêu đề Ngày sinh -->
+                    <TextView
+                        android:id="@+id/txtDobLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Ngày sinh"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="4dp"
+                        android:paddingStart="4dp"
+                        android:fontFamily="sans-serif-medium" />
+
+                    <!-- Ngày sinh -->
+                    <EditText
+                        android:id="@+id/edtDob"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Ngày sinh"
+                        android:padding="18dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/edittext_log"
+                        android:inputType="date"
+                        android:textColorHint="#757575"
+                        android:textColor="@color/primary_black"
+                        android:textSize="16sp"
+                        android:elevation="2dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:importantForAutofill="no" />
+
+                    <!-- Tiêu đề Số điện thoại -->
+                    <TextView
+                        android:id="@+id/txtPhoneLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Số điện thoại"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="4dp"
+                        android:paddingStart="4dp"
+                        android:fontFamily="sans-serif-medium" />
+
+                    <!-- SĐT -->
+                    <EditText
+                        android:id="@+id/edtPhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Số điện thoại"
+                        android:padding="18dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/edittext_log"
+                        android:inputType="phone"
+                        android:textColorHint="#757575"
+                        android:textColor="@color/primary_black"
+                        android:textSize="16sp"
+                        android:elevation="2dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:importantForAutofill="no" />
+
+                    <!-- Tiêu đề Email -->
+                    <TextView
+                        android:id="@+id/txtEmailLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Email"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="4dp"
+                        android:paddingStart="4dp"
+                        android:fontFamily="sans-serif-medium" />
+
+                    <!-- Email -->
+                    <EditText
+                        android:id="@+id/edtEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Email"
+                        android:padding="18dp"
+                        android:layout_marginBottom="0dp"
+                        android:background="@drawable/edittext_log"
+                        android:inputType="textEmailAddress"
+                        android:textColorHint="#757575"
+                        android:textColor="@color/primary_black"
+                        android:textSize="16sp"
+                        android:elevation="2dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:importantForAutofill="no" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- CardView cho mật khẩu -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="👤 Họ tên"
-                android:padding="18dp"
-                android:layout_marginBottom="12dp"
-                android:background="@drawable/edittext_log"
-                android:textColorHint="#757575"
-                android:textColor="@color/primary_black"
-                android:textSize="16sp"
-                android:elevation="2dp"
-                android:fontFamily="sans-serif-medium" />
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardUseCompatPadding="true">
 
-            <!-- TextView hiển thị giá trị Họ tên -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-            <!-- Tiêu đề Ngày sinh -->
-            <TextView
-                android:id="@+id/txtDobLabel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Ngày sinh"
-                android:textColor="@android:color/black"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="4dp"
-                android:paddingStart="4dp"
-                android:fontFamily="sans-serif-medium" />
+                    <!-- Tiêu đề section -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Bảo mật"
+                        android:textColor="#2196F3"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="16dp"
+                        android:fontFamily="sans-serif-medium" />
 
-            <!-- Ngày sinh -->
-            <EditText
-                android:id="@+id/edtDob"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="🎂 Ngày sinh"                
-                android:padding="18dp"
-                android:layout_marginBottom="12dp"
-                android:background="@drawable/edittext_log"
-                android:inputType="date"
-                android:textColorHint="#757575"
-                android:textColor="@color/primary_black"
-                android:textSize="16sp"
-                android:elevation="2dp"
-                android:fontFamily="sans-serif-medium"
-                android:importantForAutofill="no" />
-
-            <!-- Tiêu đề Số điện thoại -->
-            <TextView
-                android:id="@+id/txtPhoneLabel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Số điện thoại"
-                android:textColor="@android:color/black"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="4dp"
-                android:paddingStart="4dp"
-                android:fontFamily="sans-serif-medium" />
-
-            <!-- SĐT -->
-            <EditText
-                android:id="@+id/edtPhone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="📞 Số điện thoại"
-                android:padding="18dp"
-                android:layout_marginBottom="12dp"
-                android:background="@drawable/edittext_log"
-                android:inputType="phone"
-                android:textColorHint="#757575"
-                android:textColor="@color/primary_black"
-                android:textSize="16sp"
-                android:elevation="2dp"
-                android:fontFamily="sans-serif-medium"
-                android:importantForAutofill="no" />
-
-            <!-- Tiêu đề Email -->
-            <TextView
-                android:id="@+id/txtEmailLabel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Email"
-                android:textColor="@android:color/black"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="4dp"
-                android:paddingStart="4dp"
-                android:fontFamily="sans-serif-medium" />
-
-            <!-- Email -->
-            <EditText
-                android:id="@+id/edtEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="✉️ Email"
-                android:padding="18dp"
-                android:layout_marginBottom="12dp"
-                android:background="@drawable/edittext_log"
-                android:inputType="textEmailAddress"
-                android:textColorHint="#757575"
-                android:textColor="@color/primary_black"
-                android:textSize="16sp"
-                android:elevation="2dp"
-                android:fontFamily="sans-serif-medium"
-                android:importantForAutofill="no" />
-
-            <!-- Tiêu đề đổi mật khẩu -->
-            <TextView
-                android:id="@+id/txtPasswordLabel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Mật khẩu"
-                android:textColor="@android:color/black"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="4dp"
-                android:paddingStart="4dp"
-                android:fontFamily="sans-serif-medium" />
-
-            <!-- Đổi mật khẩu -->
-            <TextView
-                android:id="@+id/txtChangePassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="🔒 Đổi mật khẩu"
-                android:padding="18dp"
-                android:background="@drawable/edittext_log"
-                android:textColor="@color/primary_black"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:elevation="2dp"
-                android:drawablePadding="8dp"
-                android:gravity="center_vertical" />
-
-        </LinearLayout>
-    </ScrollView>
+                    <!-- Đổi mật khẩu -->
+                    <TextView
+                        android:id="@+id/txtChangePassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Đổi mật khẩu"
+                        android:padding="18dp"
+                        android:background="@drawable/edittext_log"
+                        android:textColor="@color/primary_black"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:elevation="2dp"
+                        android:drawablePadding="8dp"
+                        android:gravity="center_vertical" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+    </LinearLayout>
 </LinearLayout>
