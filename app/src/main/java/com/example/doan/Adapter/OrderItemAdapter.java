@@ -72,7 +72,7 @@ public class OrderItemAdapter extends ArrayAdapter<OrderItemWithFood> {
         if (!isAdminMode) {
             convertView.setOnClickListener(v -> {
                 Intent intent = new Intent(context, DetailFoodActivity.class);
-                intent.putExtra("id", String.valueOf(food.getId()));
+                intent.putExtra("id", food.getId());
                 context.startActivity(intent);
             });
         } else {
