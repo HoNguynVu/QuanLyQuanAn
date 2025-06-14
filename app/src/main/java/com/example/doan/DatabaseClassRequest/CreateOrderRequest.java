@@ -1,4 +1,4 @@
-package com.example.doan.DatabaseClass;
+package com.example.doan.DatabaseClassRequest;
 
 import java.util.List;
 
