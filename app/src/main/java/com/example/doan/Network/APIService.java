@@ -8,7 +8,7 @@ import com.example.doan.DatabaseClassResponse.LoginResponse;
 import com.example.doan.DatabaseClass.Order;
 import com.example.doan.DatabaseClass.OrderItem;
 import com.example.doan.DatabaseClass.Review;
-import com.example.doan.DatabaseClassResponse.OrderRequest;
+import com.example.doan.DatabaseClassRequest.OrderRequest;
 import com.example.doan.DatabaseClassResponse.OrderResponse;
 import com.example.doan.DatabaseClassResponse.StatisticsResponse;
 import com.example.doan.DatabaseClassResponse.StatusResponse;
