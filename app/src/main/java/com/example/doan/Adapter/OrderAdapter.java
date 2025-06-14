@@ -93,7 +93,8 @@ public class OrderAdapter extends ArrayAdapter<Order> {
 
                     })
                     .show();
-        });        // Thêm click listener cho toàn bộ item để xem chi tiết
+        });
+        // Thêm click listener cho toàn bộ item để xem chi tiết
         convertView.setOnClickListener(v -> {
             Intent intent = new Intent(context, AdminOrderDetailActivity.class);
             intent.putExtra("order_id", order.getOrderId());
