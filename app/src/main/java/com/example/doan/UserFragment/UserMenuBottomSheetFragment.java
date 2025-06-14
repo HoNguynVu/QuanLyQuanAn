@@ -25,7 +25,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
-import static com.example.doan.User.UserConstants.GETFOODS_URL;
 
 public class UserMenuBottomSheetFragment extends BottomSheetDialogFragment {
     private UserFragmentMenuBottomSheetBinding binding;
@@ -41,15 +40,6 @@ public class UserMenuBottomSheetFragment extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = UserFragmentMenuBottomSheetBinding.inflate(inflater, container, false);
-
-        adapter = new UserMenuAdapter(requireContext(), itemList);
-
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(binding.menuRecyclerView.getContext(), LinearLayout.VERTICAL);
-        binding.menuRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.menuRecyclerView.setAdapter(adapter);
-        binding.menuRecyclerView.addItemDecoration(dividerItemDecoration);
-        binding.menuRecyclerView.addItemDecoration(new UserSpaceItemDecoration(16));
-
         return binding.getRoot();
     }
 
@@ -57,7 +47,21 @@ public class UserMenuBottomSheetFragment extends BottomSheetDialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        UserDataFetcher.fetchFoods(requireContext(), GETFOODS_URL, new UserDataFetcher.FetchCallBack() {
+        setRecyclerView();
+        getFoodData();
+    }
+
+    public void setRecyclerView() {
+        adapter = new UserMenuAdapter(requireContext(), itemList);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(binding.menuRecyclerView.getContext(), LinearLayout.VERTICAL);
+        binding.menuRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.menuRecyclerView.setAdapter(adapter);
+        binding.menuRecyclerView.addItemDecoration(dividerItemDecoration);
+        binding.menuRecyclerView.addItemDecoration(new UserSpaceItemDecoration(16));
+    }
+
+    public void getFoodData() {
+        UserDataFetcher.fetchFoods(new UserDataFetcher.FetchCallBack<FoodItem>() {
 
             @Override
             public void onSuccess(List<FoodItem> data) {
@@ -68,8 +72,9 @@ public class UserMenuBottomSheetFragment extends BottomSheetDialogFragment {
             }
 
             @Override
-            public void onError(VolleyError error) {
+            public void onError(String message) {
+                Log.d("Lỗi Retrofit: ", message);
             }
-        });
+        }, "all");
     }
 }

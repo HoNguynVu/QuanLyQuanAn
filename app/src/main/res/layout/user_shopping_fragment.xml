@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="20dp"
     android:orientation="vertical">
 
 
@@ -17,7 +18,7 @@
         android:background="@drawable/searchshape"
         android:iconifiedByDefault="false"
         android:queryBackground="@android:color/transparent"
-        android:queryHint="What do you want to order?"
+        android:queryHint="Bạn muốn đặt gì?"
         android:layout_marginBottom="16dp"
         android:searchIcon="@drawable/ic_search" />
 
@@ -33,6 +34,7 @@
         android:layout_height="wrap_content" />
 
     <androidx.viewpager2.widget.ViewPager2
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/view_pager" />
