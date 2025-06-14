@@ -60,12 +60,14 @@ public class OrderItemAdapter extends ArrayAdapter<OrderItemWithFood> {
         txtName.setText(food.getName());
         txtQty.setText("Số lượng: " + item.getOrderItem().getQuantity());
         txtPrice.setText("Giá: " + formatCurrency(food.getPrice()) + " đ");
-        txtNote.setText("Ghi chú: " + item.getOrderItem().getNote());        // Load ảnh bằng Glide (thêm thư viện Glide vào project)
+        txtNote.setText("Ghi chú: " + item.getOrderItem().getNote());
+
+        // Load ảnh bằng Glide (thêm thư viện Glide vào project)
         Glide.with(context)
                 .load(food.getImageUrl())
                 .placeholder(R.drawable.ic_launcher_background)  // ảnh mặc định nếu chưa load được
                 .into(imgFood);
-                
+
         // Chỉ cho phép click nếu không phải admin mode
         if (!isAdminMode) {
             convertView.setOnClickListener(v -> {
@@ -79,7 +81,7 @@ public class OrderItemAdapter extends ArrayAdapter<OrderItemWithFood> {
             convertView.setFocusable(false);
             convertView.setOnClickListener(null);
         }
-        
+
         return convertView;
     }
     private String formatCurrency(double amount) {

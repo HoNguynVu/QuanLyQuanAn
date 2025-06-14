@@ -111,14 +111,14 @@ public class AdminSetting extends AppCompatActivity {
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     User user = response.body().user;
-                    if (user != null && user.email != null) {
-                        edtName.setText(user.name);
-                        edtPhone.setText(user.phone);
-                        edtEmail.setText(user.email);
+                    if (user != null && user.getEmail() != null) {
+                        edtName.setText(user.getName());
+                        edtPhone.setText(user.getPhone());
+                        edtEmail.setText(user.getEmail());
 
-                        if (user.date_birth != null && !user.date_birth.isEmpty()) {
+                        if (user.getDate_birth() != null && !user.getDate_birth().isEmpty()) {
                             try {
-                                edtDob.setText(displayFormat.format(serverFormat.parse(user.date_birth)));
+                                edtDob.setText(displayFormat.format(serverFormat.parse(user.getDate_birth())));
                             } catch (ParseException e) {
                                 edtDob.setText("");
                             }
