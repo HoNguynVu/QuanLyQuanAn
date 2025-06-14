@@ -57,7 +57,7 @@ public class OrderAdapter extends ArrayAdapter<Order> {
         tvStatus.setText("Trạng thái: " + order.getStatus());
         tvCustomerName.setText("Khách hàng: " + (order.getCustomerName() != null ? order.getCustomerName() : "Không xác định"));
         setStatusColor(tvStatus, order.getStatus());btnUpdate.setOnClickListener(v -> {
-            String[] statuses = {"Đang chờ", "Đang chuẩn bị", "Đã giao", "Hủy"};
+            String[] statuses = {"Đang chờ", "Đã tiếp nhận","Đang giao", "Đã giao", "Hủy"};
 
             new AlertDialog.Builder(context)
                     .setTitle("Chọn trạng thái mới")
@@ -119,8 +119,11 @@ public class OrderAdapter extends ArrayAdapter<Order> {
             case "Đang chờ":
                 color = 0xFFFFC107; // Vàng
                 break;
-            case "Đang chuẩn bị":
+            case "Đã tiếp nhận":
                 color = 0xFFFF9800; // Cam
+                break;
+            case "Đang giao":
+                color = 0xFF2196F3; // Xanh
                 break;
             case "Đã giao":
                 color = 0xFF4CAF50; // Xanh lá
