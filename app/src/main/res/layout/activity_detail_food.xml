@@ -81,13 +81,22 @@
             android:layout_marginTop="8dp"
             android:nestedScrollingEnabled="false"
             android:overScrollMode="never"/>
-
+        <TextView
+            android:id="@+id/txt_rating_avg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trung bình: 4.5 ★"
+            android:textSize="16sp"
+            android:textColor="#FF9800"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp" />
         <!-- Nút đánh giá & quay lại -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="16dp"
+            android:layout_marginBottom="5dp"
+            android:paddingBottom="16dp"
             android:gravity="center">
 
             <Button
@@ -98,7 +107,7 @@
                 android:text="Đánh giá món ăn"
                 android:backgroundTint="#4CAF50"
                 android:textColor="#FFFFFF"
-                android:textSize="12dp"
+                android:textSize="14sp"
                 android:layout_marginEnd="8dp" />
 
             <Button
@@ -106,7 +115,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="12dp"
+                android:textSize="14sp"
                 android:text="Quay lại"
                 android:backgroundTint="#9E9E9E"
                 android:textColor="#FFFFFF"

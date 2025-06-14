@@ -22,6 +22,8 @@ public class FoodItem {
     private float ratingAvg;
     private String itemQuantity;
 
+
+
     public FoodItem(int id, String name, String category, double price, String image_url, int available, String description, float ratingAvg, String note, String itemQuantity) {
         this.id = id;
         this.name = name;
