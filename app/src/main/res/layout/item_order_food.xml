@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:text="Tên món:"
                 android:textStyle="bold"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textColor="#2D3748"
                 android:layout_marginBottom="4dp" />
 
@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Số lượng:"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:textColor="#4A5568"
                 android:layout_marginBottom="2dp" />
 
@@ -57,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Giá:"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:textColor="#E53E3E"
                 android:textStyle="bold"
                 android:layout_marginBottom="2dp" />
@@ -67,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Ghi chú:"
-                android:textSize="12sp"
+                android:textSize="16sp"
                 android:textColor="#718096"
                 android:layout_marginTop="2dp" />
 
