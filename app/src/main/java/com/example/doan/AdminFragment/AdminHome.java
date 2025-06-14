@@ -56,4 +56,8 @@ public class AdminHome extends AppCompatActivity {
             return true;
         });
     }
+    public void navigateToOrders() {
+        bottomNavigationView.setSelectedItemId(R.id.nav_orders);
+    }
+
 }
