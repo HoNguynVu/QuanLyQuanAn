@@ -16,6 +16,7 @@
         android:padding="16dp"
         android:background="@android:color/white">
 
+        <!-- Ảnh món ăn -->
         <ImageView
             android:id="@+id/img_food"
             android:layout_width="60dp"
