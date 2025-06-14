@@ -3,6 +3,7 @@ package com.example.doan.ProfileUser;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -33,7 +34,7 @@ public class AddReviewActivity extends AppCompatActivity {
     private ImageView imgFood;
     private TextView tvFoodName;
     private TextInputEditText edtComment;
-    private MaterialButton btnSubmit;
+    private Button btnSubmit, btnCancel;
 
     private RatingBar ratingBarUser;
 
@@ -55,6 +56,7 @@ public class AddReviewActivity extends AppCompatActivity {
         tvFoodName = findViewById(R.id.tvFoodName);
         edtComment = findViewById(R.id.edtComment);
         btnSubmit = findViewById(R.id.btn_submit);
+        btnCancel = findViewById(R.id.btn_cancel);
         ratingBarUser = findViewById(R.id.ratingBarUser);
     }
 
@@ -88,6 +90,7 @@ public class AddReviewActivity extends AppCompatActivity {
     private void  setClick()
     {
         btnSubmit.setOnClickListener(v -> {
+            btnSubmit.setEnabled(false);
             String comment = edtComment.getText().toString();
             int rating = (int)ratingBarUser.getRating();
             SharedPreferences sharedPreferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
@@ -95,6 +98,10 @@ public class AddReviewActivity extends AppCompatActivity {
 
             addReview(comment, rating , userID);
             setResult(RESULT_OK); // báo về cho Activity gọi nó
+            finish();
+        });
+        btnCancel.setOnClickListener(v -> {
+            setResult(RESULT_CANCELED);
             finish();
         });
     }
