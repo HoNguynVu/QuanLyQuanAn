@@ -60,9 +60,7 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
     }
     private void loadOrderDetails(String orderId) {
         APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
-
         Log.d("API", "Gửi yêu cầu lấy đơn hàng với orderId = " + orderId);
-
         apiService.getOrderItems(orderId).enqueue(new Callback<List<OrderItem>>() {
             @Override
             public void onResponse(Call<List<OrderItem>> call, Response<List<OrderItem>> response) {
@@ -132,12 +130,11 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
 
         if (status == null) status = "Đang xử lý";
         if (createdAt == null) createdAt = "Không rõ ngày";
-
         txtStatus.setText("Trạng thái: " + status);
         txtDate.setText("Ngày tạo: " + createdAt);
         txtTotal.setText("Tổng tiền: " + formatCurrency(amount) + " VND");
 
-        adapter = new OrderItemAdapter(this, itemList);
+        adapter = new OrderItemAdapter(this, itemList, true); // true = admin mode
         listView.setAdapter(adapter);
     }
     private String formatCurrency(double amount) {
