@@ -48,12 +48,12 @@ public class AdminSetting extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_setting);
 
-        init();
+        initViews();
         initClick();
         loadUserData();
     }
 
-    public void init()
+    public void initViews()
     {
         toolbar = findViewById(R.id.topAppBar);
         toolbar.setNavigationOnClickListener(v -> onBackPressed());

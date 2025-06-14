@@ -127,7 +127,4 @@ public class AdminHomeFragment extends Fragment {
         barChart.animateY(1000);
         barChart.invalidate();
     }
-
-
-
 }
