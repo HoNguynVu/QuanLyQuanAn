@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="#F5F7FA">      <!-- Header -->
+    android:background="#F5F7FA">
+    <!-- Header -->
     <TextView
         android:id="@+id/txt_header"
         android:layout_width="match_parent"
@@ -21,7 +22,8 @@
         android:elevation="2dp"
         android:layout_marginBottom="12dp"
         android:clickable="false"
-        android:focusable="false" />    <!-- Thông tin đơn hàng -->
+        android:focusable="false" />
+    <!-- Thông tin đơn hàng -->
     <TextView
         android:id="@+id/txt_order_id"
         android:layout_width="match_parent"
@@ -82,7 +84,8 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#E2E8F0"
-        android:layout_marginVertical="12dp" />    <!-- Danh sách món (ListView) -->
+        android:layout_marginVertical="12dp" />
+    <!-- Danh sách món (ListView) -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -111,7 +114,8 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#E2E8F0"
-        android:layout_marginBottom="12dp" />    <!-- Tổng tiền -->
+        android:layout_marginBottom="12dp" />
+    <!-- Tổng tiền -->
     <TextView
         android:id="@+id/txt_total_amount"
         android:layout_width="match_parent"

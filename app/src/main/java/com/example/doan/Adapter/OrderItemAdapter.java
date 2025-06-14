@@ -17,6 +17,7 @@ import com.example.doan.ProfileUser.DetailFoodActivity;
 import com.example.doan.ProfileUser.OrderItemWithFood;
 import com.example.doan.R;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class OrderItemAdapter extends ArrayAdapter<OrderItemWithFood> {
@@ -48,7 +49,7 @@ public class OrderItemAdapter extends ArrayAdapter<OrderItemWithFood> {
 
         txtName.setText(food.getName());
         txtQty.setText("Số lượng: " + item.getOrderItem().getQuantity());
-        txtPrice.setText("Giá: " + food.getPrice() + "đ");
+        txtPrice.setText("Giá: " + formatCurrency(food.getPrice()) + " đ");
         txtNote.setText("Ghi chú: " + item.getOrderItem().getNote());
 
         // Load ảnh bằng Glide (thêm thư viện Glide vào project)
@@ -62,5 +63,9 @@ public class OrderItemAdapter extends ArrayAdapter<OrderItemWithFood> {
             context.startActivity(intent);
         });
         return convertView;
+    }
+    private String formatCurrency(double amount) {
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        return formatter.format(amount);
     }
 }

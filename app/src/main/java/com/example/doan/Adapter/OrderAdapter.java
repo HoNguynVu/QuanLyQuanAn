@@ -127,7 +127,8 @@ public class OrderAdapter extends ArrayAdapter<Order> {
                 break;
             case "Hủy":
                 color = 0xFFF44336; // Đỏ
-                break;            default:
+                break;
+                default:
                 color = 0xFF000000; // Đen
         }
         tvStatus.setTextColor(color);
