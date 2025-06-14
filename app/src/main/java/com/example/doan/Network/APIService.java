@@ -80,7 +80,7 @@ public interface APIService {
             @Field("new_password") String newPassword
     );
 
-    @GET("get_foods.php")
+    @GET("get_foods_by_category.php")
     Call<FoodListResponse> getFoodsByCategory(@Query("category") String category);
 
     @FormUrlEncoded
@@ -176,5 +176,15 @@ public interface APIService {
             @Field("title") String title,
             @Field("message") String message
     );
+
+    @FormUrlEncoded
+    @POST("add_review.php")
+    Call<ResponseBody> addReview(
+            @Field("food_id") String foodId,
+            @Field("user_id") int userId,
+            @Field("rating") int rating,
+            @Field("comment") String comment
+    );
+
 
 }

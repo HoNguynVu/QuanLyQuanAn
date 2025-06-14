@@ -17,6 +17,9 @@ public class Order {
     @SerializedName("created_at")
     private String createdAt;
 
+    @SerializedName("discount_percent")
+    private int discount_percent;
+
     // Getter và Setter
 
     public String getOrderId() {
@@ -52,6 +55,14 @@ public class Order {
     }
     public int getUser_id() { return userId; }
     public void setUser_id(int user_id) { this.userId = user_id; }
+
+    public void setDiscount_percent(int discount_percent) {
+        this.discount_percent = discount_percent;
+    }
+    public int getDiscount_percent() {
+        return discount_percent;
+    }
+
 
 }
 

@@ -8,12 +8,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.doan.Adapter.OrderAdapter;
 import com.example.doan.Adapter.Orders_User_Adapter;
 import com.example.doan.DatabaseClass.Order;
 import com.example.doan.Network.APIService;
@@ -28,9 +23,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MyOrdersActivity extends AppCompatActivity {
-    private ListView listOrders;
-    private List<Order> orderList;
-    private Orders_User_Adapter adapter;
+
+    private ListView ordersListView;
+    private List<Order> orders;
+    private Orders_User_Adapter ordersAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,41 +34,59 @@ public class MyOrdersActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_my_orders);
 
-        listOrders = findViewById(R.id.listOrders);
-        orderList = new ArrayList<>();
-        adapter = new Orders_User_Adapter(this, orderList);
-        listOrders.setAdapter(adapter);
+        initUI();
+        setupBackButton();
 
-        SharedPreferences sp = getSharedPreferences("UserInfo", MODE_PRIVATE);
-        String email = sp.getString("email", "");
-
-        ImageView imgBack = findViewById(R.id.imgBackMyOrder);
-        imgBack.setOnClickListener(view -> finish());
-
-        fetchOrdersFromServer(email);
-
+        String userEmail = getUserEmail();
+        fetchOrders(userEmail);
     }
-        private void fetchOrdersFromServer(String email) {
-            APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
-            Call<List<Order>> call = apiService.getOrdersByUser(email);
 
-            call.enqueue(new Callback<List<Order>>() {
-                @Override
-                public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        orderList.clear();
-                        orderList.addAll(response.body());
-                        adapter.notifyDataSetChanged();
-                    } else {
-                        Toast.makeText(MyOrdersActivity.this, "Không có dữ liệu đơn hàng", Toast.LENGTH_SHORT).show();
-                    }
+    //Ánh xạ giao diện và thiết lập adapter cho ListView
+    private void initUI() {
+        ordersListView = findViewById(R.id.listOrders);
+        orders = new ArrayList<>();
+        ordersAdapter = new Orders_User_Adapter(this, orders);
+        ordersListView.setAdapter(ordersAdapter);
+    }
+
+    //Lấy email người dùng từ SharedPreferences
+    private String getUserEmail() {
+        SharedPreferences sharedPreferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
+        return sharedPreferences.getString("email", "");
+    }
+
+    //Bắt sự kiện nút quay lại
+    private void setupBackButton() {
+        ImageView backButton = findViewById(R.id.imgBackMyOrder);
+        backButton.setOnClickListener(view -> finish());
+    }
+
+    //Gọi API để lấy danh sách đơn hàng của người dùng
+    private void fetchOrders(String email) {
+        APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
+        Call<List<Order>> call = apiService.getOrdersByUser(email);
+
+        call.enqueue(new Callback<List<Order>>() {
+            @Override
+            public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    orders.clear();
+                    orders.addAll(response.body());
+                    ordersAdapter.notifyDataSetChanged();
+                } else {
+                    showToast("Không có dữ liệu đơn hàng");
                 }
+            }
 
-                @Override
-                public void onFailure(Call<List<Order>> call, Throwable t) {
-                    Toast.makeText(MyOrdersActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
+            @Override
+            public void onFailure(Call<List<Order>> call, Throwable t) {
+                showToast("Lỗi kết nối: " + t.getMessage());
+            }
+        });
+    }
 
+    //Hiển thị thông báo ngắn
+    private void showToast(String message) {
+        Toast.makeText(MyOrdersActivity.this, message, Toast.LENGTH_SHORT).show();
+    }
 }

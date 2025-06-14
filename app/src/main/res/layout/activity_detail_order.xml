@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp"
     android:layout_width="match_parent"
@@ -14,51 +15,87 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Chi Tiết Đơn Hàng"
-        android:textSize="24sp"
+        android:textSize="22sp"
         android:textStyle="bold"
         android:gravity="center"
-        android:textColor="@color/black"
-        android:paddingBottom="16dp" />
+        android:textColor="#212121"
+        android:paddingBottom="20dp" />
 
-    <!-- Thông tin đơn hàng -->
-    <TextView
-        android:id="@+id/txt_order_id"
-        android:layout_width="wrap_content"
+    <!-- Mã đơn hàng + Mã giảm giá -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Mã đơn hàng: #12345"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:textColor="@color/black"
-        android:layout_marginBottom="8dp" />
+        android:orientation="horizontal"
+        android:layout_marginBottom="8dp">
 
-    <TextView
-        android:id="@+id/txt_order_date"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/txt_order_id"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Mã đơn hàng: #12345"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="#424242" />
+
+        <TextView
+            android:id="@+id/txt_discount"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Giảm giá: SALE50"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="#FF5722"
+            android:gravity="center" />
+    </LinearLayout>
+
+    <!-- Ngày tạo + Trạng thái -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Ngày tạo: 2025-05-18"
-        android:layout_marginBottom="4dp" />
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp">
 
-    <TextView
-        android:id="@+id/txt_order_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Trạng thái: Đã giao"
-        android:textColor="#4CAF50"
-        android:layout_marginBottom="16dp" />
+        <TextView
+            android:id="@+id/txt_order_date"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Ngày tạo: 2025-05-18"
+            android:textSize="18sp"
+            android:textColor="#616161" />
 
+        <TextView
+            android:id="@+id/txt_order_status"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Trạng thái: Đã giao"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:textColor="#4CAF50" />
+    </LinearLayout>
+
+    <!-- Đường kẻ -->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#E0E0E0"
+        android:background="#BDBDBD"
         android:layout_marginBottom="16dp" />
 
-    <!-- Danh sách món (ListView) -->
+    <!-- Danh sách món -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Danh sách món:"
+        android:text="Danh sách các món trong đơn hàng"
         android:textStyle="bold"
-        android:textSize="16sp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:textSize="20sp"
+        android:textColor="#212121"
         android:layout_marginBottom="8dp" />
 
     <ListView
@@ -67,15 +104,19 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:divider="@android:color/darker_gray"
+        android:layout_marginTop="20dp"
         android:dividerHeight="1dp"
-        android:paddingBottom="8dp" />
+        android:background="@android:color/white"
+        android:padding="4dp" />
 
+    <!-- Đường kẻ -->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#E0E0E0"
+        android:background="#BDBDBD"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp" />
+
     <!-- Tổng tiền -->
     <TextView
         android:id="@+id/txt_total_amount"
@@ -83,14 +124,21 @@
         android:layout_height="wrap_content"
         android:text="Tổng tiền: 250.000đ"
         android:textStyle="bold"
-        android:textSize="18sp"
+        android:textSize="20sp"
         android:textColor="#FF5722"
         android:layout_gravity="end" />
 
-    <Button
+    <!-- Nút Quay lại -->
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_back"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Quay lại"
+        android:textSize="20sp"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:backgroundTint="@color/black"
+        android:layout_gravity="center"
+        app:cornerRadius="8dp"
         android:layout_marginTop="24dp" />
 </LinearLayout>
