@@ -9,7 +9,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.doan.Adapter.Orders_User_Adapter;
+import com.example.doan.Adapter.OrdersUserAdapter;
 import com.example.doan.DatabaseClass.Order;
 import com.example.doan.Network.APIService;
 import com.example.doan.Network.RetrofitClient;
@@ -26,7 +26,7 @@ public class MyOrdersActivity extends AppCompatActivity {
 
     private ListView ordersListView;
     private List<Order> orders;
-    private Orders_User_Adapter ordersAdapter;
+    private OrdersUserAdapter ordersAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +45,7 @@ public class MyOrdersActivity extends AppCompatActivity {
     private void initUI() {
         ordersListView = findViewById(R.id.listOrders);
         orders = new ArrayList<>();
-        ordersAdapter = new Orders_User_Adapter(this, orders);
+        ordersAdapter = new OrdersUserAdapter(this, orders);
         ordersListView.setAdapter(ordersAdapter);
     }
 

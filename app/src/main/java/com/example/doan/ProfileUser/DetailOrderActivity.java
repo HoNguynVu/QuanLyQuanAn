@@ -47,6 +47,7 @@ public class DetailOrderActivity extends AppCompatActivity {
             return;
         }
         loadOrderDetails(orderId);
+        updateUIFromIntent();
     }
 
     // Khởi tạo view
@@ -59,6 +60,7 @@ public class DetailOrderActivity extends AppCompatActivity {
         txtTotal = findViewById(R.id.txt_total_amount);
         listView = findViewById(R.id.lv_order_items);
         btnBack = findViewById(R.id.btn_back);
+
     }
 
     // Thiết lập sự kiện nút Back
@@ -147,7 +149,7 @@ public class DetailOrderActivity extends AppCompatActivity {
     // Cập nhật UI dựa trên dữ liệu intent và danh sách món
     private void updateUIFromIntent() {
         double amount = getIntent().getDoubleExtra("final_amount", 0.0);
-        String formattedAmount = String.format("%,.2f", amount);
+        String formattedAmount = String.format("%,.0f", amount);
 
         txtOrderId.setText("Mã đơn: " + orderId);
 
@@ -159,12 +161,13 @@ public class DetailOrderActivity extends AppCompatActivity {
 
         txtStatus.setText("Trạng thái: " + status);
         txtDate.setText("Ngày tạo: " + createdAt);
-        txtTotal.setText("Tổng tiền: " + formattedAmount + "đ");
+        txtTotal.setText(formattedAmount + "đ");
 
         int discount = getIntent().getIntExtra("discount_percent", 0);
         if (discount != 0) {
             txtDiscount.setText("Giảm giá: " + discount + "%");
         }
+
 
         adapter = new OrderItemAdapter(this, itemList);
         listView.setAdapter(adapter);

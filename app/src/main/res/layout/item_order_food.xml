@@ -7,14 +7,22 @@
     android:layout_marginVertical="4dp"
     card_view:cardCornerRadius="8dp"
     card_view:cardElevation="2dp"
-    android:background="@android:color/white">
+    card_view:cardBackgroundColor="#FFFFFF">
 
+    <!-- Add a border by creating a wrapper with background -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="16dp"
-        android:background="@android:color/white">
+        android:background="@drawable/card_border_gray"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:background="@android:color/white"
+            android:layout_margin="1dp">
 
         <!-- Ảnh món ăn -->
         <ImageView
@@ -73,6 +81,6 @@
                 android:textColor="#718096"
                 android:layout_marginTop="2dp" />
 
-        </LinearLayout>
+        </LinearLayout>        </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

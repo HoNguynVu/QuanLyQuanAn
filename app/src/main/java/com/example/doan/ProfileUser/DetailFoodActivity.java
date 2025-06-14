@@ -38,7 +38,19 @@ public class DetailFoodActivity extends AppCompatActivity {
     private Button btnAddReview, btnBack;
     private List<Review> reviewList = new ArrayList<>();
 
-    private String foodId;
+    private int foodId;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 100 && resultCode == RESULT_OK) {
+            // Reload lại dữ liệu món ăn
+            loadFoodDetails(foodId);
+            loadFoodReviews(foodId);
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +89,7 @@ public class DetailFoodActivity extends AppCompatActivity {
         btnAddReview.setOnClickListener(v -> {
             Intent intent = new Intent(DetailFoodActivity.this, AddReviewActivity.class);
             intent.putExtra("food_id", foodId);
-            startActivity(intent);
+            startActivityForResult(intent, 100); // 100 là request code
         });
         btnBack.setOnClickListener(v -> {
             finish();
@@ -85,18 +97,18 @@ public class DetailFoodActivity extends AppCompatActivity {
     }
     // Lấy ID món ăn từ Intent truyền vào
     private void getFoodIdFromIntent() {
-        foodId = getIntent().getStringExtra("id");
+        foodId = getIntent().getIntExtra("id", 0);
     }
 
     // Gọi API để lấy thông tin chi tiết món ăn
-    private void loadFoodDetails(String id) {
-        if (id == null || id.isEmpty()) {
+    private void loadFoodDetails(int id) {
+        if (id<=0) {
             showError("Không có ID món ăn");
             return;
         }
 
         APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
-        Call<FoodItem> call = apiService.getFoodByID(id);
+        Call<FoodItem> call = apiService.getFoodByID(String.valueOf(foodId));
         call.enqueue(new Callback<FoodItem>() {
             @Override
             public void onResponse(Call<FoodItem> call, Response<FoodItem> response) {
@@ -119,19 +131,21 @@ public class DetailFoodActivity extends AppCompatActivity {
         txtName.setText("Tên món ăn : "+ food.getName());
         txtPrice.setText("Giá món ăn : " + food.getPrice() + "đ");
         txtDescription.setText(food.getDescription());
-        txtRatingAvg.setText("Đánh giá  trung bình : " + food.getRatingAvg() + "★");
+        txtRatingAvg.setText(food.getRatingAvg() + "★");
         Glide.with(this).load(food.getImageUrl()).into(imgFood);
     }
 
     // Gọi API để lấy danh sách đánh giá món ăn
-    private void loadFoodReviews(String id) {
-        if (id == null || id.isEmpty()) {
+    private void loadFoodReviews(int id) {
+        if (id <= 0) {
             showError("Không có ID món ăn để tải đánh giá");
             return;
         }
 
         APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
-        Call<List<Review>> call = apiService.getReviewsByFoodId(id);
+        Call<List<Review>> call = apiService.getReviewsByFoodId(String.valueOf(foodId));
+        Log.d("API_CALL", "Gọi API getReviewsByFoodId với food_id = " + foodId);
+
         call.enqueue(new Callback<List<Review>>() {
             @Override
             public void onResponse(Call<List<Review>> call, Response<List<Review>> response) {
