@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.doan.Adapter.UserCheckOutAdapter;
 import com.example.doan.DatabaseClass.FoodItem;
-import com.example.doan.DatabaseClassResponse.OrderRequest;
+import com.example.doan.DatabaseClassRequest.OrderRequest;
 import com.example.doan.DatabaseClassResponse.OrderResponse;
 import com.example.doan.User.OrderUtils;
 import com.example.doan.User.UserCartManager;

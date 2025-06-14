@@ -1,5 +1,5 @@
 // OrderRequest.java
-package com.example.doan.DatabaseClassResponse;
+package com.example.doan.DatabaseClassRequest;
 
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
@@ -24,9 +24,12 @@ public class OrderRequest {
         @SerializedName("quantity")
         public int quantity;
 
-        public Item(int foodId, int quantity) {
+        @SerializedName("note")
+        public String note;
+        public Item(int foodId, int quantity, String note) {
             this.foodId = foodId;
             this.quantity = quantity;
+            this.note = note;
         }
     }
 }

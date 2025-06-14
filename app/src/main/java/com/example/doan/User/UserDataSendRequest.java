@@ -1,24 +1,9 @@
 package com.example.doan.User;
 
-import static android.content.ContentValues.TAG;
-
-import android.content.Context;
-import android.util.Log;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-import com.example.doan.DatabaseClassResponse.OrderRequest;
+import com.example.doan.DatabaseClassRequest.OrderRequest;
 import com.example.doan.DatabaseClassResponse.OrderResponse;
 import com.example.doan.Network.APIService;
 import com.example.doan.Network.RetrofitClient;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.List;
 
