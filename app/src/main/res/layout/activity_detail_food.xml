@@ -203,7 +203,7 @@
             android:gravity="center">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_add_review"
+            android:id="@+id/btn_add_review"
                 android:layout_width="0dp"
                 android:layout_height="56dp"
                 android:layout_weight="1"
@@ -221,6 +221,7 @@
                 android:layout_weight="1"
                 android:textSize="15sp"
                 android:text="Quay lại"
+                android:background="@drawable/button_item_cancel"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
                 android:layout_marginStart="8dp" />
