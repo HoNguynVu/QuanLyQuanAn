@@ -81,7 +81,7 @@ public class UserCheckOutActivity extends AppCompatActivity {
                                         userId,
                                         orderId,
                                         "Đặt hàng thành công",
-                                        "Đơn hàng #" + orderId + " của bạn đã được ghi nhận."
+                                        "Đơn hàng với mã số #SE" + orderId + " của bạn đã được ghi nhận."
                                 ).enqueue(new Callback<ResponseBody>() {
                                     @Override
                                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
