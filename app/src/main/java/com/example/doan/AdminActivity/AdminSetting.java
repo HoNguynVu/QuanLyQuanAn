@@ -1,7 +1,11 @@
 package com.example.doan.AdminActivity;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,12 +48,12 @@ public class AdminSetting extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_setting);
 
-        init();
+        initViews();
         initClick();
         loadUserData();
     }
 
-    public void init()
+    public void initViews()
     {
         toolbar = findViewById(R.id.topAppBar);
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
@@ -71,7 +75,9 @@ public class AdminSetting extends AppCompatActivity {
         // DatePicker cho ngày sinh
         edtDob.setOnClickListener(v -> showDatePickerDialog());
 
-        currentEmail = CurrentUser.getInstance().getEmail();
+        SharedPreferences sharedPreferences = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+
+        currentEmail = sharedPreferences.getString("email", null);
         if (currentEmail == null) {
             Toast.makeText(this, "Không có email người dùng", Toast.LENGTH_SHORT).show();
             finish();
@@ -161,7 +167,8 @@ public class AdminSetting extends AppCompatActivity {
                 Toast.makeText(AdminSetting.this, "Lỗi kết nối server", Toast.LENGTH_SHORT).show();
             }
         });
-    }    private void showChangePasswordDialog() {
+    }
+    private void showChangePasswordDialog() {
         // Tạo dialog tùy chỉnh
         Dialog dialog = new Dialog(this, R.style.FullWidthDialog);
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_change_password, null);
@@ -197,7 +204,12 @@ public class AdminSetting extends AppCompatActivity {
             }
 
             if (!newPass.equals(confirmPass)) {
-                Toast.makeText(this, "Mật khẩu mới không khớp", Toast.LENGTH_SHORT).show();
+                edtConfirmPassword.setError("Mật khẩu xác nhận không khớp");
+                return;
+            }
+
+            if (newPass.length() < 8 || !newPass.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")) {
+                edtNewPassword.setError("Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ và số");
                 return;
             }
 

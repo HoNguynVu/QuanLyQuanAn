@@ -20,7 +20,6 @@ public class AdminHome extends AppCompatActivity {
         setContentView(R.layout.activity_admin_home);
         Toolbar toolbar = findViewById(R.id.topAppBar);
         setSupportActionBar(toolbar);
-
         bottomNavigationView = findViewById(R.id.bottomNavigation);
 
         // Load Fragment đầu tiên (Trang chủ hoặc Menu mặc định)
@@ -45,8 +44,6 @@ public class AdminHome extends AppCompatActivity {
             if (item.getItemId()==R.id.nav_profile) {
                 selectedFragment = new AdminProfileFragment();
             }
-
-
             if (selectedFragment != null) {
                 getSupportFragmentManager()
                         .beginTransaction()
@@ -56,4 +53,8 @@ public class AdminHome extends AppCompatActivity {
             return true;
         });
     }
+    public void navigateToOrders(){
+        bottomNavigationView.setSelectedItemId(R.id.nav_orders);
+    }
+
 }

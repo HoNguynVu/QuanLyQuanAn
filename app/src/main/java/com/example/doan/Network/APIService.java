@@ -183,4 +183,14 @@ public interface APIService {
     @POST("create_order.php")
     Call<OrderResponse> createOrder(@Body OrderRequest orderRequest);
 
+    @FormUrlEncoded
+    @POST("add_review.php")
+    Call<ResponseBody> addReview(
+            @Field("food_id") String foodId,
+            @Field("user_id") int userId,
+            @Field("rating") int rating,
+            @Field("comment") String comment
+    );
+
+
 }

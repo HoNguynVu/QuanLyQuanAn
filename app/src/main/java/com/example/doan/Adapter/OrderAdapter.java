@@ -2,6 +2,7 @@ package com.example.doan.Adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.doan.AdminActivity.AdminOrderDetailActivity;
 import com.example.doan.DatabaseClass.Order;
 import com.example.doan.DatabaseClassResponse.StatusResponse;
 import com.example.doan.Network.APIService;
@@ -43,22 +45,19 @@ public class OrderAdapter extends ArrayAdapter<Order> {
 
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_order, parent, false);
-        }
-
-        TextView tvId = convertView.findViewById(R.id.tvOrderId);
+        }        TextView tvId = convertView.findViewById(R.id.tvOrderId);
         TextView tvTime = convertView.findViewById(R.id.tvOrderTime);
         TextView tvAmount = convertView.findViewById(R.id.tvTotalAmount);
         TextView tvStatus = convertView.findViewById(R.id.tvStatus);
+        TextView tvCustomerName = convertView.findViewById(R.id.tvCustomerName);
         Button btnUpdate = convertView.findViewById(R.id.btnUpdateStatus);
-
         tvId.setText("Mã đơn: " + order.getOrderId());
         tvTime.setText("Thời gian: " + order.getCreatedAt());
         tvAmount.setText("Tổng tiền: " + formatCurrency(order.getFinalAmount()) + " VND");
         tvStatus.setText("Trạng thái: " + order.getStatus());
-        setStatusColor(tvStatus, order.getStatus());
-
-        btnUpdate.setOnClickListener(v -> {
-            String[] statuses = {"Đang chuẩn bị", "Đã giao", "Hủy"};
+        tvCustomerName.setText("Khách hàng: " + (order.getCustomerName() != null ? order.getCustomerName() : "Không xác định"));
+        setStatusColor(tvStatus, order.getStatus());btnUpdate.setOnClickListener(v -> {
+            String[] statuses = {"Đang chờ", "Đã tiếp nhận","Đang giao", "Đã giao", "Hủy"};
 
             new AlertDialog.Builder(context)
                     .setTitle("Chọn trạng thái mới")
@@ -95,7 +94,17 @@ public class OrderAdapter extends ArrayAdapter<Order> {
                     })
                     .show();
         });
-
+        // Thêm click listener cho toàn bộ item để xem chi tiết
+        convertView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, AdminOrderDetailActivity.class);
+            intent.putExtra("order_id", order.getOrderId());
+            intent.putExtra("status", order.getStatus());
+            intent.putExtra("created_at", order.getCreatedAt());
+            intent.putExtra("final_amount", order.getFinalAmount());
+            intent.putExtra("customer_name", order.getCustomerName());
+            intent.putExtra("user_id", order.getUser_id());
+            context.startActivity(intent);
+        });
         return convertView;
     }
 
@@ -107,8 +116,14 @@ public class OrderAdapter extends ArrayAdapter<Order> {
     private void setStatusColor(TextView tvStatus, String status) {
         int color;
         switch (status) {
-            case "Đang chuẩn bị":
+            case "Đang chờ":
+                color = 0xFFFFC107; // Vàng
+                break;
+            case "Đã tiếp nhận":
                 color = 0xFFFF9800; // Cam
+                break;
+            case "Đang giao":
+                color = 0xFF2196F3; // Xanh
                 break;
             case "Đã giao":
                 color = 0xFF4CAF50; // Xanh lá
@@ -116,7 +131,7 @@ public class OrderAdapter extends ArrayAdapter<Order> {
             case "Hủy":
                 color = 0xFFF44336; // Đỏ
                 break;
-            default:
+                default:
                 color = 0xFF000000; // Đen
         }
         tvStatus.setTextColor(color);
