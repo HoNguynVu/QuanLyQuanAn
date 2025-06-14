@@ -1,5 +1,7 @@
 package com.example.doan.User;
 
+import androidx.annotation.NonNull;
+
 import com.example.doan.DatabaseClassRequest.OrderRequest;
 import com.example.doan.DatabaseClassResponse.OrderResponse;
 import com.example.doan.Network.APIService;
@@ -30,7 +32,7 @@ public class UserDataSendRequest {
         Call<OrderResponse> call = apiService.createOrder(request);
         call.enqueue(new Callback<OrderResponse>() {
             @Override
-            public void onResponse(Call<OrderResponse> call, retrofit2.Response<OrderResponse> response) {
+            public void onResponse(@NonNull Call<OrderResponse> call, @NonNull retrofit2.Response<OrderResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     listener.onSuccess(response.body());
                 } else {
