@@ -16,19 +16,19 @@
         android:id="@+id/header">
 
         <ImageButton
-            android:src="@drawable/ic_back"
-            android:background="@android:color/transparent"
-            android:layout_width="50dp"
-            android:layout_height="47dp"
+            android:id="@+id/btnBack"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            android:id="@+id/btnBack"
-            />
+            android:background="@android:color/transparent"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_back" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="My Cart"
+            android:text="Giỏ hàng"
             android:layout_gravity="center"
             android:fontFamily="@font/arial_rounded"
             android:textSize="30sp"
@@ -86,7 +86,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Checkout"
+                    android:text="Đặt hàng"
                     android:layout_gravity="center"
                     android:fontFamily="@font/arial_rounded"
                     app:layout_constraintStart_toStartOf="parent"

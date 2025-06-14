@@ -8,6 +8,8 @@ import com.example.doan.DatabaseClassResponse.LoginResponse;
 import com.example.doan.DatabaseClass.Order;
 import com.example.doan.DatabaseClass.OrderItem;
 import com.example.doan.DatabaseClass.Review;
+import com.example.doan.DatabaseClassRequest.OrderRequest;
+import com.example.doan.DatabaseClassResponse.OrderResponse;
 import com.example.doan.DatabaseClassResponse.StatisticsResponse;
 import com.example.doan.DatabaseClassResponse.StatusResponse;
 import com.example.doan.DatabaseClassResponse.UploadResponse;
@@ -18,6 +20,7 @@ import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -176,6 +179,9 @@ public interface APIService {
             @Field("title") String title,
             @Field("message") String message
     );
+
+    @POST("create_order.php")
+    Call<OrderResponse> createOrder(@Body OrderRequest orderRequest);
 
     @FormUrlEncoded
     @POST("add_review.php")

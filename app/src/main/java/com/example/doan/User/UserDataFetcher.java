@@ -1,49 +1,42 @@
 package com.example.doan.User;
 
-import android.content.Context;
 import android.util.Log;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.DatabaseClassResponse.FoodListResponse;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.example.doan.Network.APIService;
+import com.example.doan.Network.RetrofitClient;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+
 public class UserDataFetcher {
-    public interface FetchCallBack {
-        void onSuccess(List<FoodItem> data);
-        void onError(VolleyError error);
+    public interface FetchCallBack<T> {
+        void onSuccess(List<T> data);
+        void onError(String message);
     }
 
-    public static void fetchFoods(Context context, String url, FetchCallBack callBack) {
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                response -> {
-                    Log.d("foods", response);
+    public static void fetchFoods(FetchCallBack<FoodItem> callBack, String category) {
+        APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
+        Call<FoodListResponse> call = apiService.getFoodsByCategory(category);
 
-                    // Dùng FoodListResponse thay vì List<FoodItem>
-                    FoodListResponse foodResponse = new Gson().fromJson(response, FoodListResponse.class);
-                    if (foodResponse != null && "success".equalsIgnoreCase(foodResponse.status) && foodResponse.data != null) {
-                        callBack.onSuccess(foodResponse.data);
-                    } else {
-                        callBack.onSuccess(new ArrayList<>()); // trả về list rỗng thay vì null
-                    }
+        call.enqueue(new retrofit2.Callback<FoodListResponse>() {
+            @Override
+            public void onResponse(Call<FoodListResponse> call, retrofit2.Response<FoodListResponse> response) {
+                Log.d("Response", response.toString());
+                if (response.isSuccessful() && response.body() != null) {
+                    callBack.onSuccess(response.body().data);
+                } else {
+                    callBack.onError("Không lấy được dữ liệu món ăn");
+                }
+            }
 
-                },
-                error -> {
-                    Log.e("fetchFoods", "Volley error", error);
-                    callBack.onError(error);
-                });
-
-        RequestQueue queue = Volley.newRequestQueue(context.getApplicationContext());
-        queue.add(stringRequest);
+            @Override
+            public void onFailure(Call<FoodListResponse> call, Throwable t) {
+                callBack.onError(t.getMessage());
+            }
+        });
     }
 
 }

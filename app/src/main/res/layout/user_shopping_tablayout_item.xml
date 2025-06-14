@@ -14,11 +14,11 @@
 
         <ImageView
             android:id="@+id/tabIcon"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_chips"
+            android:src="@drawable/ic_main_course"
             />
 
     </androidx.cardview.widget.CardView>

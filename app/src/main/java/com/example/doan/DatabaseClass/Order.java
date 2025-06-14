@@ -2,6 +2,8 @@ package com.example.doan.DatabaseClass;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class Order {
     @SerializedName("id")
     private String orderId;
@@ -17,6 +19,8 @@ public class Order {
     @SerializedName("created_at")
     private String createdAt;
 
+    @SerializedName("items")
+    private List<OrderItem> items;
     @SerializedName("customer_name")
     private String customerName;
 
@@ -31,6 +35,10 @@ public class Order {
 
     public void setOrderId(String orderId) {
         this.orderId = orderId;
+    }
+
+    public List<OrderItem> getItems() {
+        return items;
     }
 
     public double getFinalAmount() {

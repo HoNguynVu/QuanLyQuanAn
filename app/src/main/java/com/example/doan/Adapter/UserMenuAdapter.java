@@ -66,9 +66,12 @@ public class UserMenuAdapter extends RecyclerView.Adapter<UserMenuAdapter.myView
             binding.tvPrice.setText(String.valueOf(item.getPrice()));
             binding.tvDetail.setText(item.getDescription());
             String imageUrl = item.getImageUrl();
-
             Glide.with(binding.getRoot().getContext()).load(imageUrl).into(binding.imageView);
 
+            setDetailView(item);
+        }
+
+        public void setDetailView(FoodItem item) {
             binding.getRoot().setOnClickListener(new View.OnClickListener(){
 
                 @Override
@@ -89,6 +92,5 @@ public class UserMenuAdapter extends RecyclerView.Adapter<UserMenuAdapter.myView
                 }
             });
         }
-
     }
 }

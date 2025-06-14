@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
@@ -22,7 +24,6 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 public class UserShoppingFragment extends Fragment {
     private UserShoppingFragmentBinding binding;
-    UserShoppingPagerAdapter adapter;
     TabLayout tabLayout;
     ViewPager2 viewPager2;
 
@@ -30,23 +31,28 @@ public class UserShoppingFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = UserShoppingFragmentBinding.inflate(inflater, container, false);
-        binding.searchView.setOnQueryTextFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus) {
-                FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragmentContainerView, new UserSearchFragment());
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        });
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setSearchView();
+        setTabLayoutAndViewPager();
+    }
 
-        tabLayout = view.findViewById(R.id.menu_container);
-        viewPager2 = view.findViewById(R.id.view_pager);
+    public void setSearchView() {
+        binding.searchView.setOnQueryTextFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.fragmentContainerView);
+                navController.navigate(R.id.searchFragment);
+            }
+        });
+    }
+
+    public void setTabLayoutAndViewPager() {
+        tabLayout = binding.menuContainer;
+        viewPager2 = binding.viewPager;
 
         UserShoppingPagerAdapter myViewPagerAdapter = new UserShoppingPagerAdapter(this);
         viewPager2.setAdapter(myViewPagerAdapter);
@@ -56,20 +62,24 @@ public class UserShoppingFragment extends Fragment {
             TextView tabText = tabView.findViewById(R.id.tabText);
             switch (position) {
                 case 1:
-                    tabText.setText("Chips");
-                    tabIcon.setImageResource(R.drawable.ic_chips);
+                    tabText.setText("Khai vị");
+                    tabIcon.setImageResource(R.drawable.ic_appetizer);
                     break;
                 case 2:
-                    tabText.setText("Drinks");
-                    tabIcon.setImageResource(R.drawable.ic_tea_cup);
+                    tabText.setText("Đồ uống");
+                    tabIcon.setImageResource(R.drawable.ic_drink);
+                    break;
+                case 3:
+                    tabText.setText("Tráng miệng");
+                    tabIcon.setImageResource(R.drawable.ic_dessert);
                     break;
                 default:
-                    tabText.setText("Soups");
-                    tabIcon.setImageResource(R.drawable.ic_soup);
+                    tabText.setText("Món chính");
+                    tabIcon.setImageResource(R.drawable.ic_main_course);
             }
 
             tab.setCustomView(tabView);
         }).attach();
-    }
 
+    }
 }

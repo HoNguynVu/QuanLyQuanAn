@@ -1,8 +1,6 @@
 package com.example.doan.UserFragment;
 
 import static android.content.ContentValues.TAG;
-import static com.example.doan.User.UserConstants.GETFOODS_URL;
-
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -31,7 +29,6 @@ public class UserShoppingDrinksFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
     }
 
@@ -41,12 +38,6 @@ public class UserShoppingDrinksFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = UserShoppingDrinksFragmentBinding.inflate(inflater, container, false);
-
-        adapter = new UserMenuAdapter(requireContext(), itemList);
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.recyclerView.setAdapter(adapter);
-        binding.recyclerView.setHasFixedSize(true);
-        binding.recyclerView.addItemDecoration(new UserSpaceItemDecoration(16));
         return binding.getRoot();
     }
 
@@ -54,7 +45,20 @@ public class UserShoppingDrinksFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        UserDataFetcher.fetchFoods(requireContext(), GETFOODS_URL, new UserDataFetcher.FetchCallBack() {
+        setRecyclerView();
+        getFoodData();
+    }
+
+    public void setRecyclerView() {
+        adapter = new UserMenuAdapter(requireContext(), itemList);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.recyclerView.setAdapter(adapter);
+        binding.recyclerView.setHasFixedSize(true);
+        binding.recyclerView.addItemDecoration(new UserSpaceItemDecoration(16));
+    }
+
+    public void getFoodData() {
+        UserDataFetcher.fetchFoods(new UserDataFetcher.FetchCallBack<FoodItem>() {
 
             @Override
             public void onSuccess(List<FoodItem> data) {
@@ -65,8 +69,9 @@ public class UserShoppingDrinksFragment extends Fragment {
             }
 
             @Override
-            public void onError(VolleyError error) {
+            public void onError(String message) {
+                Log.d("Lỗi Retrofit: ", message);
             }
-        });
+        }, "Đồ uống");
     }
 }
