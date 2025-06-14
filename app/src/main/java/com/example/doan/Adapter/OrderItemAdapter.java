@@ -57,9 +57,10 @@ public class OrderItemAdapter extends ArrayAdapter<OrderItemWithFood> {
                 .load(food.getImageUrl())
                 .placeholder(R.drawable.ic_launcher_background)  // ảnh mặc định nếu chưa load được
                 .into(imgFood);
+
         convertView.setOnClickListener(v -> {
             Intent intent = new Intent(context, DetailFoodActivity.class);
-            intent.putExtra("id", String.valueOf(food.getId()));
+            intent.putExtra("id", Integer.valueOf(food.getId()));
             context.startActivity(intent);
         });
         return convertView;

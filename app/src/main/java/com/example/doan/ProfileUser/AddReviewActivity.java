@@ -35,7 +35,7 @@ public class AddReviewActivity extends AppCompatActivity {
 
     private RatingBar ratingBarUser;
 
-    private String foodId;
+    private int foodId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,9 +58,9 @@ public class AddReviewActivity extends AppCompatActivity {
 
     private void loadData()
     {
-        foodId = getIntent().getStringExtra("food_id");
+        foodId = getIntent().getIntExtra("food_id", 0);
         APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
-        Call<FoodItem> call = apiService.getFoodByID(foodId);
+        Call<FoodItem> call = apiService.getFoodByID(String.valueOf(foodId));
         call.enqueue(new Callback<FoodItem>() {
             @Override
             public void onResponse(Call<FoodItem> call, Response<FoodItem> response) {
@@ -90,24 +90,23 @@ public class AddReviewActivity extends AppCompatActivity {
             int rating = (int)ratingBarUser.getRating();
             SharedPreferences sharedPreferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
             int userID = sharedPreferences.getInt("id",-1);
-            Log.d("userID", String.valueOf(userID));
-            Log.d("rating", String.valueOf(rating));
-            Log.d("foodId", foodId);
+
             addReview(comment, rating , userID);
+            setResult(RESULT_OK); // báo về cho Activity gọi nó
+            finish();
         });
     }
 
 
     private void addReview(String comment, int rating , int userID) {
         APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
-        Call<ResponseBody> call = apiService.addReview(foodId, userID, rating, comment);
+        Call<ResponseBody> call = apiService.addReview(foodId, userID, comment, rating);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(AddReviewActivity.this, "Đánh giá thành công . Cảm ơn sự đóng góp ý kiến của bạn", Toast.LENGTH_SHORT).show();
-                    finish();
                 } else {
                     Toast.makeText(AddReviewActivity.this, "Thêm đánh giá thất bại", Toast.LENGTH_SHORT).show();
                 }
