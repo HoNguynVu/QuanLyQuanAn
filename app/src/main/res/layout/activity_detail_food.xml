@@ -97,31 +97,37 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="5dp"
-            android:paddingBottom="16dp"
-            android:gravity="center">
+            android:layout_marginBottom="16dp"
+            android:padding="8dp"
+            android:gravity="center"
+            android:background="@drawable/bg_button_group"
+            android:elevation="4dp">
 
             <Button
                 android:id="@+id/btn_add_review"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_weight="1"
                 android:text="Đánh giá món ăn"
-                android:backgroundTint="#4CAF50"
+                android:background="@drawable/bg_button_green"
                 android:textColor="#FFFFFF"
-                android:textSize="14sp"
-                android:layout_marginEnd="8dp" />
+                android:textSize="15sp"
+                android:layout_marginEnd="12dp"
+                android:elevation="2dp"
+                android:fontFamily="sans-serif-medium"/>
 
             <Button
                 android:id="@+id/btn_back"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_weight="1"
-                android:textSize="14sp"
+                android:textSize="15sp"
                 android:text="Quay lại"
-                android:backgroundTint="#9E9E9E"
+                android:background="@drawable/bg_button_gray"
                 android:textColor="#FFFFFF"
-                android:layout_marginStart="8dp" />
+                android:layout_marginStart="12dp"
+                android:elevation="2dp"
+                android:fontFamily="sans-serif-medium"/>
         </LinearLayout>
 
     </LinearLayout>
