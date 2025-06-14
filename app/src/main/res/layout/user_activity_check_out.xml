@@ -32,7 +32,7 @@
             android:fontFamily="@font/arial_rounded"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Check Out"
+            android:text="Đặt hàng"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -75,7 +75,7 @@
                     android:textStyle="bold"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:text="Address"/>
+                    android:text="Địa chỉ"/>
 
                 <TextView
                     android:layout_marginStart="16dp"
@@ -92,7 +92,7 @@
                     android:fontFamily="@font/arial_rounded"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Change"
+                    android:text="Thay đổi"
                     android:textColor="#F44336"
                     android:layout_marginEnd="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -114,7 +114,7 @@
                     android:id="@+id/tv_bucket"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="My Bucket"
+                    android:text="Đơn hàng"
                     android:layout_marginStart="16dp"
                     android:textSize="30sp"
                     android:textStyle="bold"
@@ -149,7 +149,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     android:layout_marginStart="16dp"
-                    android:text="Payment"
+                    android:text="Thanh toán"
                     android:textStyle="bold"
                     android:textSize="30sp"/>
 
@@ -159,7 +159,7 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_payment"
-                    android:text="Item Total"
+                    android:text="Tiền hàng"
                     android:layout_marginStart="16dp"
                     android:textSize="24sp"
                     android:id="@+id/tv_total"/>
@@ -170,7 +170,7 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_total"
-                    android:text="Delivery Fee"
+                    android:text="Phí giao hàng"
                     android:layout_marginStart="16dp"
                     android:textSize="24sp"
                     android:id="@+id/tv_fee"/>
@@ -193,7 +193,7 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/tv_fee"
-                    android:text="0$"
+                    android:text="0"
                     android:textSize="24sp"
                     android:id="@+id/fee"/>
 
@@ -233,7 +233,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Checkout"
+                    android:text="Đặt hàng"
                     android:layout_gravity="center"
                     android:fontFamily="@font/arial_rounded"
                     app:layout_constraintStart_toStartOf="parent"
@@ -242,7 +242,7 @@
                     android:textSize="20sp"
                     android:textColor="@color/white"
                     android:textStyle="bold"
-                    android:layout_marginStart="8dp"/>
+                    android:layout_marginStart="16dp"/>
 
                 <TextView
                     android:id="@+id/totalOrder"
@@ -257,7 +257,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginEnd="8dp"/>
+                    android:layout_marginEnd="16dp"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>

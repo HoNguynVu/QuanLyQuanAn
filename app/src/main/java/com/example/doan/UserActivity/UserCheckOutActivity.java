@@ -30,6 +30,23 @@ public class UserCheckOutActivity extends AppCompatActivity {
         binding = UserActivityCheckOutBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        setRecyclerView();
+        setBtnBack();
+        setPrice();
+        setBtnCheckOut();
+    }
+
+
+    public void setBtnBack() {
+        binding.btnBack.setOnClickListener(v -> finish());
+    }
+    public void setPrice() {
+        String price = UserCartManager.getInstance().getTotalOrder() + "";
+        binding.price.setText(price);
+        binding.fee.setText("0");
+        binding.totalOrder.setText(price);
+    }
+    public void setRecyclerView() {
         adapter = new UserCheckOutAdapter(cartList, this);
         binding.recyclerviewList.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerviewList.setAdapter(adapter);
@@ -40,19 +57,13 @@ public class UserCheckOutActivity extends AppCompatActivity {
         );
 
         binding.recyclerviewList.addItemDecoration(dividerItemDecoration);
-
-        binding.btnBack.setOnClickListener(v -> finish());
-
-        String price = UserCartManager.getInstance().getTotalOrder() + "$";
-        binding.price.setText(price);
-        binding.fee.setText("0$");
-        binding.totalOrder.setText(price);
-
+    }
+    public void setBtnCheckOut() {
         binding.btnCheckout.setOnClickListener(v -> {
             int userID = 1;
             List<OrderRequest.Item> items = OrderUtils.convertFoodItemsToOrderItems(cartList);
             String discountCode = null; // nếu có
-            String paymentMethod = "cash"; // hoặc "momo", "card" tùy bạn
+            String paymentMethod = "cash"; // hoặc "momo", "card"
             Log.d("DEBUG", "UserID gửi lên: " + userID);
 
             UserDataSendRequest.sendCreateOrderRequest(userID, items, discountCode, paymentMethod,
@@ -66,6 +77,7 @@ public class UserCheckOutActivity extends AppCompatActivity {
                             UserCartManager.getInstance().deleteItem();
                             Intent intent = new Intent(UserCheckOutActivity.this, UserOrderSuccessActivity.class);
                             startActivity(intent);
+                            finish();
                         }
 
                         @Override

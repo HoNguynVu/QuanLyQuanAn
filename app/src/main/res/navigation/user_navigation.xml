@@ -28,4 +28,10 @@
         android:label="fragment_shopping"
         android:name="com.example.doan.UserFragment.UserShoppingFragment"
         tools:layout="@layout/user_shopping_fragment" />
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:label="fragment_search"
+        android:name="com.example.doan.UserFragment.UserSearchFragment"
+        tools:layout="@layout/user_search_fragment" />
 </navigation>

@@ -40,15 +40,6 @@ public class UserMenuBottomSheetFragment extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = UserFragmentMenuBottomSheetBinding.inflate(inflater, container, false);
-
-        adapter = new UserMenuAdapter(requireContext(), itemList);
-
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(binding.menuRecyclerView.getContext(), LinearLayout.VERTICAL);
-        binding.menuRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.menuRecyclerView.setAdapter(adapter);
-        binding.menuRecyclerView.addItemDecoration(dividerItemDecoration);
-        binding.menuRecyclerView.addItemDecoration(new UserSpaceItemDecoration(16));
-
         return binding.getRoot();
     }
 
@@ -56,6 +47,20 @@ public class UserMenuBottomSheetFragment extends BottomSheetDialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        setRecyclerView();
+        getFoodData();
+    }
+
+    public void setRecyclerView() {
+        adapter = new UserMenuAdapter(requireContext(), itemList);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(binding.menuRecyclerView.getContext(), LinearLayout.VERTICAL);
+        binding.menuRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.menuRecyclerView.setAdapter(adapter);
+        binding.menuRecyclerView.addItemDecoration(dividerItemDecoration);
+        binding.menuRecyclerView.addItemDecoration(new UserSpaceItemDecoration(16));
+    }
+
+    public void getFoodData() {
         UserDataFetcher.fetchFoods(new UserDataFetcher.FetchCallBack<FoodItem>() {
 
             @Override

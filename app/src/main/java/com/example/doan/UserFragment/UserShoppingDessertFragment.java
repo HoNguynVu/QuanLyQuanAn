@@ -40,20 +40,26 @@ public class UserShoppingDessertFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = UserShoppingDessertFragmentBinding.inflate(inflater, container, false);
-
-        adapter = new UserMenuAdapter(requireContext(), itemList);
-
-        binding.recyclerView.setAdapter(adapter);
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding.recyclerView.addItemDecoration(new UserSpaceItemDecoration(16));
 
+        setRecyclerView();
+        getFoodData();
+    }
+
+    public void setRecyclerView() {
+        adapter = new UserMenuAdapter(requireContext(), itemList);
+
+        binding.recyclerView.setAdapter(adapter);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.recyclerView.addItemDecoration(new UserSpaceItemDecoration(16));
+    }
+
+    public void getFoodData() {
         UserDataFetcher.fetchFoods(new UserDataFetcher.FetchCallBack<FoodItem>() {
 
             @Override
