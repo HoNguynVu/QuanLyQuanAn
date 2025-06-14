@@ -243,7 +243,7 @@
         </androidx.cardview.widget.CardView>
 
         <!-- Back Button -->
-        <com.google.android.material.button.MaterialButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_back"
             android:layout_width="match_parent"
             android:layout_height="56dp"
@@ -252,6 +252,7 @@
             android:textAllCaps="false"
             android:textStyle="bold"
             android:textColor="@android:color/white"
+            android:backgroundTint="#0053FF"
             android:background="@drawable/button_item_menu"
             app:cornerRadius="16dp"
             android:layout_marginTop="8dp"
