@@ -165,6 +165,8 @@ public class DetailFoodActivity extends AppCompatActivity {
     private void updateReviewList(List<Review> reviews) {
         reviewList.clear();
         reviewList.addAll(reviews);
+        Log.d("REVIEW", "Số review nhận được: " + reviews.size());
+
         reviewAdapter.notifyDataSetChanged();
     }
 
