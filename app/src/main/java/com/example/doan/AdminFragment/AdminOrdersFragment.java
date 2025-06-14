@@ -117,8 +117,10 @@ public class AdminOrdersFragment extends Fragment {
             int statusId = statusRadioGroup.getCheckedRadioButtonId();
             if (statusId == R.id.radioAll) {
                 selectedStatus = "all";
-            } else if (statusId == R.id.radioPreparing) {
-                selectedStatus = "Đang chuẩn bị";
+            } else if (statusId == R.id.radioReceived) {
+                selectedStatus = "Đã tiếp nhận";
+            } else if (statusId == R.id.radioDelivering) {
+                selectedStatus = "Đang giao";
             } else if (statusId == R.id.radioDelivered) {
                 selectedStatus = "Đã giao";
             } else if (statusId == R.id.radioCancelled) {

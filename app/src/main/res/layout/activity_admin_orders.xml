@@ -25,7 +25,7 @@
                 android:layout_height="48dp"
                 android:padding="12dp"
                 android:src="@android:drawable/ic_menu_search"
-                android:tint="#666666" />
+                app:tint="#666666" />
 
             <EditText
                 android:id="@+id/editTextSearch"
@@ -64,7 +64,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="8dp">            <TextView
+            android:padding="8dp">
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Lọc theo trạng thái:"
@@ -91,10 +92,16 @@
                     android:text="Đang chờ"/>
                     
                 <RadioButton
-                    android:id="@+id/radioPreparing"
+                    android:id="@+id/radioReceived"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Đang chuẩn bị"/>
+                    android:text="Đã tiếp nhận"/>
+
+                <RadioButton
+                    android:id="@+id/radioDelivering"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đang giao"/>
                     
                 <RadioButton
                     android:id="@+id/radioDelivered"
@@ -107,7 +114,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Hủy"/>
-            </RadioGroup>            <TextView
+            </RadioGroup>
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Sắp xếp theo:"
