@@ -17,6 +17,12 @@ import com.example.doan.databinding.UserActivityDetailsBinding;
 public class UserDetailsActivity extends AppCompatActivity {
     UserActivityDetailsBinding binding;
     int quantity;
+    int foodID;
+    String foodName;
+    double foodPrice;
+    String foodQuantity;
+    String foodImageUrl;
+    String foodDescription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,45 +30,81 @@ public class UserDetailsActivity extends AppCompatActivity {
         binding = UserActivityDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        getIntentData();
+        bindData();
+        setBtnBack();
+
+        //tăng số lượng và cập nhật tổng tiền
+        setBtnPlus();
+
+        //giảm số lượng và cập nhật tổng tiền
+        setBtnMinus();
+
+        //thêm vào giỏ hàng
+        setBtnOrder();
+
+        //đi tới giỏ hàng
+        setBtnCartFragment();
+    }
+
+    public void getIntentData() {
         Intent intent = getIntent();
-        int foodID = intent.getIntExtra("MenuItemID", -1);
-        String foodName = intent.getStringExtra("MenuItemName");
-        double foodPrice = intent.getDoubleExtra("MenuItemPrice", 0);
-        String foodQuantity = intent.getStringExtra("MenuItemQuantity");
-        String foodImageUrl = intent.getStringExtra("MenuItemImageUrl");
-        String foodDescription = intent.getStringExtra("MenuItemDescription");
+        foodID = intent.getIntExtra("MenuItemID", -1);
+        foodName = intent.getStringExtra("MenuItemName");
+        foodPrice = intent.getDoubleExtra("MenuItemPrice", 0);
+        foodQuantity = intent.getStringExtra("MenuItemQuantity");
+        foodImageUrl = intent.getStringExtra("MenuItemImageUrl");
+        foodDescription = intent.getStringExtra("MenuItemDescription");
+    }
 
+    public void setBtnBack() {
+        binding.btnBack.setOnClickListener(v -> finish());
+    }
+    public void bindData() {
+        //số lượng, mặc định là 1
         quantity = (foodQuantity == null) ? 1 : Integer.parseInt(foodQuantity);
-        String Total = String.valueOf(foodPrice * quantity);
+        binding.quantity.setText(String.valueOf(quantity));
 
+        //tổng tiền
+        String Total = String.valueOf(foodPrice * quantity);
+        binding.total.setText(Total);
+
+        //tên món
         binding.detailsFoodName.setText(foodName);
+
+        //đơn giá
         binding.detailsFoodPrice.setText(String.valueOf(foodPrice));
 
-        Log.d(TAG, "foodImageUrl: " + foodImageUrl);
+        //hình ảnh
         Glide.with(this).load(foodImageUrl).into(binding.detailsFoodImage);
-        binding.quantity.setText(String.valueOf(quantity));
-        binding.btnBack.setOnClickListener(v -> finish());
-        binding.total.setText(Total);
-        binding.detailsFoodDescription.setText(foodDescription);
 
+        //mô tả món ăn
+        binding.detailsFoodDescription.setText(foodDescription);
+    }
+
+    public void setBtnPlus() {
+        binding.btnPlus.setOnClickListener(v -> {
+            quantity++;
+            binding.quantity.setText(String.valueOf(quantity));
+            String total = quantity * foodPrice + "";
+            binding.total.setText(total);
+        });
+    }
+
+    public void setBtnMinus() {
         binding.btnMinus.setOnClickListener(v -> {
             if(quantity > 1) {
                 quantity--;
 
                 binding.quantity.setText(String.valueOf(quantity));
-                String total = quantity * foodPrice + "$";
+                String total = quantity * foodPrice + "";
                 binding.total.setText(total);
 
             }
         });
+    }
 
-        binding.btnPlus.setOnClickListener(v -> {
-            quantity++;
-            binding.quantity.setText(String.valueOf(quantity));
-            String total = quantity * foodPrice + "$";
-            binding.total.setText(total);
-        });
-
+    public void setBtnOrder() {
         binding.btnOrder.setOnClickListener(v -> {
             String note = (binding.textInput.getEditText() != null && binding.textInput.getEditText().getText() != null)
                     ? binding.textInput.getEditText().getText().toString()
@@ -71,6 +113,13 @@ public class UserDetailsActivity extends AppCompatActivity {
             UserCartManager.getInstance().addItem(new FoodItem(foodID, foodName, "", foodPrice, foodImageUrl, 1, "", 5, note,  String.valueOf(quantity)));
             binding.textInput.getEditText().setText("");
             Toast.makeText(this, "Đã thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    public void setBtnCartFragment() {
+        binding.cartFragment.setOnClickListener(v -> {
+            Intent intent = new Intent(this, UserCartActivity.class);
+            startActivity(intent);
         });
     }
 }

@@ -57,18 +57,23 @@ public class UserCartAdapter extends RecyclerView.Adapter<UserCartAdapter.CartVi
         }
 
         public void bind(int position) {
-
             double price = cartList.get(position).getPrice();
             final int[] quantity = {Integer.parseInt(cartList.get(position).getItemQuantity())};
-            String total = (price * quantity[0]) + "$";
+            String total = (price * quantity[0]) + "";
+
             binding.tvName.setText(cartList.get(position).getName());
             binding.tvPrice.setText(total);
             String imageUrl = cartList.get(position).getImageUrl();
             Glide.with(binding.getRoot().getContext()).load(imageUrl).into(binding.imageView);
-
             binding.quantity.setText(cartList.get(position).getItemQuantity());
             binding.note.setText(cartList.get(position).getNote());
 
+            setDetailView();
+            setBtnMinus(quantity, position, price);
+            setBtnPlus(quantity, position, price);
+            setBtnDelete(quantity, position, price);
+        }
+        public void setDetailView() {
             binding.getRoot().setOnClickListener(new View.OnClickListener(){
 
                 @Override
@@ -85,41 +90,43 @@ public class UserCartAdapter extends RecyclerView.Adapter<UserCartAdapter.CartVi
 
                 }
             });
-
+        }
+        public void setBtnMinus(int[] quantity, int position, double price) {
             binding.btnMinus.setOnClickListener(v -> {
                 if(quantity[0] > 1) {
                     quantity[0]--;
                     cartList.get(position).setItemQuantity(String.valueOf(quantity[0]));
                     binding.quantity.setText(String.valueOf(quantity[0]));
-                    String Total = quantity[0] * price + "$";
+                    String Total = quantity[0] * price + "";
                     binding.tvPrice.setText(Total);
 
                     userCartManager.setTotalOrder(userCartManager.getTotalOrder() - price);
                     userCartManager.notifyTotalChanged();
                 }
             });
+        }
 
+        public void setBtnPlus(int[] quantity, int position, double price) {
             binding.btnPlus.setOnClickListener(v -> {
                 quantity[0]++;
                 cartList.get(position).setItemQuantity(String.valueOf(quantity[0]));
                 binding.quantity.setText(String.valueOf(quantity[0]));
-                String Total = quantity[0] * price + "$";
+                String Total = quantity[0] * price + "";
                 binding.tvPrice.setText(Total);
 
                 userCartManager.setTotalOrder(userCartManager.getTotalOrder() + price);
                 userCartManager.notifyTotalChanged();
             });
-
-            binding.btnDelete.setOnClickListener(v -> {
-               cartList.remove(position);
-               notifyItemRemoved(position);
-               userCartManager.setTotalOrder(userCartManager.getTotalOrder() - price * quantity[0]);
-               userCartManager.notifyTotalChanged();
-            });
         }
 
-
-
+        public void setBtnDelete(int[] quantity, int position, double price) {
+            binding.btnDelete.setOnClickListener(v -> {
+                cartList.remove(position);
+                notifyItemRemoved(position);
+                userCartManager.setTotalOrder(userCartManager.getTotalOrder() - price * quantity[0]);
+                userCartManager.notifyTotalChanged();
+            });
+        }
     }
 
 

@@ -72,7 +72,9 @@
             android:exported="false" />
         <activity
             android:name=".UserActivity.UserMainActivity"
-            android:exported="false" />
+            android:windowSoftInputMode="adjustResize|stateVisible"
+            android:exported="false">
+        </activity>
         <activity
             android:name=".UserActivity.UserCheckOutActivity"
             android:exported="false" />
