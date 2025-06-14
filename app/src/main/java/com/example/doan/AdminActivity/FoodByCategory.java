@@ -64,12 +64,12 @@ public class FoodByCategory extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        init(view);
+        initViews(view);
 
         loadMenuFromServer();
     }
 
-    public void init(View view)
+    public void initViews(View view)
     {
         recyclerView = view.findViewById(R.id.recyclerViewMenu);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

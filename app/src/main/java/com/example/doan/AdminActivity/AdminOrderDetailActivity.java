@@ -38,26 +38,26 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_order_detail);
-
-        orderId = getIntent().getStringExtra("order_id");
-
-        txtHeader = findViewById(R.id.txt_header);
-        txtOrderId = findViewById(R.id.txt_order_id);
-        txtDate = findViewById(R.id.txt_order_date);
-        txtStatus = findViewById(R.id.txt_order_status);        txtTotal = findViewById(R.id.txt_total_amount);
-        txtCustomerName = findViewById(R.id.txt_customer_name);
-        listView = findViewById(R.id.lv_order_items);
-        btnBack = findViewById(R.id.btn_back);
-        btnBack.setOnClickListener(v -> finish());
-
+        initViews();
         if (orderId == null || orderId.isEmpty()) {
             Toast.makeText(this, "Không có mã đơn hàng", Toast.LENGTH_SHORT).show();
             return;
         }
-
         loadOrderDetails(orderId);
     }
-
+    private void initViews()
+    {
+        orderId = getIntent().getStringExtra("order_id");
+        txtHeader = findViewById(R.id.txt_header);
+        txtOrderId = findViewById(R.id.txt_order_id);
+        txtDate = findViewById(R.id.txt_order_date);
+        txtStatus = findViewById(R.id.txt_order_status);
+        txtTotal = findViewById(R.id.txt_total_amount);
+        txtCustomerName = findViewById(R.id.txt_customer_name);
+        listView = findViewById(R.id.lv_order_items);
+        btnBack = findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(v -> finish());
+    }
     private void loadOrderDetails(String orderId) {
         APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
 
@@ -119,7 +119,8 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
                 Toast.makeText(AdminOrderDetailActivity.this, "Lỗi kết nối", Toast.LENGTH_SHORT).show();
             }
         });
-    }    private void updateUIFromIntent() {
+    }
+    private void updateUIFromIntent() {
         double amount = getIntent().getDoubleExtra("final_amount", 0.0);
         String customerName = getIntent().getStringExtra("customer_name");
         
@@ -139,7 +140,6 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
         adapter = new OrderItemAdapter(this, itemList);
         listView.setAdapter(adapter);
     }
-
     private String formatCurrency(double amount) {
         DecimalFormat formatter = new DecimalFormat("#,###");
         return formatter.format(amount);
