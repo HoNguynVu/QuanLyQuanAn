@@ -51,12 +51,11 @@ public class UserCheckOutAdapter extends RecyclerView.Adapter<UserCheckOutAdapte
         }
 
         public void bind(int position) {
-
             double price = cartList.get(position).getPrice();
             final int[] quantity = {Integer.parseInt(cartList.get(position).getItemQuantity())};
-            String total = (price * quantity[0]) + "$";
+            String total = (price * quantity[0]) + "";
 
-            String foodName = cartList.get(position).getName() + "(" + cartList.get(position).getItemQuantity() + "x)";
+            String foodName = cartList.get(position).getName() + " (" + cartList.get(position).getItemQuantity() + "x)";
             binding.tvFoodName.setText(foodName);
             binding.tvPrice.setText(total);
         }

@@ -26,6 +26,10 @@ public class UserOrderSuccessActivity extends AppCompatActivity {
         binding = UserActivityOrderSuccessBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        setBtnBackToHome();
+    }
+
+    public void setBtnBackToHome() {
         binding.backToHome.setOnClickListener(v -> {
             Intent intent = new Intent(this, UserMainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

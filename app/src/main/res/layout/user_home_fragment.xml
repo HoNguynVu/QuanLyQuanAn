@@ -7,6 +7,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
 
         tools:context=".Fragment.UserHomeFragment">
 
@@ -20,7 +21,7 @@
             android:background="@drawable/searchshape"
             android:iconifiedByDefault="false"
             android:queryBackground="@android:color/transparent"
-            android:queryHint="What do you want to order?"
+            android:queryHint="Bạn muốn đặt gì?"
             android:layout_marginBottom="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -72,8 +73,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="30dp"
             android:fontFamily="@font/arial_rounded"
-            android:text="Today's Promo"
-            android:textSize="30sp"
+            android:text="Hôm nay có gì hot?"
+            android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardview" />
@@ -88,7 +89,7 @@
             android:fontFamily="@font/arial_rounded"
             android:gravity="center"
             android:layout_marginEnd="16dp"
-            android:text="See all"
+            android:text="Xem thêm"
             android:textColor="#C13A3D"
             android:textSize="20sp"
 
