@@ -122,12 +122,13 @@
             android:layout_marginBottom="12dp" />
 
         <!-- Detail button -->
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnDetail"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:text="Xem chi tiết"
             android:background="@drawable/button_item_menu"
+            android:backgroundTint="#0053FF"
             android:textColor="@android:color/white"
             android:textStyle="bold"
             android:textSize="15sp"

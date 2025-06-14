@@ -87,9 +87,11 @@ public class DetailFoodActivity extends AppCompatActivity {
     // Đặt sự kiện cho các nút
     private void setButton() {
         btnAddReview.setOnClickListener(v -> {
+            btnAddReview.setEnabled(false);
             Intent intent = new Intent(DetailFoodActivity.this, AddReviewActivity.class);
             intent.putExtra("food_id", foodId);
             startActivityForResult(intent, 100); // 100 là request code
+            btnAddReview.setEnabled(true);
         });
         btnBack.setOnClickListener(v -> {
             finish();
@@ -102,7 +104,7 @@ public class DetailFoodActivity extends AppCompatActivity {
 
     // Gọi API để lấy thông tin chi tiết món ăn
     private void loadFoodDetails(int id) {
-        if (id<=0) {
+        if (id <= 0) {
             showError("Không có ID món ăn");
             return;
         }
