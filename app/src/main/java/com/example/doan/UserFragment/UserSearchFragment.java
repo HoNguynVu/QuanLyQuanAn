@@ -1,7 +1,6 @@
 package com.example.doan.UserFragment;
 
 import static android.content.ContentValues.TAG;
-import static com.example.doan.User.UserConstants.GETFOODS_URL;
 
 import android.os.Bundle;
 

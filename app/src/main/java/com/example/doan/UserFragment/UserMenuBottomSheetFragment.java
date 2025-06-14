@@ -25,7 +25,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
-import static com.example.doan.User.UserConstants.GETFOODS_URL;
 
 public class UserMenuBottomSheetFragment extends BottomSheetDialogFragment {
     private UserFragmentMenuBottomSheetBinding binding;

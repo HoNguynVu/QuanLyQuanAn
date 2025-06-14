@@ -57,19 +57,19 @@ public class UserShoppingFragment extends Fragment {
             switch (position) {
                 case 1:
                     tabText.setText("Appetizer");
-                    tabIcon.setImageResource(R.drawable.ic_chips);
+                    tabIcon.setImageResource(R.drawable.ic_appetizer);
                     break;
                 case 2:
                     tabText.setText("Drink");
-                    tabIcon.setImageResource(R.drawable.ic_tea_cup);
+                    tabIcon.setImageResource(R.drawable.ic_drink);
                     break;
                 case 3:
                     tabText.setText("Dessert");
-                    tabIcon.setImageResource(R.drawable.ic_tea_cup);
+                    tabIcon.setImageResource(R.drawable.ic_dessert);
                     break;
                 default:
                     tabText.setText("Main Course");
-                    tabIcon.setImageResource(R.drawable.ic_soup);
+                    tabIcon.setImageResource(R.drawable.ic_main_course);
             }
 
             tab.setCustomView(tabView);
