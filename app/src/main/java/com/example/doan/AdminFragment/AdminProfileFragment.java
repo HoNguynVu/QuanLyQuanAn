@@ -66,9 +66,9 @@ public class AdminProfileFragment extends Fragment {
         ProfileRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         items = new ArrayList<>();
-        items.add(new ProfileOption(R.drawable.ic_person, "My Profile"));
-        items.add(new ProfileOption(R.drawable.ic_settings, "Settings"));
-        items.add(new ProfileOption(R.drawable.ic_logout, "Log Out"));
+        items.add(new ProfileOption(R.drawable.ic_order, "Đơn hàng"));
+        items.add(new ProfileOption(R.drawable.ic_settings, "Cài đặt"));
+        items.add(new ProfileOption(R.drawable.ic_logout, "Đăng xuất"));
 
         setAdapter(sharedPreferences);
         ProfileRecyclerView.setAdapter(adapter);
@@ -77,7 +77,7 @@ public class AdminProfileFragment extends Fragment {
     public void setAdapter(SharedPreferences sharedPreferences) {
         adapter = new ProfileOptionAdapter(items, option-> {
             switch (option.getTitle()) {
-                case "Log Out":
+                case "Đăng xuất":
                     Toast.makeText(getContext(), "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.clear();
@@ -86,17 +86,15 @@ public class AdminProfileFragment extends Fragment {
                     Intent intent = new Intent(getContext(), LoginActivity.class);
                     startActivity(intent);
                     break;
-                case "My Profile":
-                    Toast.makeText(getContext(), "Điều hướng đến My Profile", Toast.LENGTH_SHORT).show();
-                    Intent intent1 = new Intent(getContext(), MyProfileActivity.class);
-                    intent1.putExtra("username", txtUsername.getText().toString());
-                    intent1.putExtra("email", txtEmail.getText().toString());
-                    intent1.putExtra("phone", phone);
-                    intent1.putExtra("dob", dob);
-                    startActivity(intent1);
+                case "Đơn hàng":
+                    requireActivity().getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragmentContainer, new AdminOrdersFragment())
+                            .addToBackStack(null)
+                            .commit();
+                    ((AdminHome) requireActivity()).navigateToOrders();
                     break;
-                case "Settings":
-                    Toast.makeText(getContext(), "Điều hướng đến Settings", Toast.LENGTH_SHORT).show();
+                case "Cài đặt":
                     Intent intent2 = new Intent(getContext(), AdminSetting.class);
                     startActivity(intent2);
                     break;
