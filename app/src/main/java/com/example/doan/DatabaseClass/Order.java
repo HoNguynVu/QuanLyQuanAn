@@ -17,6 +17,9 @@ public class Order {
     @SerializedName("created_at")
     private String createdAt;
 
+    @SerializedName("customer_name")
+    private String customerName;
+
     @SerializedName("discount_percent")
     private int discount_percent;
 
@@ -53,6 +56,15 @@ public class Order {
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
     public int getUser_id() { return userId; }
     public void setUser_id(int user_id) { this.userId = user_id; }
 

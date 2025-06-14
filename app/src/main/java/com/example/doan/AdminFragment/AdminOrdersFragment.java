@@ -1,5 +1,6 @@
 package com.example.doan.AdminFragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -73,11 +74,31 @@ public class AdminOrdersFragment extends Fragment {
         statusRadioGroup = view.findViewById(R.id.statusRadioGroup);
         sortRadioGroup = view.findViewById(R.id.sortRadioGroup);
         btnApplyFilter = view.findViewById(R.id.btnApplyFilter);
-
         orderList = new ArrayList<>();
         filteredOrderList = new ArrayList<>();
         orderAdapter = new OrderAdapter(getContext(), filteredOrderList);
         orderListView.setAdapter(orderAdapter);
+        
+        // Thiết lập click listener cho ListView
+        setupOrderListClickListener();
+    }
+    
+    private void setupOrderListClickListener() {
+        orderListView.setOnItemClickListener((parent, view, position, id) -> {
+            if (position < filteredOrderList.size()) {
+                Order selectedOrder = filteredOrderList.get(position);
+                  // Tạo Intent để chuyển đến AdminOrderDetailActivity
+                Intent intent = new Intent(getContext(), com.example.doan.AdminActivity.AdminOrderDetailActivity.class);
+                intent.putExtra("order_id", selectedOrder.getOrderId());
+                intent.putExtra("status", selectedOrder.getStatus());
+                intent.putExtra("created_at", selectedOrder.getCreatedAt());
+                intent.putExtra("final_amount", selectedOrder.getFinalAmount());
+                intent.putExtra("customer_name", selectedOrder.getCustomerName());
+                intent.putExtra("user_id", selectedOrder.getUser_id());
+                
+                startActivity(intent);
+            }
+        });
     }
 
     private void setupFilterFunctionality() {
@@ -102,8 +123,9 @@ public class AdminOrdersFragment extends Fragment {
                 selectedStatus = "Đã giao";
             } else if (statusId == R.id.radioCancelled) {
                 selectedStatus = "Hủy";
-            }
-            
+            } else if (statusId == R.id.radioWaiting)
+                selectedStatus = "Đang chờ";
+
             // Lấy kiểu sắp xếp được chọn
             int sortId = sortRadioGroup.getCheckedRadioButtonId();
             if (sortId == R.id.radioNewest) {
