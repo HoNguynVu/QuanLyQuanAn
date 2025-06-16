@@ -54,21 +54,51 @@ public class OrderAdapter extends ArrayAdapter<Order> {
         tvId.setText("Mã đơn: " + order.getOrderId());
         tvTime.setText("Thời gian: " + order.getCreatedAt());
         tvAmount.setText("Tổng tiền: " + formatCurrency(order.getFinalAmount()) + " VND");
-        tvStatus.setText("Trạng thái: " + order.getStatus());
-        tvCustomerName.setText("Khách hàng: " + (order.getCustomerName() != null ? order.getCustomerName() : "Không xác định"));
-        setStatusColor(tvStatus, order.getStatus());btnUpdate.setOnClickListener(v -> {
-            String[] statuses = {"Đang chờ", "Đã tiếp nhận","Đang giao", "Đã giao", "Hủy"};
+        tvStatus.setText("Trạng thái: " + order.getStatus());        tvCustomerName.setText("Khách hàng: " + (order.getCustomerName() != null ? order.getCustomerName() : "Không xác định"));
+        setStatusColor(tvStatus, order.getStatus());
+        
+        // Ẩn nút cập nhật nếu đơn hàng đã hoàn thành hoặc hủy
+        if ("Đã giao".equals(order.getStatus())) {
+            btnUpdate.setVisibility(View.GONE);
+        } else if ("Hủy".equals(order.getStatus())) {
+            btnUpdate.setVisibility(View.GONE);
+        } else {
+            btnUpdate.setVisibility(View.VISIBLE);
+        }btnUpdate.setOnClickListener(v -> {
+            String currentStatus = order.getStatus();
+            
+            // Tạo danh sách trạng thái có thể chuyển đổi dựa trên trạng thái hiện tại
+            String[] allStatuses = {"Đang chờ", "Đã tiếp nhận","Đang giao", "Đã giao", "Hủy"};
+            java.util.ArrayList<String> availableStatuses = new java.util.ArrayList<>();
+            
+            // Logic xác định trạng thái có thể chuyển đổi
+            if ("Hủy".equals(currentStatus)) {
+                // Nếu đã hủy thì không thể chuyển sang trạng thái nào khác
+                Toast.makeText(context, "Đơn hàng đã bị hủy không thể thay đổi trạng thái", Toast.LENGTH_SHORT).show();
+                return;
+            } else if ("Đang giao".equals(currentStatus) || "Đã giao".equals(currentStatus)) {
+                // Nếu đang giao hoặc đã giao thì không thể hủy
+                for (String status : allStatuses) {
+                    if (!"Hủy".equals(status)) {
+                        availableStatuses.add(status);
+                    }
+                }
+            } else {
+                // Các trạng thái khác có thể chuyển đổi bình thường
+                for (String status : allStatuses) {
+                    availableStatuses.add(status);
+                }
+            }
+            
+            // Chuyển đổi ArrayList thành array
+            String[] statuses = availableStatuses.toArray(new String[0]);
 
             new AlertDialog.Builder(context)
                     .setTitle("Chọn trạng thái mới")
                     .setItems(statuses, (dialog, which) -> {
                         String selectedStatus = statuses[which];
-                        order.setStatus(selectedStatus);
-                        tvStatus.setText("Trạng thái: " + selectedStatus);
-                        setStatusColor(tvStatus, selectedStatus);
-
-                        Toast.makeText(context, "Cập nhật trạng thái thành công", Toast.LENGTH_SHORT).show();
-
+                        
+                        // Gọi API để cập nhật trạng thái
                         APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
                         Call<StatusResponse> call = apiService.updateOrderStatus(
                                 Integer.parseInt(order.getOrderId()),
@@ -78,16 +108,25 @@ public class OrderAdapter extends ArrayAdapter<Order> {
                         call.enqueue(new Callback<StatusResponse>() {
                             @Override
                             public void onResponse(Call<StatusResponse> call, Response<StatusResponse> response) {
-                                if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
-                                    Toast.makeText(context, "Đã cập nhật trạng thái lên server", Toast.LENGTH_SHORT).show();
+                                if (response.isSuccessful() && response.body() != null) {
+                                    if (response.body().isSuccess()) {
+                                        // Cập nhật UI chỉ khi server trả về thành công
+                                        order.setStatus(selectedStatus);
+                                        tvStatus.setText("Trạng thái: " + selectedStatus);
+                                        setStatusColor(tvStatus, selectedStatus);
+                                        Toast.makeText(context, "Cập nhật trạng thái thành công", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        // Server trả về lỗi (ví dụ: vi phạm quy tắc chuyển trạng thái)
+                                        Toast.makeText(context, "Lỗi: " + response.body().getMessage(), Toast.LENGTH_LONG).show();
+                                    }
                                 } else {
-                                    Toast.makeText(context, "Lỗi cập nhật server: " + response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(context, "Lỗi kết nối đến server", Toast.LENGTH_SHORT).show();
                                 }
                             }
 
                             @Override
                             public void onFailure(Call<StatusResponse> call, Throwable t) {
-                                Toast.makeText(context, "Không thể kết nối đến server", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Không thể kết nối đến server: " + t.getMessage(), Toast.LENGTH_LONG).show();
                             }
                         });
 
