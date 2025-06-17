@@ -17,6 +17,9 @@ public class OrderRequest {
     @SerializedName("payment_method")
     public String paymentMethod;
 
+    @SerializedName("address")
+    public String address;
+
     public static class Item {
         @SerializedName("food_id")
         public int foodId;
@@ -26,6 +29,8 @@ public class OrderRequest {
 
         @SerializedName("note")
         public String note;
+
+
         public Item(int foodId, int quantity, String note) {
             this.foodId = foodId;
             this.quantity = quantity;

@@ -2,6 +2,7 @@ package com.example.doan.Network;
 
 import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.DatabaseClass.Notification;
+import com.example.doan.DatabaseClassResponse.DiscountResponse;
 import com.example.doan.DatabaseClassResponse.FoodListResponse;
 import com.example.doan.DatabaseClassResponse.GenericResponse;
 import com.example.doan.DatabaseClassResponse.LoginResponse;
@@ -191,6 +192,12 @@ public interface APIService {
             @Field("user_id") int userId,
             @Field("comment") String comment,
             @Field("rating") int rating
+    );
+
+    @FormUrlEncoded
+    @POST("search_discount_by_code.php")
+    Call<DiscountResponse> checkDiscount(
+            @Field("code") String discountCode
     );
 
 
