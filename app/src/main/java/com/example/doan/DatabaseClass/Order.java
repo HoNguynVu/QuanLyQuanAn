@@ -21,6 +21,10 @@ public class Order {
 
     @SerializedName("items")
     private List<OrderItem> items;
+
+    @SerializedName("address")
+    private String address;
+
     @SerializedName("customer_name")
     private String customerName;
 
@@ -83,6 +87,12 @@ public class Order {
         return discount_percent;
     }
 
+    public String getAddress() {
+        return address;
+    }
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
 }
 
