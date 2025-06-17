@@ -2,6 +2,8 @@ package com.example.doan.DatabaseClass;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 public class Discount {
 
     @SerializedName("id")
@@ -17,10 +19,10 @@ public class Discount {
     private double maxDiscountAmount;
 
     @SerializedName("valid_from")
-    private String validFrom; // có thể dùng Date nếu bạn convert định dạng ISO
+    private Date validFrom; // có thể dùng Date nếu bạn convert định dạng ISO
 
     @SerializedName("valid_to")
-    private String validTo;
+    private Date validTo;
 
     @SerializedName("is_active")
     private boolean isActive;
@@ -43,11 +45,11 @@ public class Discount {
         return maxDiscountAmount;
     }
 
-    public String getValidFrom() {
+    public Date getValidFrom() {
         return validFrom;
     }
 
-    public String getValidTo() {
+    public Date getValidTo() {
         return validTo;
     }
 
