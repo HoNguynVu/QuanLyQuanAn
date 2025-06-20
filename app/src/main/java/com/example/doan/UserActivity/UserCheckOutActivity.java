@@ -104,7 +104,6 @@ public class UserCheckOutActivity extends AppCompatActivity {
                     setPrice();
                 }
             });
-
         });
     }
 
