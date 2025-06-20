@@ -37,15 +37,19 @@ public class AdminHome extends AppCompatActivity {
             }
             if(item.getItemId()==R.id.nav_orders){
                 selectedFragment = new AdminOrdersFragment();
+                toolbar.setTitle("Quản lý đơn hàng");
             }
             if (item.getItemId()==R.id.nav_menu) {
                 selectedFragment = new AdminMenuFragment();
+                toolbar.setTitle("Quản lý Menu");
             }
             if (item.getItemId()==R.id.nav_profile) {
                 selectedFragment = new AdminProfileFragment();
+                toolbar.setTitle("Thông tin cá nhân");
             }
             if (item.getItemId()==R.id.nav_chat) {
-//                selectedFragment = new AdminChatFragment();
+                selectedFragment = new AdminChatFragment();
+                toolbar.setTitle("Chat");
             }
             if (selectedFragment != null) {
                 getSupportFragmentManager()
