@@ -44,6 +44,9 @@ public class AdminHome extends AppCompatActivity {
             if (item.getItemId()==R.id.nav_profile) {
                 selectedFragment = new AdminProfileFragment();
             }
+            if (item.getItemId()==R.id.nav_chat) {
+//                selectedFragment = new AdminChatFragment();
+            }
             if (selectedFragment != null) {
                 getSupportFragmentManager()
                         .beginTransaction()
