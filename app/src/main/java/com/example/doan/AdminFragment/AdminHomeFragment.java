@@ -1,5 +1,6 @@
 package com.example.doan.AdminFragment;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.doan.DatabaseClassResponse.StatisticsResponse;
+import com.example.doan.Interface.ToolbarController;
 import com.example.doan.Network.APIService;
 import com.example.doan.Network.RetrofitClient;
 import com.example.doan.R;
@@ -32,11 +34,30 @@ public class AdminHomeFragment extends Fragment {
 
     private TextView txtTotalOrders, txtTodayRevenue, txtMonthlyRevenue, txtTotalRevenue;
     private BarChart barChart;
-
     private DecimalFormat formatter;
+    private ToolbarController toolbarController;
+
     public AdminHomeFragment(){
         super(R.layout.fragment_home);
     }
+    
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof ToolbarController) {
+            toolbarController = (ToolbarController) context;
+        }
+    }
+    
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Ẩn toolbar cho AdminHomeFragment
+        if (toolbarController != null) {
+            toolbarController.showToolbar(false);
+        }
+    }
+    
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

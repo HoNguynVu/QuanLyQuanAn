@@ -1,5 +1,6 @@
 package com.example.doan.AdminFragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -22,6 +23,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.doan.DatabaseClass.Order;
 import com.example.doan.Adapter.OrderAdapter;
+import com.example.doan.Interface.ToolbarController;
 import com.example.doan.Network.APIService;
 import com.example.doan.Network.RetrofitClient;
 import com.example.doan.R;
@@ -51,8 +53,27 @@ public class AdminOrdersFragment extends Fragment {
     private String selectedStatus = "all";
     private String selectedSort = "newest";
 
+    private ToolbarController toolbarController;
+
     public AdminOrdersFragment() {
         super(R.layout.activity_admin_orders);
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof ToolbarController) {
+            toolbarController = (ToolbarController) context;
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Ẩn toolbar cho AdminOrdersFragment
+        if (toolbarController != null) {
+            toolbarController.showToolbar(false);
+        }
     }
 
     @Override

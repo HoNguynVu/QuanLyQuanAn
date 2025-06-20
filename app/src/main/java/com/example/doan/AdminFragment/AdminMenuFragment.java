@@ -1,5 +1,6 @@
 package com.example.doan.AdminFragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,11 +15,13 @@ import androidx.fragment.app.Fragment;
 
 import com.example.doan.AdminActivity.AdminAddFoodItem;
 import com.example.doan.AdminActivity.FoodByCategory;
+import com.example.doan.Interface.ToolbarController;
 import com.example.doan.R;
 
 public class AdminMenuFragment extends Fragment {
 
     private CardView cardKhaiVi, cardMonChinh, cardTrangMieng, cardThucUong;
+    private ToolbarController toolbarController;
 
     public AdminMenuFragment() {
         super(R.layout.fragment_menu); // Dùng fragment_menu.xml
@@ -28,6 +31,24 @@ public class AdminMenuFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true); // Cho phép fragment tạo menu riêng
+    }
+    
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof ToolbarController) {
+            toolbarController = (ToolbarController) context;
+        }
+    }
+    
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Hiển thị toolbar cho AdminMenuFragment
+        if (toolbarController != null) {
+            toolbarController.showToolbar(true);
+            toolbarController.setToolbarTitle("Quản lý thực đơn", false);
+        }
     }
 
     @Override
