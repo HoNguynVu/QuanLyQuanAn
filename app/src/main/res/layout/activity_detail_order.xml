@@ -88,6 +88,7 @@
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
+                                android:src="@drawable/ic_discount"
                                 android:layout_marginEnd="8dp" />
 
                             <TextView
@@ -118,7 +119,8 @@
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
-                                android:layout_marginEnd="8dp" />
+                                android:layout_marginEnd="8dp"
+                                android:src="@drawable/ic_calendar" />
 
                             <TextView
                                 android:id="@+id/txt_order_date"
@@ -140,7 +142,8 @@
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
-                                android:layout_marginEnd="8dp" />
+                                android:layout_marginEnd="8dp"
+                                android:src="@drawable/ic_status" />
 
                             <TextView
                                 android:id="@+id/txt_order_status"
@@ -151,6 +154,30 @@
                                 android:textStyle="bold"
                                 android:textColor="#4CAF50" />
                         </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Address Row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="8dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginEnd="8dp"
+                            android:src="@drawable/ic_location_on" />
+
+                        <TextView
+                            android:id="@+id/txt_order_address"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Địa chỉ: 123 Đường ABC, Quận 1, TP.HCM"
+                            android:textSize="14sp"
+                            android:textColor="#666666"
+                            android:maxLines="2"
+                            android:ellipsize="end"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

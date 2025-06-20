@@ -1,18 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
+<com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    card_view:cardCornerRadius="8dp"
-    card_view:cardElevation="6dp">
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp"
+    app:strokeColor="#FFE0B2"
+    app:strokeWidth="1dp"
+    android:layout_marginVertical="8dp"
+    android:layout_marginHorizontal="4dp"
+    android:foreground="?attr/selectableItemBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:gravity="center_vertical">
 
+        <!-- Icon thông báo -->
+        <ImageView
+            android:id="@+id/imgNotification"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_notification"
+            android:contentDescription="Notification Icon"
+            android:background="@drawable/bg_circle_orange"
+            android:padding="10dp"
+            android:layout_marginEnd="16dp"/>
 
         <!-- Nội dung thông báo -->
         <LinearLayout
@@ -25,36 +41,34 @@
                 android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
                 android:text="Thông báo đơn hàng"
                 android:textStyle="bold"
-                android:textSize="18sp"
-                android:textColor="#FF5722"
-                android:fontFamily="sans-serif-medium" />
+                android:textSize="17sp"
+                android:textColor="#FF9800"
+                android:fontFamily="sans-serif-medium"
+                android:maxLines="1"
+                android:ellipsize="end"/>
 
             <TextView
                 android:id="@+id/tvMessage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
                 android:text="Đơn hàng #12345 đã được giao thành công. Cảm ơn bạn đã sử dụng dịch vụ!"
-                android:textSize="18sp"
-                android:textColor="#444444"
-                android:layout_marginTop="4dp"
+                android:textSize="15sp"
+                android:textColor="#333333"
+                android:layout_marginTop="2dp"
                 android:maxLines="3"
-                android:ellipsize="end" />
+                android:ellipsize="end"/>
 
             <TextView
                 android:id="@+id/tvCreatedAt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="12/06/2025 10:30"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:textColor="#888888"
                 android:layout_marginTop="6dp"
-                android:padding="10dp"
-                android:layout_gravity="end" />
-
+                android:layout_gravity="end"/>
         </LinearLayout>
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

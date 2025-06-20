@@ -10,7 +10,7 @@
 
     <item android:title="Notification"
         android:id="@+id/notificationFragment"
-        android:icon="@drawable/notification"/>
+        android:icon="@drawable/ic_notification"/>
 
     <item android:title="Profile"
         android:id="@+id/profileFragment"
