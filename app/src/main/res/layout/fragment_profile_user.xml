@@ -110,7 +110,7 @@
                         android:id="@+id/btn_order_history"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Lịch sử đơn hàng"
+                        android:text="Lịch sử đặt hàng"
                         android:textSize="16sp"
                         android:textAlignment="textStart"
                         app:icon="@drawable/ic_history"

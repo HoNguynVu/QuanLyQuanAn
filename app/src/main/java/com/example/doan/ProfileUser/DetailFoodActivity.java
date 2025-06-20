@@ -10,6 +10,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,6 +38,8 @@ public class DetailFoodActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ReviewAdapter reviewAdapter;
     private Button btnAddReview, btnBack;
+    private ActivityResultLauncher<Intent> addReviewLauncher;
+
     private List<Review> reviewList = new ArrayList<>();
 
     private int foodId;
@@ -59,6 +63,7 @@ public class DetailFoodActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail_food);
 
         initViews();
+        setLauncher();
         initAdapter();
         setButton();
         getFoodIdFromIntent();
@@ -90,7 +95,7 @@ public class DetailFoodActivity extends AppCompatActivity {
             btnAddReview.setEnabled(false);
             Intent intent = new Intent(DetailFoodActivity.this, AddReviewActivity.class);
             intent.putExtra("food_id", foodId);
-            startActivityForResult(intent, 100); // 100 là request code
+            addReviewLauncher.launch(intent);
             btnAddReview.setEnabled(true);
         });
         btnBack.setOnClickListener(v -> {
@@ -146,7 +151,7 @@ public class DetailFoodActivity extends AppCompatActivity {
 
         APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
         Call<List<Review>> call = apiService.getReviewsByFoodId(String.valueOf(foodId));
-        Log.d("API_CALL", "Gọi API getReviewsByFoodId với food_id = " + foodId);
+
 
         call.enqueue(new Callback<List<Review>>() {
             @Override
@@ -175,5 +180,18 @@ public class DetailFoodActivity extends AppCompatActivity {
     // Hiển thị Toast thông báo lỗi
     private void showError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void setLauncher(){
+        addReviewLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        loadFoodDetails(foodId);
+                        loadFoodReviews(foodId);
+                    }
+                }
+        );
+
     }
 }
