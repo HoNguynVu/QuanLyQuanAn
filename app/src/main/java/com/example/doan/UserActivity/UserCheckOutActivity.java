@@ -83,13 +83,14 @@ public class UserCheckOutActivity extends AppCompatActivity {
             call.enqueue(new Callback<DiscountResponse>() {
                 @Override
                 public void onResponse(Call<DiscountResponse> call, Response<DiscountResponse> response) {
-                    if (response.isSuccessful() && response.body() != null) {
+                    if (response.body().isSuccess() && response.body() != null) {
                         // Kiểm tra kết quả từ API
                         DiscountResponse discountResponse = response.body();
                         Discount discount = discountResponse.getDiscount();
                         discountAmount = discount.getDiscountPercent();
                         discountTotal = discount.getMaxDiscountAmount();
                         setPrice();
+
                     } else {
                         DiscountCode.setError("Mã giảm giá không hợp lệ hoặc đã hết hạn");
                         discountAmount=0;
@@ -103,7 +104,6 @@ public class UserCheckOutActivity extends AppCompatActivity {
                     setPrice();
                 }
             });
-
         });
     }
 

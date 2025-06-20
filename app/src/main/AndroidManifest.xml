@@ -25,6 +25,9 @@
         <activity
             android:name=".ProfileUser.ChangePasswordActivity"
             android:exported="false" />
+        <activity android:name=".AdminActivity.ChatActivity"
+            android:exported="false" />
+
         <activity
             android:name=".ProfileUser.MyProfileActivity"
             android:exported="false" />
