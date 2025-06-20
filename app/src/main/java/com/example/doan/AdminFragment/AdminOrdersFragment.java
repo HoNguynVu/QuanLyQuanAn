@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -76,9 +77,7 @@ public class AdminOrdersFragment extends Fragment {
         orderAdapter = new OrderAdapter(getContext(), filteredOrderList);
         orderListView.setAdapter(orderAdapter);
         setupOrderListClickListener();
-    }
-
-    private void setupOrderListClickListener() {
+    }    private void setupOrderListClickListener() {
         orderListView.setOnItemClickListener((parent, view, position, id) -> {
             if (position < filteredOrderList.size()) {
                 Order selectedOrder = filteredOrderList.get(position);
@@ -89,6 +88,9 @@ public class AdminOrdersFragment extends Fragment {
                 intent.putExtra("final_amount", selectedOrder.getFinalAmount());
                 intent.putExtra("customer_name", selectedOrder.getCustomerName());
                 intent.putExtra("user_id", selectedOrder.getUser_id());
+                intent.putExtra("address", selectedOrder.getAddress());
+                intent.putExtra("phone", selectedOrder.getPhone());
+                intent.putExtra("discount_code", selectedOrder.getDiscountCode());
                 startActivity(intent);
             }
         });

@@ -23,10 +23,14 @@ public class Order {
     private List<OrderItem> items;
 
     @SerializedName("address")
-    private String address;
-
-    @SerializedName("customer_name")
+    private String address;    @SerializedName("customer_name")
     private String customerName;
+
+    @SerializedName("phone")
+    private String phone;
+
+    @SerializedName("discount_code")
+    private String discountCode;
 
     @SerializedName("discount_percent")
     private int discount_percent;
@@ -86,12 +90,25 @@ public class Order {
     public int getDiscount_percent() {
         return discount_percent;
     }
-
     public String getAddress() {
         return address;
     }
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getDiscountCode() {
+        return discountCode;
+    }
+    public void setDiscountCode(String discountCode) {
+        this.discountCode = discountCode;
     }
 
 }
