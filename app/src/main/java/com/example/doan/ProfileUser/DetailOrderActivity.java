@@ -25,7 +25,7 @@ import retrofit2.Response;
 
 public class DetailOrderActivity extends AppCompatActivity {
 
-    private TextView txtHeader, txtOrderId, txtDate, txtStatus, txtTotal,txtDiscount;
+    private TextView txtHeader, txtOrderId, txtDate, txtStatus, txtTotal,txtDiscount,txtAddress;
     private ListView listView;
     private List<OrderItemWithFood> itemList = new ArrayList<>();
     private OrderItemAdapter adapter;
@@ -57,6 +57,7 @@ public class DetailOrderActivity extends AppCompatActivity {
         txtDiscount = findViewById(R.id.txt_discount);
         txtDate = findViewById(R.id.txt_order_date);
         txtStatus = findViewById(R.id.txt_order_status);
+        txtAddress = findViewById(R.id.txt_order_address);
         txtTotal = findViewById(R.id.txt_total_amount);
         listView = findViewById(R.id.lv_order_items);
         btnBack = findViewById(R.id.btn_back);
@@ -155,13 +156,16 @@ public class DetailOrderActivity extends AppCompatActivity {
 
         String status = getIntent().getStringExtra("status");
         String createdAt = getIntent().getStringExtra("created_at");
+        String address = getIntent().getStringExtra("address");
 
         if (status == null) status = "Đang xử lý";
         if (createdAt == null) createdAt = "Không rõ ngày";
+        if (address == null) address = "Không rõ địa chỉ";
 
         txtStatus.setText("Trạng thái: " + status);
         txtDate.setText("Ngày tạo: " + createdAt);
         txtTotal.setText(formattedAmount + "đ");
+        txtAddress.setText("Địa chỉ: " + address);
 
         int discount = getIntent().getIntExtra("discount_percent", 0);
         if (discount != 0) {

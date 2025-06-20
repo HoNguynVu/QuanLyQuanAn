@@ -65,6 +65,7 @@ public class OrdersUserAdapter extends ArrayAdapter<Order> {
                 intent.putExtra("status", order.getStatus());
                 intent.putExtra("created_at", order.getCreatedAt());
                 intent.putExtra("final_amount", order.getFinalAmount());
+                intent.putExtra("address", order.getAddress());
                 intent.putExtra("discount_percent", order.getDiscount_percent());
                 context.startActivity(intent);
             }
