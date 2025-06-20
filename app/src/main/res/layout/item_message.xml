@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/messageContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:orientation="horizontal">
+
+    <!-- Sent Message Layout (Right Side) -->
+    <LinearLayout
+        android:id="@+id/sentMessageLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="8dp">
+
+            <!-- Sent Message Bubble -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="#2196F3">
+
+                <TextView
+                    android:id="@+id/txtSentMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tin nhắn đã gửi"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    android:padding="12dp"
+                    android:maxWidth="240dp" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Sent Message Time -->
+            <TextView
+                android:id="@+id/txtSentTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="14:30"
+                android:textColor="#999999"
+                android:textSize="11sp"
+                android:layout_gravity="end"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="4dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Received Message Layout (Left Side) -->
+    <LinearLayout
+        android:id="@+id/receivedMessageLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="start"
+        android:visibility="visible">
+
+        <!-- Sender Avatar -->
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginEnd="60dp">
+
+            <!-- Received Message Bubble -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@android:color/white">
+
+                <TextView
+                    android:id="@+id/txtReceivedMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tin nhắn đã nhận"
+                    android:textColor="#2E2E2E"
+                    android:textSize="16sp"
+                    android:padding="12dp"
+                    android:maxWidth="240dp" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Received Message Time -->
+            <TextView
+                android:id="@+id/txtReceivedTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="14:29"
+                android:textColor="#999999"
+                android:textSize="11sp"
+                android:layout_marginTop="2dp"
+                android:layout_marginStart="4dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -27,6 +27,29 @@ public class User implements Serializable {
     @SerializedName("role")
     private String role;
 
+    @SerializedName("last_message_time")
+    private String lastMessageTime;
+
+    public String getLastMessageTime() {
+        return lastMessageTime;
+    }
+
+    public void setLastMessageTime(String lastMessageTime) {
+        this.lastMessageTime = lastMessageTime;
+    }
+
+    @SerializedName("has_unread")
+    private boolean hasUnread;
+
+    public boolean isHasUnread() {
+        return hasUnread;
+    }
+
+    public void setHasUnread(boolean hasUnread) {
+        this.hasUnread = hasUnread;
+    }
+
+
     // Constructor đầy đủ
     public User(int id, String email, String name, String password, String phone, String date_birth, String role) {
         this.id = id;
@@ -46,6 +69,18 @@ public class User implements Serializable {
         this.phone = phone;
         this.date_birth = date_birth;
         this.role = role;
+    }
+
+    public User(int id, String email, String name, String password, String phone, String date_birth, String role, String lastMessageTime, boolean hasUnread) {
+        this.id = id;
+        this.email = email;
+        this.name = name;
+        this.password = password;
+        this.phone = phone;
+        this.date_birth = date_birth;
+        this.role = role;
+        this.lastMessageTime = lastMessageTime;
+        this.hasUnread = hasUnread;
     }
 
     // Getter – Setter

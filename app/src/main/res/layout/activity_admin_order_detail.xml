@@ -58,9 +58,7 @@
                 android:textColor="#1A202C"
                 android:layout_marginBottom="8dp"
                 android:clickable="false"
-                android:focusable="false" />
-
-            <TextView
+                android:focusable="false" />            <TextView
                 android:id="@+id/txt_customer_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -72,15 +70,48 @@
                 android:focusable="false" />
 
             <TextView
+                android:id="@+id/txt_customer_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Số điện thoại: "
+                android:textSize="15sp"
+                android:textColor="#3B82F6"
+                android:layout_marginBottom="8dp"
+                android:clickable="false"
+                android:focusable="false" />
+
+            <TextView
                 android:id="@+id/txt_order_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Ngày tạo: "
                 android:textSize="15sp"
                 android:textColor="#E91E63"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="8dp"
                 android:clickable="false"
                 android:focusable="false" />
+
+            <TextView
+                android:id="@+id/txt_delivery_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Địa chỉ giao hàng: "
+                android:textSize="15sp"
+                android:textColor="#6B7280"
+                android:layout_marginBottom="8dp"
+                android:clickable="false"
+                android:focusable="false"/>
+            <TextView
+                android:id="@+id/txt_discount_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Mã giảm giá: "
+                android:textSize="15sp"
+                android:textColor="#059669"
+                android:layout_marginBottom="8dp"
+                android:clickable="false"
+                android:focusable="false"
+                android:visibility="visible"/>
 
             <TextView
                 android:id="@+id/txt_order_status"
@@ -96,6 +127,8 @@
                 android:backgroundTint="#E6FFFA"
                 android:clickable="false"
                 android:focusable="false"/>
+
+
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

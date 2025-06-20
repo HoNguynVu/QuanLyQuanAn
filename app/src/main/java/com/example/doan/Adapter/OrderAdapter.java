@@ -45,7 +45,8 @@ public class OrderAdapter extends ArrayAdapter<Order> {
 
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_order, parent, false);
-        }        TextView tvId = convertView.findViewById(R.id.tvOrderId);
+        }
+        TextView tvId = convertView.findViewById(R.id.tvOrderId);
         TextView tvTime = convertView.findViewById(R.id.tvOrderTime);
         TextView tvAmount = convertView.findViewById(R.id.tvTotalAmount);
         TextView tvStatus = convertView.findViewById(R.id.tvStatus);
@@ -54,7 +55,8 @@ public class OrderAdapter extends ArrayAdapter<Order> {
         tvId.setText("Mã đơn: " + order.getOrderId());
         tvTime.setText("Thời gian: " + order.getCreatedAt());
         tvAmount.setText("Tổng tiền: " + formatCurrency(order.getFinalAmount()) + " VND");
-        tvStatus.setText("Trạng thái: " + order.getStatus());        tvCustomerName.setText("Khách hàng: " + (order.getCustomerName() != null ? order.getCustomerName() : "Không xác định"));
+        tvStatus.setText("Trạng thái: " + order.getStatus());
+        tvCustomerName.setText("Khách hàng: " + (order.getCustomerName() != null ? order.getCustomerName() : "Không xác định"));
         setStatusColor(tvStatus, order.getStatus());
         
         // Ẩn nút cập nhật nếu đơn hàng đã hoàn thành hoặc hủy
@@ -142,6 +144,9 @@ public class OrderAdapter extends ArrayAdapter<Order> {
             intent.putExtra("final_amount", order.getFinalAmount());
             intent.putExtra("customer_name", order.getCustomerName());
             intent.putExtra("user_id", order.getUser_id());
+            intent.putExtra("phone",order.getPhone());
+            intent.putExtra("address",order.getAddress());
+            intent.putExtra("discount_code",order.getDiscountCode());
             context.startActivity(intent);
         });
         return convertView;

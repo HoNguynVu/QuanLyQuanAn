@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,6 +26,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.DatabaseClassResponse.FoodListResponse;
 import com.example.doan.DatabaseClassResponse.GenericResponse;
+import com.example.doan.Interface.ToolbarController;
 import com.example.doan.Network.APIService;
 import com.example.doan.Network.RetrofitClient;
 import com.example.doan.R;
@@ -41,6 +44,7 @@ public class FoodByCategory extends Fragment {
     private MenuAdapter menuAdapter;
     private List<FoodItem> itemList = new ArrayList<>();
     private String selectedCategory;
+    private ToolbarController toolbarController;
 
     public FoodByCategory() {
         super(R.layout.menu_by_category);
@@ -55,11 +59,54 @@ public class FoodByCategory extends Fragment {
             selectedCategory = getArguments().getString("category", "");
         }
     }
+    
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof ToolbarController) {
+            toolbarController = (ToolbarController) context;
+        }
+    }
+    
     @Override
     public void onResume() {
         super.onResume();
-        loadMenuFromServer();  // Hàm bạn viết để reload danh sách
+        // Hiển thị toolbar với nút back cho FoodByCategory
+        if (toolbarController != null) {
+            String emoji = getCategoryEmoji(selectedCategory);
+            toolbarController.showToolbar(true);
+            toolbarController.setToolbarTitle(emoji + " " + selectedCategory, true);
+        }
     }
+    
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            // Xử lý nút back
+            if (getActivity() != null) {
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    
+    private String getCategoryEmoji(String category) {
+        if (category == null) return "🍽️";
+        switch (category.toLowerCase()) {
+            case "khai vị":
+                return "🥗";
+            case "món chính":
+                return "🍖";
+            case "tráng miệng":
+                return "🍰";
+            case "thức uống":
+                return "🥤";
+            default:
+                return "🍽️";
+        }
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
