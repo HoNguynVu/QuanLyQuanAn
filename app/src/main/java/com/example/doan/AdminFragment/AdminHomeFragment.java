@@ -66,7 +66,8 @@ public class AdminHomeFragment extends Fragment {
     }
 
     public void init(View view)
-    {        txtTotalOrders = view.findViewById(R.id.txtTotalOrders);
+    {
+        txtTotalOrders = view.findViewById(R.id.txtTotalOrders);
         txtTodayRevenue = view.findViewById(R.id.txtTodayRevenue);
         txtMonthlyRevenue = view.findViewById(R.id.txtMonthlyRevenue);
         txtTotalRevenue = view.findViewById(R.id.txtTotalRevenue);
@@ -83,7 +84,8 @@ public class AdminHomeFragment extends Fragment {
             @Override
             public void onResponse(Call<StatisticsResponse> call, Response<StatisticsResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    StatisticsResponse stats = response.body();                    txtTotalOrders.setText("Tổng đơn hàng: " + stats.getTotalOrders());
+                    StatisticsResponse stats = response.body();
+                    txtTotalOrders.setText("Tổng đơn hàng: " + stats.getTotalOrders());
                     txtTodayRevenue.setText("Doanh thu hôm nay: " + formatter.format(stats.getTodayRevenue()) + " VND");
                     txtMonthlyRevenue.setText("Doanh thu theo tháng: " + formatter.format(stats.getMonthlyRevenue()) + " VND");
                     txtTotalRevenue.setText("Tổng doanh thu: " + formatter.format(stats.getTotalRevenue()) + " VND");
@@ -94,7 +96,8 @@ public class AdminHomeFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<StatisticsResponse> call, Throwable t) {                txtTotalOrders.setText("Lỗi kết nối");
+            public void onFailure(Call<StatisticsResponse> call, Throwable t) {
+                txtTotalOrders.setText("Lỗi kết nối");
                 txtTodayRevenue.setText("");
                 txtMonthlyRevenue.setText("");
                 txtTotalRevenue.setText("");
