@@ -158,12 +158,12 @@ public class SignUpActivity extends AppCompatActivity {
                         Toast.makeText(SignUpActivity.this, "OTP đã gửi, kiểm tra email!", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(SignUpActivity.this, OTPVerifyActivity.class);
                         startActivity(intent);
-                    } else if ("error".equals(res.status) && res.message.toLowerCase().contains("đã tồn tại")) {
+                    } else if ("error".equals(res.status) && res.message.toLowerCase().contains("đã được đăng ký")) {
                         Toast.makeText(SignUpActivity.this, res.message, Toast.LENGTH_SHORT).show();
                         if (res.message.toLowerCase().contains("email")) {
                             txt_email.setError("Email đã được đăng ký");
                         }
-                        if (res.message.toLowerCase().contains("sđt") || res.message.toLowerCase().contains("số điện thoại")) {
+                        else if (res.message.toLowerCase().contains("sđt") || res.message.toLowerCase().contains("số điện thoại")) {
                             txt_phone.setError("SĐT đã được đăng ký");
                         }
                     } else {
