@@ -51,6 +51,15 @@ public class AdminChatFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.chat_fragment, container, false);
 
+        init(view);
+        loadUsers();
+        searchUsers();
+
+        return view;
+    }
+
+    private void init(View view)
+    {
         edtChatSearch = view.findViewById(R.id.etChatSearch);
 
         recyclerViewUsers = view.findViewById(R.id.recyclerViewUsers);
@@ -71,11 +80,6 @@ public class AdminChatFragment extends Fragment {
         });
 
         recyclerViewUsers.setAdapter(userAdapter);
-
-        loadUsers();
-        searchUsers();
-
-        return view;
     }
 
     private void MarkMessagesAsRead(int senderId, int receiverId) {

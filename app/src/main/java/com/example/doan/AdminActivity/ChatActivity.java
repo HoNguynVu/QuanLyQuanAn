@@ -62,17 +62,7 @@ public class ChatActivity extends AppCompatActivity {
 
         loadMessages();
 
-        btnSend.setOnClickListener(v -> {
-            String msg = edtMessage.getText().toString().trim();
-            if (!msg.isEmpty()) {
-                sendMessage(msg);
-                edtMessage.setText("");
-            }
-        });
-
-        btnBack.setOnClickListener(v -> {
-            finish();
-        });
+        initClick();
 
         startAutoRefresh();
     }
@@ -101,7 +91,20 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
+    private void initClick()
+    {
+        btnSend.setOnClickListener(v -> {
+            String msg = edtMessage.getText().toString().trim();
+            if (!msg.isEmpty()) {
+                sendMessage(msg);
+                edtMessage.setText("");
+            }
+        });
 
+        btnBack.setOnClickListener(v -> {
+            finish();
+        });
+    }
 
     private void sendMessage(String msg) {
 
