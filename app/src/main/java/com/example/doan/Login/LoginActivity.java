@@ -123,22 +123,22 @@ public class LoginActivity extends AppCompatActivity {
                     if ("success".equals(loginResponse.status)) {
                         User u = loginResponse.data;
 
-                        // Lưu vào Singleton
-                        CurrentUser.getInstance().setUser(u.id, u.email, u.name, u.phone, u.date_birth, u.role);
+
+
 
                         // SharedPreferences nếu muốn lưu thêm
                         SharedPreferences sharedPreferences = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putInt("id",u.id);
-                        editor.putString("username", u.name);
-                        editor.putString("email", u.email);
-                        editor.putString("phone", u.phone);
-                        editor.putString("dob", u.date_birth);
-                        editor.putString("role", u.role);
+                        editor.putInt("id",u.getId());
+                        editor.putString("username", u.getEmail());
+                        editor.putString("email", u.getEmail());
+                        editor.putString("phone", u.getPhone());
+                        editor.putString("dob", u.getDate_birth());
+                        editor.putString("role", u.getRole());
                         editor.putBoolean("is_Logged", true);
                         editor.apply();
 
-                        if ("admin".equalsIgnoreCase(u.role)) {
+                        if ("admin".equalsIgnoreCase(u.getRole())) {
                             startActivity(new Intent(LoginActivity.this, AdminHome.class));
                         } else {
                             startActivity(new Intent(LoginActivity.this, UserMainActivity.class));

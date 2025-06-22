@@ -11,6 +11,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.doan.R;
+import com.example.doan.User.UserCartManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Objects;
@@ -23,6 +24,11 @@ public class UserMainActivity extends AppCompatActivity {
         setContentView(R.layout.user_activity_main);
 
         setBottomNavigation();
+        UserCartManager.getInstance().initialize(this, () -> {
+            runOnUiThread(() -> {
+                // Cập nhật UI giỏ hàng ở đây (RecyclerView chẳng hạn)
+            });
+        });
     }
 
     public void setBottomNavigation() {

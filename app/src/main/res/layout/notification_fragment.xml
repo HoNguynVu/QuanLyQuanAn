@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:padding="15dp"
     android:background="#F5F5F5"
-    tools:context=".UserFragment.User_Notification_Fragment">
+    tools:context=".UserFragment.UserNotificationFragment">
 
     <!-- Tiêu đề với biểu tượng -->
     <LinearLayout

@@ -2,6 +2,7 @@ package com.example.doan.Network;
 
 import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.DatabaseClass.Notification;
+import com.example.doan.DatabaseClassResponse.DiscountResponse;
 import com.example.doan.DatabaseClassResponse.FoodListResponse;
 import com.example.doan.DatabaseClassResponse.GenericResponse;
 import com.example.doan.DatabaseClassResponse.LoginResponse;
@@ -94,6 +95,9 @@ public interface APIService {
     @POST("get_foods_by_id.php")
     Call<FoodItem> getFoodByID(@Field("food_id") String foodId);
 
+    @FormUrlEncoded
+    @POST("get_user_by_id.php")
+    Call<UserResponse> getUserByID(@Field("user_id") String userId);
 
     @FormUrlEncoded
     @POST("delete_food.php")
@@ -154,8 +158,6 @@ public interface APIService {
             @Field("date_birth") String dob
     );
 
-
-
     @FormUrlEncoded
     @POST("update_user.php")
     Call<String> updateUser(
@@ -186,10 +188,16 @@ public interface APIService {
     @FormUrlEncoded
     @POST("add_review.php")
     Call<ResponseBody> addReview(
-            @Field("food_id") String foodId,
+            @Field("food_id") int foodId,
             @Field("user_id") int userId,
-            @Field("rating") int rating,
-            @Field("comment") String comment
+            @Field("comment") String comment,
+            @Field("rating") int rating
+    );
+
+    @FormUrlEncoded
+    @POST("search_discount_by_code.php")
+    Call<DiscountResponse> checkDiscount(
+            @Field("code") String discountCode
     );
 
 

@@ -129,14 +129,14 @@ public class FoodByCategory extends Fragment {
 
 
             Glide.with(context)
-                    .load(item.getImageUrl())
+                    .load(item.getImage_url())
                     .override(100, 100)
                     .centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.DATA)
                     .placeholder(R.drawable.loading_spinner)
                     .error(R.drawable.error_image)
                     .into(holder.imgMenu);
-            Log.d("ImageURL", "URL: " + item.getImageUrl());
+            Log.d("ImageURL", "URL: " + item.getImage_url());
 
 
             holder.btnEdit.setOnClickListener(v -> {
@@ -144,7 +144,7 @@ public class FoodByCategory extends Fragment {
                 intent.putExtra("name", item.getName());
                 intent.putExtra("category", item.getCategory());
                 intent.putExtra("price", item.getPrice());
-                intent.putExtra("imageUrl", item.getImageUrl());
+                intent.putExtra("imageUrl", item.getImage_url());
                 intent.putExtra("id", item.getId());
                 intent.putExtra("amount", item.getAvailable());
                 intent.putExtra("description", item.getDescription());

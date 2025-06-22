@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.doan.DatabaseClass.FoodItem;
+import com.example.doan.User.CartLocalDb;
 import com.example.doan.User.UserCartManager;
 import com.example.doan.databinding.UserActivityDetailsBinding;
 
@@ -23,6 +24,7 @@ public class UserDetailsActivity extends AppCompatActivity {
     String foodQuantity;
     String foodImageUrl;
     String foodDescription;
+    int cartID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +90,17 @@ public class UserDetailsActivity extends AppCompatActivity {
             binding.quantity.setText(String.valueOf(quantity));
             String total = quantity * foodPrice + "";
             binding.total.setText(total);
+
+            Log.d("CartID: ", String.valueOf(cartID));
+            // Cập nhật vào Room
+            new Thread(() -> {
+                CartLocalDb db = CartLocalDb.getInstance(getApplicationContext());
+                FoodItem item = db.cartItemDao().findByCartId(cartID);
+                if (item != null) {
+                    item.setItemQuantity(String.valueOf(quantity));
+                    db.cartItemDao().update(item);
+                }
+            }).start();
         });
     }
 
@@ -110,7 +123,14 @@ public class UserDetailsActivity extends AppCompatActivity {
                     ? binding.textInput.getEditText().getText().toString()
                     : "";
             Log.d(TAG, "Note: " + note);
-            UserCartManager.getInstance().addItem(new FoodItem(foodID, foodName, "", foodPrice, foodImageUrl, 1, "", 5, note,  String.valueOf(quantity)));
+
+            FoodItem newItem = new FoodItem(foodID, foodName, "", foodPrice, foodImageUrl, 1, "", 5, note, String.valueOf(quantity));
+
+            UserCartManager.getInstance().addItem(this, newItem, itemWithId -> {
+                cartID = itemWithId.getCartId();
+                Log.d(TAG, "CartID: " + cartID);
+            });
+
             binding.textInput.getEditText().setText("");
             Toast.makeText(this, "Đã thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
         });

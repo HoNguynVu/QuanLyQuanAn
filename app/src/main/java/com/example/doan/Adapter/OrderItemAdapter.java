@@ -60,17 +60,19 @@ public class OrderItemAdapter extends ArrayAdapter<OrderItemWithFood> {
         txtName.setText(food.getName());
         txtQty.setText("Số lượng: " + item.getOrderItem().getQuantity());
         txtPrice.setText("Giá: " + formatCurrency(food.getPrice()) + " đ");
-        txtNote.setText("Ghi chú: " + item.getOrderItem().getNote());        // Load ảnh bằng Glide (thêm thư viện Glide vào project)
+        txtNote.setText("Ghi chú: " + item.getOrderItem().getNote());
+
+        // Load ảnh bằng Glide (thêm thư viện Glide vào project)
         Glide.with(context)
-                .load(food.getImageUrl())
+                .load(food.getImage_url())
                 .placeholder(R.drawable.ic_launcher_background)  // ảnh mặc định nếu chưa load được
                 .into(imgFood);
-                
+
         // Chỉ cho phép click nếu không phải admin mode
         if (!isAdminMode) {
             convertView.setOnClickListener(v -> {
                 Intent intent = new Intent(context, DetailFoodActivity.class);
-                intent.putExtra("id", String.valueOf(food.getId()));
+                intent.putExtra("id", food.getId());
                 context.startActivity(intent);
             });
         } else {
@@ -79,7 +81,7 @@ public class OrderItemAdapter extends ArrayAdapter<OrderItemWithFood> {
             convertView.setFocusable(false);
             convertView.setOnClickListener(null);
         }
-        
+
         return convertView;
     }
     private String formatCurrency(double amount) {
