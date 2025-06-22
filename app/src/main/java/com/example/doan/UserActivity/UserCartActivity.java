@@ -17,6 +17,7 @@ import com.example.doan.User.UserCartManager;
 import com.example.doan.User.UserSpaceItemDecoration;
 import com.example.doan.databinding.UserActivityCartBinding;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class UserCartActivity extends AppCompatActivity {
@@ -41,8 +42,7 @@ public class UserCartActivity extends AppCompatActivity {
             @Override
             public void onTotalChanged(double newTotal) {
                 // Cập nhật TextView mỗi khi total thay đổi
-                String total = newTotal + "";
-                Log.d(TAG, "onTotalChanged: " + newTotal);
+                String total = formatCurrency(newTotal)+ "đ" ;
                 binding.totalOrder.setText(total);
             }
         });
@@ -66,5 +66,9 @@ public class UserCartActivity extends AppCompatActivity {
             Intent intent = new Intent(this, UserCheckOutActivity.class);
             startActivity(intent);
         });
+    }
+    private static String formatCurrency(double amount) {
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        return formatter.format(amount);
     }
 }

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.databinding.UserCheckOutItemBinding;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class UserCheckOutAdapter extends RecyclerView.Adapter<UserCheckOutAdapter.CheckOutViewHolder> {
@@ -53,16 +54,14 @@ public class UserCheckOutAdapter extends RecyclerView.Adapter<UserCheckOutAdapte
         public void bind(int position) {
             double price = cartList.get(position).getPrice();
             final int[] quantity = {Integer.parseInt(cartList.get(position).getItemQuantity())};
-            String total = (price * quantity[0]) + "";
-
+            String total = formatCurrency(price * quantity[0]) + "đ";
             String foodName = cartList.get(position).getName() + " (" + cartList.get(position).getItemQuantity() + "x)";
             binding.tvFoodName.setText(foodName);
             binding.tvPrice.setText(total);
         }
-
-
-
     }
-
-
+    private static String formatCurrency(double amount) {
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        return formatter.format(amount);
+    }
 }

@@ -15,6 +15,7 @@ import com.example.doan.User.UserCartManager;
 import com.example.doan.databinding.UserCartItemBinding;
 import com.example.doan.UserActivity.UserDetailsActivity;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class UserCartAdapter extends RecyclerView.Adapter<UserCartAdapter.CartViewHolder> {
@@ -59,7 +60,7 @@ public class UserCartAdapter extends RecyclerView.Adapter<UserCartAdapter.CartVi
         public void bind(int position) {
             double price = cartList.get(position).getPrice();
             final int[] quantity = {Integer.parseInt(cartList.get(position).getItemQuantity())};
-            String total = (price * quantity[0]) + "";
+            String total = formatCurrency(quantity[0] * price) + "đ";
 
             binding.tvName.setText(cartList.get(position).getName());
             binding.tvPrice.setText(total);
@@ -97,7 +98,7 @@ public class UserCartAdapter extends RecyclerView.Adapter<UserCartAdapter.CartVi
                     quantity[0]--;
                     cartList.get(position).setItemQuantity(String.valueOf(quantity[0]));
                     binding.quantity.setText(String.valueOf(quantity[0]));
-                    String Total = quantity[0] * price + "";
+                    String Total = formatCurrency(quantity[0] * price) + "đ";
                     binding.tvPrice.setText(Total);
 
                     userCartManager.setTotalOrder(userCartManager.getTotalOrder() - price);
@@ -111,7 +112,7 @@ public class UserCartAdapter extends RecyclerView.Adapter<UserCartAdapter.CartVi
                 quantity[0]++;
                 cartList.get(position).setItemQuantity(String.valueOf(quantity[0]));
                 binding.quantity.setText(String.valueOf(quantity[0]));
-                String Total = quantity[0] * price + "";
+                String Total = formatCurrency(quantity[0] * price) + "đ";
                 binding.tvPrice.setText(Total);
 
                 userCartManager.setTotalOrder(userCartManager.getTotalOrder() + price);
@@ -128,6 +129,8 @@ public class UserCartAdapter extends RecyclerView.Adapter<UserCartAdapter.CartVi
             });
         }
     }
-
-
+    private static String formatCurrency(double amount) {
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        return formatter.format(amount);
+    }
 }
