@@ -2,7 +2,9 @@ package com.example.doan.Network;
 
 import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.DatabaseClass.Notification;
+import com.example.doan.DatabaseClassRequest.CartSyncRequest;
 import com.example.doan.DatabaseClassResponse.CartGetResponse;
+import com.example.doan.DatabaseClassResponse.CartSyncResponse;
 import com.example.doan.DatabaseClassResponse.DiscountResponse;
 import com.example.doan.DatabaseClassResponse.FoodListResponse;
 import com.example.doan.DatabaseClassResponse.GenericResponse;
@@ -203,7 +205,7 @@ public interface APIService {
     );
 
     @POST("create_cart.php")
-    Call<ResponseBody> syncCart(@Body RequestBody body);
+    Call<CartSyncResponse> syncCart(@Body CartSyncRequest body);
 
     @GET("get_cart.php")
     Call<CartGetResponse> getCart(@Query("user_id") int userId);

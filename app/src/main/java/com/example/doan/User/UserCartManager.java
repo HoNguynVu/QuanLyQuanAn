@@ -7,7 +7,9 @@ import android.util.Log;
 
 import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.DatabaseClassRequest.CartSyncRequest;
+import com.example.doan.DatabaseClassResponse.CartGetResponse;
 import com.example.doan.DatabaseClassResponse.CartSyncResponse;
+import com.example.doan.Network.APIService;
 import com.example.doan.Network.RetrofitClient;
 
 import java.util.ArrayList;
@@ -30,11 +32,6 @@ public class UserCartManager {
     private double TotalOrder = 0;
     private final Executor executor = Executors.newSingleThreadExecutor();
     private OnTotalChangedListener listener;
-
-    public interface CartApi {
-        @POST("create_cart.php")
-        Call<CartSyncResponse> syncCart(@Body CartSyncRequest request);
-    }
 
     public interface OnTotalChangedListener {
         void onTotalChanged(double newTotal);
@@ -205,8 +202,7 @@ public class UserCartManager {
 
         CartSyncRequest request = new CartSyncRequest(userId, syncItems);
 
-        // Sử dụng RetrofitClient đã cấu hình sẵn
-        CartApi api = RetrofitClient.getRetrofitInstance().create(CartApi.class);
+        APIService api = RetrofitClient.getRetrofitInstance().create(APIService.class);
 
         api.syncCart(request).enqueue(new Callback<CartSyncResponse>() {
             @Override
@@ -229,5 +225,94 @@ public class UserCartManager {
         });
     }
 
+    public void loadCartFromServer(Context context, int userId, Runnable onLoaded) {
+        APIService api = RetrofitClient.getRetrofitInstance().create(APIService.class);
+
+        api.getCart(userId).enqueue(new Callback<CartGetResponse>() {
+            @Override
+            public void onResponse(Call<CartGetResponse> call, Response<CartGetResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    cartItems.clear();
+                    TotalOrder = 0;
+
+                    List<CartGetResponse.CartItem> serverItems = response.body().items;
+                    Log.d("CartLoad", "✅ Server trả về " + serverItems.size() + " món");
+                    if (serverItems.isEmpty()) {
+                        // Nếu không có món nào thì vẫn gọi callback
+                        executor.execute(() -> {
+                            CartLocalDb db = CartLocalDb.getInstance(context);
+                            db.cartItemDao().clearCart();
+                            db.cartMetaDao().insert(new CartMeta(0));
+                            notifyTotalChanged();
+                            if (onLoaded != null) onLoaded.run();
+                        });
+                        return;
+                    }
+
+                    final int totalItems = serverItems.size();
+                    final int[] fetchedCount = {0};  // đếm số món đã lấy thành công
+
+                    for (CartGetResponse.CartItem item : serverItems) {
+                        Log.d("CartLoad", "🛒 Item: food_id=" + item.foodId +
+                                ", quantity=" + item.quantity +
+                                ", note=" + item.note);
+                        api.getFoodByID(String.valueOf(item.foodId)).enqueue(new Callback<FoodItem>() {
+                            @Override
+                            public void onResponse(Call<FoodItem> call, Response<FoodItem> foodResponse) {
+                                if (foodResponse.isSuccessful() && foodResponse.body() != null) {
+                                    FoodItem food = foodResponse.body();
+                                    food.setItemQuantity(String.valueOf(item.quantity));
+                                    food.setNote(item.note);
+                                    cartItems.add(food);
+                                    TotalOrder += food.getPrice() * item.quantity;
+                                } else {
+                                    Log.e("GetFoodByID", "⚠️ Không lấy được thông tin món ăn ID=" + item.foodId);
+                                }
+
+                                fetchedCount[0]++;
+                                if (fetchedCount[0] == totalItems) {
+                                    saveCartToRoom(context, onLoaded);
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<FoodItem> call, Throwable t) {
+                                Log.e("GetFoodByID", "❌ Lỗi kết nối món ID=" + item.foodId + ": " + t.getMessage());
+                                fetchedCount[0]++;
+                                if (fetchedCount[0] == totalItems) {
+                                    saveCartToRoom(context, onLoaded);
+                                }
+                            }
+                        });
+                    }
+                } else {
+                    Log.e("GetCart", "❌ Server trả về lỗi: " + response.code());
+                    if (onLoaded != null) onLoaded.run();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CartGetResponse> call, Throwable t) {
+                Log.e("GetCart", "❌ Lỗi kết nối: " + t.getMessage());
+                if (onLoaded != null) onLoaded.run();
+            }
+        });
+    }
+
+    private void saveCartToRoom(Context context, Runnable onLoaded) {
+        executor.execute(() -> {
+            CartLocalDb db = CartLocalDb.getInstance(context);
+            db.cartItemDao().clearCart();
+            for (FoodItem item : cartItems) {
+                db.cartItemDao().insert(item);
+            }
+            db.cartMetaDao().insert(new CartMeta(TotalOrder));
+
+            notifyTotalChanged();
+            if (onLoaded != null) onLoaded.run();
+        });
+    }
+
 
 }
+

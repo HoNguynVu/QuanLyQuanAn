@@ -28,7 +28,8 @@ public class FoodItem {
     private float ratingAvg;
     private String itemQuantity;
 
-
+    public FoodItem() {
+    }
 
     public FoodItem(int id, String name, String category, double price, String image_url, int available, String description, float ratingAvg, String note, String itemQuantity) {
         this.id = id;
@@ -54,9 +55,11 @@ public class FoodItem {
         note = "";
     }
 
-    // Chỉ có getter cho id vì id tự sinh từ MySQL
     public int getId() {
         return id;
+    }
+    public void setId(int id) {
+        this.id = id;
     }
 
     // Các getter và setter khác
@@ -121,7 +124,9 @@ public class FoodItem {
     public String getNote() {
         return note;
     }
-
+    public void setNote(String note) {
+        this.note = note;
+    }
     public int getCartId() {
         return cartId;
     }

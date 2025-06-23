@@ -20,41 +20,41 @@ import com.example.doan.databinding.UserActivityCartBinding;
 import java.util.List;
 
 public class UserCartActivity extends AppCompatActivity {
-    List<FoodItem> cartList = UserCartManager.getInstance().getCartItems();
-    UserCartAdapter adapter;
+    private UserCartAdapter adapter;
     private UserActivityCartBinding binding;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = UserActivityCartBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        ChangeOnCartManager();
-        setRecyclerView();
+        setupRecyclerView();
+        setupCartListener();
         setBtnBack();
         setBtnCheckOut();
+
+        // Gọi lại notify nếu dữ liệu đã có
+        UserCartManager.getInstance().notifyTotalChanged();
     }
 
-    public void ChangeOnCartManager() {
-        UserCartManager userCartManager = UserCartManager.getInstance();
-        userCartManager.setOnTotalChangedListener(new UserCartManager.OnTotalChangedListener() {
-            @Override
-            public void onTotalChanged(double newTotal) {
-                // Cập nhật TextView mỗi khi total thay đổi
-                String total = newTotal + "";
-                Log.d(TAG, "onTotalChanged: " + newTotal);
-                binding.totalOrder.setText(total);
-            }
-        });
-        userCartManager.notifyTotalChanged();
-    }
-
-    public void setRecyclerView() {
-        adapter = new UserCartAdapter(cartList, this);
-
+    private void setupRecyclerView() {
+        adapter = new UserCartAdapter(UserCartManager.getInstance().getCartItems(), this);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.addItemDecoration(new UserSpaceItemDecoration(16));
+    }
+
+    private void setupCartListener() {
+        UserCartManager.getInstance().setOnTotalChangedListener(newTotal -> {
+            Log.d(TAG, "onTotalChanged: " + newTotal);
+            binding.totalOrder.setText(String.valueOf(newTotal));
+
+            // Thông báo adapter cập nhật lại UI
+            if (adapter != null) {
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     public void setBtnBack() {
@@ -66,5 +66,12 @@ public class UserCartActivity extends AppCompatActivity {
             Intent intent = new Intent(this, UserCheckOutActivity.class);
             startActivity(intent);
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("CartDebug", "Cart size: " + UserCartManager.getInstance().getCartItems().size());
+
     }
 }
