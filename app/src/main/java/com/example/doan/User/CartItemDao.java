@@ -8,8 +8,7 @@ import java.util.List;
 
 @Dao
 public interface CartItemDao {
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     long insert(FoodItem item);
 
     @Query("SELECT * FROM cart_items")
@@ -20,10 +19,13 @@ public interface CartItemDao {
 
     @Delete
     void delete(FoodItem item);
-
     @Update
     void update(FoodItem item);
 
-    @Query("SELECT * FROM cart_items WHERE id = :cartId LIMIT 1")
+    @Query("SELECT * FROM cart_items WHERE cartId = :cartId LIMIT 1")
     FoodItem findByCartId(int cartId);
+
+    @Query("DELETE FROM cart_items WHERE cartId = :cartId")
+    void deleteByCartId(int cartId);
 }
+

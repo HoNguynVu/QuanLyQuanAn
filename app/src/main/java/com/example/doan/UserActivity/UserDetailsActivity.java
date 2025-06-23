@@ -4,6 +4,8 @@ import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -138,8 +140,13 @@ public class UserDetailsActivity extends AppCompatActivity {
 
     public void setBtnCartFragment() {
         binding.cartFragment.setOnClickListener(v -> {
+            binding.cartFragment.setEnabled(false);
             Intent intent = new Intent(this, UserCartActivity.class);
             startActivity(intent);
+            // Bật lại sau 500ms
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                binding.cartFragment.setEnabled(true);
+            }, 500);
         });
     }
 }

@@ -234,11 +234,9 @@ public class UserCartManager {
                 if (response.isSuccessful() && response.body() != null) {
                     cartItems.clear();
                     TotalOrder = 0;
-
                     List<CartGetResponse.CartItem> serverItems = response.body().items;
-                    Log.d("CartLoad", "✅ Server trả về " + serverItems.size() + " món");
+
                     if (serverItems.isEmpty()) {
-                        // Nếu không có món nào thì vẫn gọi callback
                         executor.execute(() -> {
                             CartLocalDb db = CartLocalDb.getInstance(context);
                             db.cartItemDao().clearCart();
@@ -250,12 +248,9 @@ public class UserCartManager {
                     }
 
                     final int totalItems = serverItems.size();
-                    final int[] fetchedCount = {0};  // đếm số món đã lấy thành công
+                    final int[] fetchedCount = {0};
 
                     for (CartGetResponse.CartItem item : serverItems) {
-                        Log.d("CartLoad", "🛒 Item: food_id=" + item.foodId +
-                                ", quantity=" + item.quantity +
-                                ", note=" + item.note);
                         api.getFoodByID(String.valueOf(item.foodId)).enqueue(new Callback<FoodItem>() {
                             @Override
                             public void onResponse(Call<FoodItem> call, Response<FoodItem> foodResponse) {
@@ -263,10 +258,9 @@ public class UserCartManager {
                                     FoodItem food = foodResponse.body();
                                     food.setItemQuantity(String.valueOf(item.quantity));
                                     food.setNote(item.note);
+
                                     cartItems.add(food);
                                     TotalOrder += food.getPrice() * item.quantity;
-                                } else {
-                                    Log.e("GetFoodByID", "⚠️ Không lấy được thông tin món ăn ID=" + item.foodId);
                                 }
 
                                 fetchedCount[0]++;
@@ -277,7 +271,6 @@ public class UserCartManager {
 
                             @Override
                             public void onFailure(Call<FoodItem> call, Throwable t) {
-                                Log.e("GetFoodByID", "❌ Lỗi kết nối món ID=" + item.foodId + ": " + t.getMessage());
                                 fetchedCount[0]++;
                                 if (fetchedCount[0] == totalItems) {
                                     saveCartToRoom(context, onLoaded);
@@ -286,14 +279,12 @@ public class UserCartManager {
                         });
                     }
                 } else {
-                    Log.e("GetCart", "❌ Server trả về lỗi: " + response.code());
                     if (onLoaded != null) onLoaded.run();
                 }
             }
 
             @Override
             public void onFailure(Call<CartGetResponse> call, Throwable t) {
-                Log.e("GetCart", "❌ Lỗi kết nối: " + t.getMessage());
                 if (onLoaded != null) onLoaded.run();
             }
         });
@@ -307,11 +298,11 @@ public class UserCartManager {
                 db.cartItemDao().insert(item);
             }
             db.cartMetaDao().insert(new CartMeta(TotalOrder));
-
             notifyTotalChanged();
             if (onLoaded != null) onLoaded.run();
         });
     }
+
 
 
 }

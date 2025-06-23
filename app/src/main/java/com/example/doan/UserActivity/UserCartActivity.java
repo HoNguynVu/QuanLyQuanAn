@@ -9,7 +9,10 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.doan.Adapter.UserCartAdapter;
 import com.example.doan.DatabaseClass.FoodItem;
@@ -58,13 +61,24 @@ public class UserCartActivity extends AppCompatActivity {
     }
 
     public void setBtnBack() {
+
         binding.btnBack.setOnClickListener(v -> finish());
     }
 
     public void setBtnCheckOut() {
         binding.btnCheckout.setOnClickListener(v -> {
-            Intent intent = new Intent(this, UserCheckOutActivity.class);
-            startActivity(intent);
+            if(UserCartManager.getInstance().getTotalOrder() > 0) {
+                binding.btnCheckout.setEnabled(false);
+                Intent intent = new Intent(this, UserCheckOutActivity.class);
+                startActivity(intent);
+                // Bật lại sau 500ms
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    binding.btnCheckout.setEnabled(true);
+                }, 500);
+            }
+            else {
+                Toast.makeText(this, "Giỏ hàng trống", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 

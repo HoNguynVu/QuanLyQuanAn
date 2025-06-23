@@ -90,8 +90,13 @@ public class UserHomeFragment extends Fragment {
 
     public void setBtnCartFragment() {
         binding.cartFragment.setOnClickListener(v -> {
+            binding.cartFragment.setEnabled(false);
             Intent intent = new Intent(getActivity(), UserCartActivity.class);
             startActivity(intent);
+            // Bật lại sau 500ms
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                binding.cartFragment.setEnabled(true);
+            }, 500);
         });
     }
 

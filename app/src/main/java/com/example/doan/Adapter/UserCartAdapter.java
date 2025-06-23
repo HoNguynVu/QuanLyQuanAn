@@ -151,31 +151,32 @@ public class UserCartAdapter extends RecyclerView.Adapter<UserCartAdapter.CartVi
 
         public void setBtnDelete(int[] quantity, int position, double price) {
             binding.btnDelete.setOnClickListener(v -> {
+                // Lấy item tại vị trí đang được xóa
                 FoodItem item = cartList.get(position);
+                int cartId = item.getCartId();  // Dùng cartId làm khóa chính
 
-                // 1. Xóa trên UI
+                // 1. Xóa khỏi danh sách RecyclerView
                 cartList.remove(position);
                 notifyItemRemoved(position);
 
-                // 2. Cập nhật TotalOrder
-                userCartManager.setTotalOrder(userCartManager.getTotalOrder() - price * quantity[0]);
-                userCartManager.notifyTotalChanged();
+                // 2. Xóa khỏi UserCartManager (danh sách tạm)
+                UserCartManager.getInstance().getCartItems().remove(item);
 
-                // 3. Xóa khỏi Room DB (theo cartId - khóa chính)
+                // 3. Cập nhật tổng tiền
+                double newTotal = Math.max(0, UserCartManager.getInstance().getTotalOrder() - price * quantity[0]);
+                UserCartManager.getInstance().setTotalOrder(newTotal);
+                UserCartManager.getInstance().notifyTotalChanged();
+
+                // 4. Xóa khỏi Room dựa vào cartId
                 new Thread(() -> {
-                    try {
-                        CartLocalDb db = CartLocalDb.getInstance(requireContext);
-                        db.cartItemDao().delete(item);
-
-                        // 4. Cập nhật lại tổng tiền trong CartMeta
-                        double totalOrder = userCartManager.getTotalOrder();
-                        db.cartMetaDao().insert(new com.example.doan.User.CartMeta(totalOrder));
-                    } catch (Exception e) {
-                        Log.e("CartDelete", "Error deleting item: " + e.getMessage());
-                    }
+                    CartLocalDb db = CartLocalDb.getInstance(requireContext);
+                    db.cartItemDao().deleteByCartId(cartId); // Xóa đúng bản ghi Room
+                    db.cartMetaDao().insert(new CartMeta(newTotal));
                 }).start();
             });
         }
+
+
     }
 
 
