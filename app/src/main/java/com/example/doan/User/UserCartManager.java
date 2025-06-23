@@ -6,11 +6,23 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.doan.DatabaseClass.FoodItem;
+import com.example.doan.DatabaseClassRequest.CartSyncRequest;
+import com.example.doan.DatabaseClassResponse.CartSyncResponse;
+import com.example.doan.Network.RetrofitClient;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
+import retrofit2.http.POST;
 
 public class UserCartManager {
     private static UserCartManager instance;
@@ -18,6 +30,11 @@ public class UserCartManager {
     private double TotalOrder = 0;
     private final Executor executor = Executors.newSingleThreadExecutor();
     private OnTotalChangedListener listener;
+
+    public interface CartApi {
+        @POST("create_cart.php")
+        Call<CartSyncResponse> syncCart(@Body CartSyncRequest request);
+    }
 
     public interface OnTotalChangedListener {
         void onTotalChanged(double newTotal);
@@ -174,6 +191,42 @@ public class UserCartManager {
         });
 
         notifyTotalChanged();
+    }
+
+
+    public void syncCartToServer(Context context, int userId, Runnable onSynced) {
+        List<CartSyncRequest.CartItem> syncItems = new ArrayList<>();
+        for (FoodItem item : cartItems) {
+            int foodId = item.getId();
+            int quantity = Integer.parseInt(item.getItemQuantity());
+            String note = item.getNote() != null ? item.getNote() : "";
+            syncItems.add(new CartSyncRequest.CartItem(foodId, quantity, note));
+        }
+
+        CartSyncRequest request = new CartSyncRequest(userId, syncItems);
+
+        // Sử dụng RetrofitClient đã cấu hình sẵn
+        CartApi api = RetrofitClient.getRetrofitInstance().create(CartApi.class);
+
+        api.syncCart(request).enqueue(new Callback<CartSyncResponse>() {
+            @Override
+            public void onResponse(Call<CartSyncResponse> call, Response<CartSyncResponse> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
+                    Log.d("SyncCart", "✅ Đồng bộ giỏ hàng thành công. Cart ID: " + response.body().getCartId());
+                } else {
+                    Log.e("SyncCart", "❌ Đồng bộ thất bại: " + response.code() + " - " + response.message());
+                }
+
+                // Gọi callback
+                if (onSynced != null) onSynced.run();
+            }
+
+            @Override
+            public void onFailure(Call<CartSyncResponse> call, Throwable t) {
+                Log.e("SyncCart", "❌ Lỗi kết nối: " + t.getMessage());
+                if (onSynced != null) onSynced.run();
+            }
+        });
     }
 
 

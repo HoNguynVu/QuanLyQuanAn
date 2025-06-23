@@ -17,6 +17,7 @@ import com.example.doan.ProfileUser.ChangePasswordActivity;
 import com.example.doan.ProfileUser.MyOrdersActivity;
 import com.example.doan.ProfileUser.MyProfileActivity;
 import com.example.doan.R;
+import com.example.doan.User.UserCartManager;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -68,7 +69,14 @@ public class UserProfileFragment extends Fragment {
             startActivity(intent);
         });
 
-        btnLogout.setOnClickListener(v -> logout());
+        btnLogout.setOnClickListener(v -> {
+            SharedPreferences sharedPreferences = requireContext().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+            int userID = sharedPreferences.getInt("id", 0);
+            UserCartManager.getInstance().syncCartToServer(requireContext(), userID, () -> {
+                UserCartManager.getInstance().cleanCart(requireContext());
+                logout();
+            });
+        });
     }
 
     private void loadUserInfo() {
