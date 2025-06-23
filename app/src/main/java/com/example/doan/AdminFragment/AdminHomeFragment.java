@@ -1,5 +1,6 @@
 package com.example.doan.AdminFragment;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.doan.DatabaseClassResponse.StatisticsResponse;
+import com.example.doan.Interface.ToolbarController;
 import com.example.doan.Network.APIService;
 import com.example.doan.Network.RetrofitClient;
 import com.example.doan.R;
@@ -30,13 +32,32 @@ import retrofit2.Response;
 
 public class AdminHomeFragment extends Fragment {
 
-    private TextView txtTotalOrders, txtTodayRevenue, txtMonthlyRevenue;
+    private TextView txtTotalOrders, txtTodayRevenue, txtMonthlyRevenue, txtTotalRevenue;
     private BarChart barChart;
-
     private DecimalFormat formatter;
+    private ToolbarController toolbarController;
+
     public AdminHomeFragment(){
         super(R.layout.fragment_home);
     }
+    
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof ToolbarController) {
+            toolbarController = (ToolbarController) context;
+        }
+    }
+    
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Ẩn toolbar cho AdminHomeFragment
+        if (toolbarController != null) {
+            toolbarController.showToolbar(false);
+        }
+    }
+    
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -49,6 +70,7 @@ public class AdminHomeFragment extends Fragment {
         txtTotalOrders = view.findViewById(R.id.txtTotalOrders);
         txtTodayRevenue = view.findViewById(R.id.txtTodayRevenue);
         txtMonthlyRevenue = view.findViewById(R.id.txtMonthlyRevenue);
+        txtTotalRevenue = view.findViewById(R.id.txtTotalRevenue);
         barChart = view.findViewById(R.id.barChart);
 
         formatter = new DecimalFormat("#,###");
@@ -63,13 +85,13 @@ public class AdminHomeFragment extends Fragment {
             public void onResponse(Call<StatisticsResponse> call, Response<StatisticsResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     StatisticsResponse stats = response.body();
-
                     txtTotalOrders.setText("Tổng đơn hàng: " + stats.getTotalOrders());
                     txtTodayRevenue.setText("Doanh thu hôm nay: " + formatter.format(stats.getTodayRevenue()) + " VND");
                     txtMonthlyRevenue.setText("Doanh thu theo tháng: " + formatter.format(stats.getMonthlyRevenue()) + " VND");
+                    txtTotalRevenue.setText("Tổng doanh thu: " + formatter.format(stats.getTotalRevenue()) + " VND");
 
                     // Vẽ biểu đồ
-                    displayChart(stats.getTodayRevenue(), stats.getMonthlyRevenue());
+                    displayChart(stats.getTodayRevenue(), stats.getMonthlyRevenue(), stats.getTotalRevenue());
                 }
             }
 
@@ -78,25 +100,32 @@ public class AdminHomeFragment extends Fragment {
                 txtTotalOrders.setText("Lỗi kết nối");
                 txtTodayRevenue.setText("");
                 txtMonthlyRevenue.setText("");
+                txtTotalRevenue.setText("");
             }
         });
-    }
-
-    // Hiển thị biểu đồ
-    private void displayChart(double todayRevenue, double monthlyRevenue) {
+    }    // Hiển thị biểu đồ
+    private void displayChart(double todayRevenue, double monthlyRevenue, double totalRevenue) {
         ArrayList<BarEntry> entries = new ArrayList<>();
         entries.add(new BarEntry(0, (float) todayRevenue));
         entries.add(new BarEntry(1, (float) monthlyRevenue));
+        entries.add(new BarEntry(2, (float) totalRevenue));
 
         BarDataSet dataSet = new BarDataSet(entries, "Doanh thu");
-        dataSet.setColors(new int[]{Color.parseColor("#03A9F4"), Color.parseColor("#FFC107")});
+        dataSet.setColors(new int[]{Color.parseColor("#03A9F4"), Color.parseColor("#FFC107"), Color.parseColor("#9C27B0")});
+        dataSet.setValueTextSize(12f);
+        dataSet.setValueTextColor(Color.BLACK);
 
         BarData barData = new BarData(dataSet);
+        barData.setBarWidth(0.6f); // Làm cho cột rộng hơn
         barData.setValueFormatter(new ValueFormatter() {
             private final DecimalFormat mFormat = new DecimalFormat("#,###");
             @Override
             public String getFormattedValue(float value) {
-                return mFormat.format(value) + " VND";
+                if (value < 1000) {
+                    return mFormat.format(value);
+                } else {
+                    return mFormat.format(value / 1000) + "K";
+                }
             }
         });
 
@@ -105,9 +134,14 @@ public class AdminHomeFragment extends Fragment {
             private final DecimalFormat mFormat = new DecimalFormat("#,###");
             @Override
             public String getFormattedValue(float value) {
-                return mFormat.format(value);
+                if (value < 1000) {
+                    return mFormat.format(value);
+                } else {
+                    return mFormat.format(value / 1000) + "K";
+                }
             }
         });
+        
         //Tắt tương tác
         barChart.setTouchEnabled(false);
         barChart.setHighlightPerTapEnabled(false);
@@ -118,13 +152,19 @@ public class AdminHomeFragment extends Fragment {
         barChart.getDescription().setEnabled(false);
         barChart.getAxisRight().setEnabled(false);
         barChart.getXAxis().setDrawGridLines(false);
-        barChart.getAxisLeft().setDrawGridLines(false);
+        barChart.getAxisLeft().setDrawGridLines(true);
+        barChart.getAxisLeft().setGridColor(Color.parseColor("#E0E0E0"));
         barChart.getLegend().setEnabled(false);
         barChart.getXAxis().setGranularity(1f);
-        barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(new String[]{"Hôm nay", "Tháng này"}));
+        barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(new String[]{"Hôm nay", "Tháng này", "Tổng cộng"}));
         barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-        barChart.getXAxis().setTextSize(10f);
-        barChart.animateY(1000);
+        barChart.getXAxis().setTextSize(12f);
+        barChart.getAxisLeft().setTextSize(10f);
+        
+        // Thêm margin cho biểu đồ
+        barChart.setExtraOffsets(10f, 20f, 10f, 10f);
+        
+        barChart.animateY(1200);
         barChart.invalidate();
     }
 }

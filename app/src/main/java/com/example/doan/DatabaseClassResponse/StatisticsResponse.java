@@ -12,6 +12,9 @@ public class StatisticsResponse {
     @SerializedName("monthly_revenue")
     private double monthlyRevenue;
 
+    @SerializedName("total_revenue")
+    private double totalRevenue;
+
     public int getTotalOrders() {
         return totalOrders;
     }
@@ -22,5 +25,9 @@ public class StatisticsResponse {
 
     public double getMonthlyRevenue() {
         return monthlyRevenue;
+    }
+
+    public double getTotalRevenue() {
+        return totalRevenue;
     }
 }

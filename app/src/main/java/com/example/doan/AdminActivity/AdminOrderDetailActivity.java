@@ -27,7 +27,7 @@ import retrofit2.Response;
 
 public class AdminOrderDetailActivity extends AppCompatActivity {
 
-    private TextView txtHeader, txtOrderId, txtDate, txtStatus, txtTotal, txtCustomerName;
+    private TextView txtHeader, txtOrderId, txtDate, txtStatus, txtTotal, txtCustomerName, txtCustomerPhone, txtAddress, txtDiscount;
     private ListView listView;
     private List<OrderItemWithFood> itemList = new ArrayList<>();
     private OrderItemAdapter adapter;
@@ -38,11 +38,13 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_order_detail);
-        initViews();
+        orderId = getIntent().getStringExtra("order_id");
         if (orderId == null || orderId.isEmpty()) {
             Toast.makeText(this, "Không có mã đơn hàng", Toast.LENGTH_SHORT).show();
+            finish();
             return;
         }
+        initViews();
         loadOrderDetails(orderId);
     }
     private void initViews()
@@ -51,9 +53,12 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
         txtHeader = findViewById(R.id.txt_header);
         txtOrderId = findViewById(R.id.txt_order_id);
         txtDate = findViewById(R.id.txt_order_date);
+        txtAddress = findViewById(R.id.txt_delivery_address);
+        txtDiscount = findViewById(R.id.txt_discount_info);
         txtStatus = findViewById(R.id.txt_order_status);
         txtTotal = findViewById(R.id.txt_total_amount);
         txtCustomerName = findViewById(R.id.txt_customer_name);
+        txtCustomerPhone = findViewById(R.id.txt_customer_phone);
         listView = findViewById(R.id.lv_order_items);
         btnBack = findViewById(R.id.btn_back);
         btnBack.setOnClickListener(v -> finish());
@@ -121,9 +126,31 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
     private void updateUIFromIntent() {
         double amount = getIntent().getDoubleExtra("final_amount", 0.0);
         String customerName = getIntent().getStringExtra("customer_name");
+        String customerPhone = getIntent().getStringExtra("phone");
+        String address = getIntent().getStringExtra("address");
+        String discountCode = getIntent().getStringExtra("discount_code");
         
         txtOrderId.setText("Mã đơn: " + orderId);
         txtCustomerName.setText("Khách hàng: " + (customerName != null ? customerName : "Không xác định"));
+        
+        // Kiểm tra xem TextView có null không
+        if (txtCustomerPhone != null) {
+            txtCustomerPhone.setText("Số điện thoại: " + (customerPhone != null ? customerPhone : "Chưa có số điện thoại"));
+        } else {
+            Log.e("AdminOrderDetail", "txtCustomerPhone is null!");
+        }
+        
+        if (txtAddress != null) {
+            txtAddress.setText("Địa chỉ giao hàng: " + (address != null ? address : "Chưa có địa chỉ"));
+        } else {
+            Log.e("AdminOrderDetail", "txtAddress is null!");
+        }
+        
+        if (txtDiscount != null) {
+            txtDiscount.setText("Mã giảm giá: " + (discountCode != null ? discountCode : "Không có mã giảm giá"));
+        } else {
+            Log.e("AdminOrderDetail", "txtDiscount is null!");
+        }
 
         String status = getIntent().getStringExtra("status");
         String createdAt = getIntent().getStringExtra("created_at");

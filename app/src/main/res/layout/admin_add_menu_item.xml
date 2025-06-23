@@ -2,153 +2,314 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    android:padding="8dp"
     android:fitsSystemWindows="true"
-    android:background="@android:color/white">
+    android:background="@drawable/gradient_background_light">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white">
+        android:layout_height="wrap_content">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="8dp"
-            android:background="@color/white">
+            android:layout_margin="4dp"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="12dp"
+            android:backgroundTint="#FFFFFF"
+            app:cardUseCompatPadding="true">
 
             <LinearLayout
                 android:id="@+id/layoutForm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="20dp"
+                android:padding="32dp"
                 android:gravity="center_horizontal">
+
+                <!-- Header với style mới -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Thêm món mới"
+                        android:textSize="28sp"
+                        android:textStyle="bold"
+                        android:textColor="#1A237E"
+                        android:letterSpacing="0.02" />
+                </LinearLayout>
+
+                <!-- Gradient divider -->
+                <LinearLayout
+                    android:layout_width="80dp"
+                    android:layout_height="3dp"
+                    android:background="@drawable/gradient_bar"
+                    android:layout_marginBottom="20dp" />
+                <!-- Input fields với style card -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="18dp"
+                    app:cardCornerRadius="14dp"
+                    app:cardElevation="3dp"
+                    android:backgroundTint="#F8F9FA">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="6dp">
+
+                        <EditText
+                            android:id="@+id/edtName"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="Tên món"
+                            android:padding="18dp"
+                            android:textColor="#333333"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Spinner với style mới -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="18dp"
+                    app:cardCornerRadius="14dp"
+                    app:cardElevation="3dp"
+                    android:backgroundTint="#F8F9FA">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="6dp">
+
+                        <Spinner
+                            android:id="@+id/spinnerCategory"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@android:color/transparent"
+                            android:padding="14dp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="18dp"
+                    app:cardCornerRadius="14dp"
+                    app:cardElevation="3dp"
+                    android:backgroundTint="#F8F9FA">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="6dp">
+
+                        <EditText
+                            android:id="@+id/edtPrice"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="Giá món (đ)"
+                            android:inputType="numberDecimal"
+                            android:background="@android:color/transparent"
+                            android:padding="18dp"
+                            android:textColor="#333333"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="18dp"
+                    app:cardCornerRadius="14dp"
+                    app:cardElevation="3dp"
+                    android:backgroundTint="#F8F9FA">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="6dp">
+                        <EditText
+                            android:id="@+id/edtAmount"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="Số lượng"
+                            android:inputType="number"
+                            android:background="@android:color/transparent"
+                            android:padding="18dp"
+                            android:textColor="#333333"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="18dp"
+                    app:cardCornerRadius="14dp"
+                    app:cardElevation="3dp"
+                    android:backgroundTint="#F8F9FA">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="top"
+                        android:padding="6dp">
+
+                        <EditText
+                            android:id="@+id/edtDescription"
+                            android:layout_width="0dp"
+                            android:layout_height="130dp"
+                            android:layout_weight="1"
+                            android:hint="Mô tả"
+                            android:background="@android:color/transparent"
+                            android:padding="18dp"
+                            android:textColor="#333333"
+                            android:textSize="16sp"
+                            android:gravity="top|start" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Button chọn ảnh với style mới -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="18dp"
+                    app:cardCornerRadius="14dp"
+                    app:cardElevation="4dp"
+                    android:backgroundTint="#E3F2FD">
+                    <Button
+                        android:id="@+id/btnChooseImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="📷 Chọn ảnh"
+                        android:background="@android:color/transparent"
+                        android:textColor="#1976D2"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:padding="14dp" />
+                </androidx.cardview.widget.CardView>
+
+                <!-- Image preview với style mới -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="5dp">
+
+                    <ImageView
+                        android:id="@+id/imgPreview"
+                        android:layout_width="match_parent"
+                        android:layout_height="220dp"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="Ảnh xem trước"
+                        android:background="#F5F5F5" />
+                </androidx.cardview.widget.CardView>
+
+                <!-- Buttons với style mới -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="12dp">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:cardCornerRadius="28dp"
+                        app:cardElevation="5dp"
+                        android:backgroundTint="#4CAF50">
+
+                        <Button
+                            android:id="@+id/btnSubmit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Lưu món ăn"
+                            android:background="@android:color/transparent"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            android:padding="14dp" />
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="28dp"
+                        app:cardElevation="5dp"
+                        android:backgroundTint="#FF5252">
+
+                        <Button
+                            android:id="@+id/btnCancel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Huỷ bỏ"
+                            android:background="@android:color/transparent"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            android:padding="14dp" />
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Progress bar với style mới -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/progressCardView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="8dp"
+            android:backgroundTint="#FFFFFF">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp"
+                android:gravity="center">
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:indeterminateTint="#1976D2"
+                    style="@android:style/Widget.DeviceDefault.Light.ProgressBar" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Thêm món mới"
-                    android:textSize="22sp"
+                    android:text="Đang xử lý..."
+                    android:textColor="#1976D2"
                     android:textStyle="bold"
-                    android:textColor="#000000"
-                    android:layout_marginBottom="18dp"
-                    android:letterSpacing="0.05" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#EEEEEE"
-                    android:layout_marginBottom="16dp" />
-
-                <EditText
-                    android:id="@+id/edtName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Tên món"
-                    android:background="@drawable/edittext_log"
-                    android:padding="14dp"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="14dp" />
-
-                <Spinner
-                    android:id="@+id/spinnerCategory"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_spinner_dropdown"
-                    android:padding="14dp"
-                    android:layout_marginBottom="14dp" />
-
-                <EditText
-                    android:id="@+id/edtPrice"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Giá món (đ)"
-                    android:inputType="numberDecimal"
-                    android:background="@drawable/edittext_log"
-                    android:padding="14dp"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="14dp" />
-
-                <EditText
-                    android:id="@+id/edtAmount"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Số lượng"
-                    android:inputType="number"
-                    android:background="@drawable/edittext_log"
-                    android:padding="14dp"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="14dp" />
-
-                <EditText
-                    android:id="@+id/edtDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:hint="Mô tả"
-                    android:background="@drawable/edittext_log"
-                    android:padding="14dp"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="14dp"
-                    android:gravity="top|start" />
-
-                <Button
-                    android:id="@+id/btnChooseImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Chọn ảnh"
-                    android:backgroundTint="#2196F3"
-                    android:textColor="@android:color/white"
-                    android:layout_marginBottom="12dp"
-                    android:drawableLeft="@drawable/ic_add"
-                    android:drawablePadding="8dp" />
-
-                <ImageView
-                    android:id="@+id/imgPreview"
-                    android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:scaleType="centerCrop"
-                    android:contentDescription="Ảnh xem trước"
-                    android:layout_marginBottom="18dp"
-                    android:background="@drawable/bg_edit_text_log"
-                    android:padding="4dp"
-                    android:cropToPadding="true"
-                    android:outlineProvider="background"
-                    android:clipToOutline="true" />
-
-                <Button
-                    android:id="@+id/btnSubmit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Lưu món ăn"
-                    android:background="@drawable/button_item_menu"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="10dp" />
-
-                <Button
-                    android:id="@+id/btnCancel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Huỷ bỏ"
-                    android:backgroundTint="#FF5252"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold" />
+                    android:layout_marginTop="8dp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_centerInParent="true"
-            android:visibility="gone"
-            style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large" />
     </RelativeLayout>
 </ScrollView>

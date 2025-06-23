@@ -17,6 +17,8 @@ import com.example.doan.User.CartLocalDb;
 import com.example.doan.User.UserCartManager;
 import com.example.doan.databinding.UserActivityDetailsBinding;
 
+import java.text.DecimalFormat;
+
 public class UserDetailsActivity extends AppCompatActivity {
     UserActivityDetailsBinding binding;
     int quantity;
@@ -70,14 +72,14 @@ public class UserDetailsActivity extends AppCompatActivity {
         binding.quantity.setText(String.valueOf(quantity));
 
         //tổng tiền
-        String Total = String.valueOf(foodPrice * quantity);
+        String Total = formatCurrency(quantity * foodPrice) + "đ";
         binding.total.setText(Total);
 
         //tên món
         binding.detailsFoodName.setText(foodName);
 
         //đơn giá
-        binding.detailsFoodPrice.setText(String.valueOf(foodPrice));
+        binding.detailsFoodPrice.setText(formatCurrency(foodPrice) + "đ");
 
         //hình ảnh
         Glide.with(this).load(foodImageUrl).into(binding.detailsFoodImage);
@@ -90,7 +92,7 @@ public class UserDetailsActivity extends AppCompatActivity {
         binding.btnPlus.setOnClickListener(v -> {
             quantity++;
             binding.quantity.setText(String.valueOf(quantity));
-            String total = quantity * foodPrice + "";
+            String total = formatCurrency(quantity * foodPrice) + "đ";
             binding.total.setText(total);
 
             Log.d("CartID: ", String.valueOf(cartID));
@@ -112,7 +114,7 @@ public class UserDetailsActivity extends AppCompatActivity {
                 quantity--;
 
                 binding.quantity.setText(String.valueOf(quantity));
-                String total = quantity * foodPrice + "";
+                String total = formatCurrency(quantity * foodPrice) + "đ";
                 binding.total.setText(total);
 
             }
@@ -148,5 +150,9 @@ public class UserDetailsActivity extends AppCompatActivity {
                 binding.cartFragment.setEnabled(true);
             }, 500);
         });
+    }
+    private static String formatCurrency(double amount) {
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        return formatter.format(amount);
     }
 }

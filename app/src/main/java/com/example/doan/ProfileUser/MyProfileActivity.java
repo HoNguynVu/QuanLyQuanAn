@@ -86,28 +86,37 @@ public class MyProfileActivity extends AppCompatActivity {
             return;
         }
 
+
         APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
         Call<String> call = apiService.updateUser(email, newName, newPhone, newDob);
 
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                if (response.isSuccessful() &&
-                        response.body() != null &&
-                        response.body().trim().equalsIgnoreCase("success")) {
+                if (response.isSuccessful() && response.body() != null ) {
+                    String result = response.body().trim();
 
-                    // Lưu thông tin mới vào SharedPreferences
-                    SharedPreferences prefs = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putString("username", newName);
-                    editor.putString("phone", newPhone);
-                    editor.putString("dob", newDob);
-                    editor.apply();
+                    switch (result) {
+                        case "phone_exists":
+                            showToast("Số điện thoại đã được sử dụng bởi người dùng khác!");
+                            break;
+                        case "success":
+                            // Lưu thông tin mới vào SharedPreferences
+                            SharedPreferences prefs = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = prefs.edit();
+                            editor.putString("username", newName);
+                            editor.putString("phone", newPhone);
+                            editor.putString("dob", newDob);
+                            editor.apply();
 
-                    showToast("Cập nhật thành công!");
-                    finish();
-                } else {
-                    showToast("Cập nhật thất bại!");
+                            showToast("Cập nhật thành công!");
+                            finish();
+                            break;
+                        case "error":
+                        default:
+                            showToast("Cập nhật thất bại! Vui lòng thử lại.");
+                            break;
+                    }
                 }
             }
 

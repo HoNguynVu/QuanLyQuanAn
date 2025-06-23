@@ -1,7 +1,9 @@
 package com.example.doan.Network;
 
 import com.example.doan.DatabaseClass.FoodItem;
+import com.example.doan.DatabaseClass.Message;
 import com.example.doan.DatabaseClass.Notification;
+import com.example.doan.DatabaseClassRequest.MessageRequest;
 import com.example.doan.DatabaseClassRequest.CartSyncRequest;
 import com.example.doan.DatabaseClassResponse.CartGetResponse;
 import com.example.doan.DatabaseClassResponse.CartSyncResponse;
@@ -21,6 +23,7 @@ import com.example.doan.DatabaseClass.User;
 import com.example.doan.DatabaseClassResponse.UserResponse;
 
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -206,6 +209,26 @@ public interface APIService {
 
     @POST("create_cart.php")
     Call<CartSyncResponse> syncCart(@Body CartSyncRequest body);
+    @POST("send_message.php")
+    Call<Map<String, Object>> sendMessage(@Body MessageRequest request);
+
+    @GET("get_message.php")
+    Call<List<Message>> getMessages(
+            @Query("sender_id") int senderId,
+            @Query("receiver_id") int receiverId
+    );
+
+    @GET("get_user_list.php")
+    Call<List<User>> getAllUsers(@Query("admin_id") int currentUserId);
+
+    @FormUrlEncoded
+    @POST("mark_messages_as_read.php")
+    Call<Map<String, Object>> markMessagesAsRead(
+            @Field("sender_id") int senderId,
+            @Field("receiver_id") int receiverId
+    );
+
+
 
     @GET("get_cart.php")
     Call<CartGetResponse> getCart(@Query("user_id") int userId);

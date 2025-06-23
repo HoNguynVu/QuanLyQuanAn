@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,12 +28,14 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitle, tvMessage, tvCreatedAt;
+        ImageView imgNotification; // Thêm dòng này
 
         public ViewHolder(View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvMessage = itemView.findViewById(R.id.tvMessage);
             tvCreatedAt = itemView.findViewById(R.id.tvCreatedAt);
+            imgNotification = itemView.findViewById(R.id.imgNotification); // Thêm dòng này
         }
     }
 
@@ -49,6 +52,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         holder.tvTitle.setText(notification.getTitle());
         holder.tvMessage.setText(notification.getMessage());
         holder.tvCreatedAt.setText(notification.getCreated_at());
+        // Nếu muốn đổi icon theo loại thông báo:
+        // holder.imgNotification.setImageResource(R.drawable.ic_notification);
     }
 
     @Override

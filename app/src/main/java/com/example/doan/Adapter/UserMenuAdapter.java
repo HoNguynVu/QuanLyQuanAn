@@ -18,6 +18,7 @@ import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.UserActivity.UserDetailsActivity;
 import com.example.doan.databinding.UserMenuItemBinding;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class UserMenuAdapter extends RecyclerView.Adapter<UserMenuAdapter.myViewHolder> {
@@ -63,7 +64,7 @@ public class UserMenuAdapter extends RecyclerView.Adapter<UserMenuAdapter.myView
 
         public void bind(FoodItem item) {
             binding.tvName.setText(item.getName());
-            binding.tvPrice.setText(String.valueOf(item.getPrice()));
+            binding.tvPrice.setText(formatCurrency(item.getPrice())+"đ");
             binding.tvDetail.setText(item.getDescription());
             String imageUrl = item.getImage_url();
             Glide.with(binding.getRoot().getContext()).load(imageUrl).into(binding.imageView);
@@ -92,5 +93,9 @@ public class UserMenuAdapter extends RecyclerView.Adapter<UserMenuAdapter.myView
                 }
             });
         }
+    }
+    private static String formatCurrency(double amount) {
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        return formatter.format(amount);
     }
 }

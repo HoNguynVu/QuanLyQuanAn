@@ -34,4 +34,10 @@
         android:label="fragment_search"
         android:name="com.example.doan.UserFragment.UserSearchFragment"
         tools:layout="@layout/user_search_fragment" />
+
+    <fragment
+        android:id="@+id/chatFragment"
+        android:label="fragment_search"
+        android:name="com.example.doan.UserFragment.UserChatFragment"
+        tools:layout="@layout/chat_fragment" />
 </navigation>
