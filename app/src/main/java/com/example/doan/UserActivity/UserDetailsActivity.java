@@ -4,6 +4,8 @@ import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -11,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.doan.DatabaseClass.FoodItem;
+import com.example.doan.User.CartLocalDb;
 import com.example.doan.User.UserCartManager;
 import com.example.doan.databinding.UserActivityDetailsBinding;
 
@@ -25,6 +28,7 @@ public class UserDetailsActivity extends AppCompatActivity {
     String foodQuantity;
     String foodImageUrl;
     String foodDescription;
+    int cartID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +94,17 @@ public class UserDetailsActivity extends AppCompatActivity {
             binding.quantity.setText(String.valueOf(quantity));
             String total = formatCurrency(quantity * foodPrice) + "đ";
             binding.total.setText(total);
+
+            Log.d("CartID: ", String.valueOf(cartID));
+            // Cập nhật vào Room
+            new Thread(() -> {
+                CartLocalDb db = CartLocalDb.getInstance(getApplicationContext());
+                FoodItem item = db.cartItemDao().findByCartId(cartID);
+                if (item != null) {
+                    item.setItemQuantity(String.valueOf(quantity));
+                    db.cartItemDao().update(item);
+                }
+            }).start();
         });
     }
 
@@ -112,7 +127,14 @@ public class UserDetailsActivity extends AppCompatActivity {
                     ? binding.textInput.getEditText().getText().toString()
                     : "";
             Log.d(TAG, "Note: " + note);
-            UserCartManager.getInstance().addItem(new FoodItem(foodID, foodName, "", foodPrice, foodImageUrl, 1, "", 5, note,  String.valueOf(quantity)));
+
+            FoodItem newItem = new FoodItem(foodID, foodName, "", foodPrice, foodImageUrl, 1, "", 5, note, String.valueOf(quantity));
+
+            UserCartManager.getInstance().addItem(this, newItem, itemWithId -> {
+                cartID = itemWithId.getCartId();
+                Log.d(TAG, "CartID: " + cartID);
+            });
+
             binding.textInput.getEditText().setText("");
             Toast.makeText(this, "Đã thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
         });
@@ -120,8 +142,13 @@ public class UserDetailsActivity extends AppCompatActivity {
 
     public void setBtnCartFragment() {
         binding.cartFragment.setOnClickListener(v -> {
+            binding.cartFragment.setEnabled(false);
             Intent intent = new Intent(this, UserCartActivity.class);
             startActivity(intent);
+            // Bật lại sau 500ms
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                binding.cartFragment.setEnabled(true);
+            }, 500);
         });
     }
     private static String formatCurrency(double amount) {

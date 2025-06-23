@@ -64,7 +64,7 @@ public class OrderItemAdapter extends ArrayAdapter<OrderItemWithFood> {
 
         // Load ảnh bằng Glide (thêm thư viện Glide vào project)
         Glide.with(context)
-                .load(food.getImageUrl())
+                .load(food.getImage_url())
                 .placeholder(R.drawable.ic_launcher_background)  // ảnh mặc định nếu chưa load được
                 .into(imgFood);
 

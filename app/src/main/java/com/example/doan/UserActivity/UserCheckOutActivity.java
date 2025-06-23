@@ -187,7 +187,7 @@ public class UserCheckOutActivity extends AppCompatActivity {
                         Log.d("Order", "Đặt hàng thành công với ID: " + orderResponse.getOrderId());
 
                         // Xóa giỏ hàng và chuyển màn hình
-                        UserCartManager.getInstance().deleteItem();
+                        UserCartManager.getInstance().cleanCart(UserCheckOutActivity.this);
                         Intent intent = new Intent(UserCheckOutActivity.this, UserOrderSuccessActivity.class);
                         startActivity(intent);
                         finish();

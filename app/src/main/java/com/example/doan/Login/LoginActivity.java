@@ -21,6 +21,7 @@ import com.example.doan.DatabaseClass.CurrentUser;
 import com.example.doan.Network.APIService;
 import com.example.doan.Network.RetrofitClient;
 import com.example.doan.R;
+import com.example.doan.User.UserCartManager;
 import com.example.doan.UserActivity.UserMainActivity;
 
 import retrofit2.Call;
@@ -139,7 +140,11 @@ public class LoginActivity extends AppCompatActivity {
                         if ("admin".equalsIgnoreCase(u.getRole())) {
                             startActivity(new Intent(LoginActivity.this, AdminHome.class));
                         } else {
-                            startActivity(new Intent(LoginActivity.this, UserMainActivity.class));
+                            UserCartManager.getInstance().loadCartFromServer(LoginActivity.this, u.getId(), () -> {
+                                Intent intent = new Intent(LoginActivity.this, UserMainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            });
                         }
                         finish();
                     } else {

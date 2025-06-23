@@ -84,7 +84,7 @@ public class AddReviewActivity extends AppCompatActivity {
 
     private void bindFoodData(FoodItem food) {
         tvFoodName.setText(food.getName());
-        Glide.with(this).load(food.getImageUrl()).into(imgFood);
+        Glide.with(this).load(food.getImage_url()).into(imgFood);
     }
 
     private void  setClick()

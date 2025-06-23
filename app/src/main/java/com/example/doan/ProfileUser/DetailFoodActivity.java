@@ -139,7 +139,7 @@ public class DetailFoodActivity extends AppCompatActivity {
         txtPrice.setText("Giá món ăn : " + food.getPrice() + "đ");
         txtDescription.setText(food.getDescription());
         txtRatingAvg.setText(food.getRatingAvg() + "★");
-        Glide.with(this).load(food.getImageUrl()).into(imgFood);
+        Glide.with(this).load(food.getImage_url()).into(imgFood);
     }
 
     // Gọi API để lấy danh sách đánh giá món ăn

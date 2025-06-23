@@ -2,6 +2,7 @@ package com.example.doan.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.doan.DatabaseClass.FoodItem;
+import com.example.doan.User.CartLocalDb;
+import com.example.doan.User.CartMeta;
 import com.example.doan.User.UserCartManager;
 import com.example.doan.databinding.UserCartItemBinding;
 import com.example.doan.UserActivity.UserDetailsActivity;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 public class UserCartAdapter extends RecyclerView.Adapter<UserCartAdapter.CartViewHolder> {
@@ -60,11 +62,11 @@ public class UserCartAdapter extends RecyclerView.Adapter<UserCartAdapter.CartVi
         public void bind(int position) {
             double price = cartList.get(position).getPrice();
             final int[] quantity = {Integer.parseInt(cartList.get(position).getItemQuantity())};
-            String total = formatCurrency(quantity[0] * price) + "đ";
+            String total = (price * quantity[0]) + "";
 
             binding.tvName.setText(cartList.get(position).getName());
             binding.tvPrice.setText(total);
-            String imageUrl = cartList.get(position).getImageUrl();
+            String imageUrl = cartList.get(position).getImage_url();
             Glide.with(binding.getRoot().getContext()).load(imageUrl).into(binding.imageView);
             binding.quantity.setText(cartList.get(position).getItemQuantity());
             binding.note.setText(cartList.get(position).getNote());
@@ -84,7 +86,7 @@ public class UserCartAdapter extends RecyclerView.Adapter<UserCartAdapter.CartVi
                         Intent intent = new Intent(requireContext, UserDetailsActivity.class);
                         intent.putExtra("MenuItemName", cartList.get(position).getName());
                         intent.putExtra("MenuItemPrice", cartList.get(position).getPrice());
-                        intent.putExtra("MenuItemImageUrl", cartList.get(position).getImageUrl());
+                        intent.putExtra("MenuItemImageUrl", cartList.get(position).getImage_url());
                         intent.putExtra("MenuItemQuantity", cartList.get(position).getItemQuantity());
                         requireContext.startActivity(intent);
                     }
@@ -96,13 +98,26 @@ public class UserCartAdapter extends RecyclerView.Adapter<UserCartAdapter.CartVi
             binding.btnMinus.setOnClickListener(v -> {
                 if(quantity[0] > 1) {
                     quantity[0]--;
-                    cartList.get(position).setItemQuantity(String.valueOf(quantity[0]));
+                    FoodItem item = cartList.get(position);
+                    item.setItemQuantity(String.valueOf(quantity[0]));
                     binding.quantity.setText(String.valueOf(quantity[0]));
-                    String Total = formatCurrency(quantity[0] * price) + "đ";
-                    binding.tvPrice.setText(Total);
 
                     userCartManager.setTotalOrder(userCartManager.getTotalOrder() - price);
                     userCartManager.notifyTotalChanged();
+
+                    double newTotal = quantity[0] * price;
+                    binding.tvPrice.setText(String.valueOf(newTotal));
+
+                    new Thread(() -> {
+                        try {
+                            CartLocalDb db = CartLocalDb.getInstance(requireContext);
+                            db.cartItemDao().update(item); // Room dùng cartId để update
+                            double totalOrder = userCartManager.getTotalOrder();
+                            db.cartMetaDao().insert(new com.example.doan.User.CartMeta(totalOrder));
+                        } catch (Exception e) {
+                            Log.e("RoomUpdate", "Error updating quantity: " + e.getMessage());
+                        }
+                    }).start();
                 }
             });
         }
@@ -110,27 +125,59 @@ public class UserCartAdapter extends RecyclerView.Adapter<UserCartAdapter.CartVi
         public void setBtnPlus(int[] quantity, int position, double price) {
             binding.btnPlus.setOnClickListener(v -> {
                 quantity[0]++;
-                cartList.get(position).setItemQuantity(String.valueOf(quantity[0]));
+                FoodItem item = cartList.get(position);
+                item.setItemQuantity(String.valueOf(quantity[0]));
                 binding.quantity.setText(String.valueOf(quantity[0]));
-                String Total = formatCurrency(quantity[0] * price) + "đ";
-                binding.tvPrice.setText(Total);
 
                 userCartManager.setTotalOrder(userCartManager.getTotalOrder() + price);
                 userCartManager.notifyTotalChanged();
+
+                double newTotal = quantity[0] * price;
+                binding.tvPrice.setText(String.valueOf(newTotal));
+
+                new Thread(() -> {
+                    try {
+                        CartLocalDb db = CartLocalDb.getInstance(requireContext);
+                        db.cartItemDao().update(item); // Room dùng cartId để update
+                        double totalOrder = userCartManager.getTotalOrder();
+                        db.cartMetaDao().insert(new com.example.doan.User.CartMeta(totalOrder));
+
+                    } catch (Exception e) {
+                        Log.e("RoomUpdate", "Error updating quantity: " + e.getMessage());
+                    }
+                }).start();
             });
         }
 
         public void setBtnDelete(int[] quantity, int position, double price) {
             binding.btnDelete.setOnClickListener(v -> {
+                // Lấy item tại vị trí đang được xóa
+                FoodItem item = cartList.get(position);
+                int cartId = item.getCartId();  // Dùng cartId làm khóa chính
+
+                // 1. Xóa khỏi danh sách RecyclerView
                 cartList.remove(position);
                 notifyItemRemoved(position);
-                userCartManager.setTotalOrder(userCartManager.getTotalOrder() - price * quantity[0]);
-                userCartManager.notifyTotalChanged();
+
+                // 2. Xóa khỏi UserCartManager (danh sách tạm)
+                UserCartManager.getInstance().getCartItems().remove(item);
+
+                // 3. Cập nhật tổng tiền
+                double newTotal = Math.max(0, UserCartManager.getInstance().getTotalOrder() - price * quantity[0]);
+                UserCartManager.getInstance().setTotalOrder(newTotal);
+                UserCartManager.getInstance().notifyTotalChanged();
+
+                // 4. Xóa khỏi Room dựa vào cartId
+                new Thread(() -> {
+                    CartLocalDb db = CartLocalDb.getInstance(requireContext);
+                    db.cartItemDao().deleteByCartId(cartId); // Xóa đúng bản ghi Room
+                    db.cartMetaDao().insert(new CartMeta(newTotal));
+                }).start();
             });
         }
+
+
     }
-    private static String formatCurrency(double amount) {
-        DecimalFormat formatter = new DecimalFormat("#,###");
-        return formatter.format(amount);
-    }
+
+
 }

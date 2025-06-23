@@ -1,8 +1,14 @@
 package com.example.doan.DatabaseClass;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
+@Entity(tableName = "cart_items")
 public class FoodItem {
+    @PrimaryKey(autoGenerate = true)
+    private int cartId;
     @SerializedName("id")
     private int id;
     @SerializedName("name")
@@ -15,14 +21,15 @@ public class FoodItem {
     private String image_url;
     @SerializedName("description")
     private String description;
-    private final String note;
+    private String note;
     @SerializedName("available")
     private int available;
     @SerializedName("rating_avg")
     private float ratingAvg;
     private String itemQuantity;
 
-
+    public FoodItem() {
+    }
 
     public FoodItem(int id, String name, String category, double price, String image_url, int available, String description, float ratingAvg, String note, String itemQuantity) {
         this.id = id;
@@ -48,9 +55,11 @@ public class FoodItem {
         note = "";
     }
 
-    // Chỉ có getter cho id vì id tự sinh từ MySQL
     public int getId() {
         return id;
+    }
+    public void setId(int id) {
+        this.id = id;
     }
 
     // Các getter và setter khác
@@ -82,11 +91,11 @@ public class FoodItem {
         this.available = available;
     }
 
-    public String getImageUrl() {
+    public String getImage_url() {
         return image_url;
     }
-    public void setImageUrl(String imageUrl) {
-        this.image_url = imageUrl;
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
     }
 
     public String getDescription() {
@@ -114,5 +123,15 @@ public class FoodItem {
 
     public String getNote() {
         return note;
+    }
+    public void setNote(String note) {
+        this.note = note;
+    }
+    public int getCartId() {
+        return cartId;
+    }
+
+    public void setCartId(int cartId) {
+        this.cartId = cartId;
     }
 }

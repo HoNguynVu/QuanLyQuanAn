@@ -61,7 +61,7 @@ public class UserHomePopularItemAdapter extends RecyclerView.Adapter<UserHomePop
             binding.tvName.setText(item.getName());
             binding.tvPrice.setText(formatCurrency(item.getPrice())+"đ");
             binding.tvDetail.setText(item.getDescription());
-            String imageUrl = item.getImageUrl();
+            String imageUrl = item.getImage_url();
             Glide.with(binding.getRoot().getContext()).load(imageUrl).into(binding.imageView);
 
             setDetailView(item);
@@ -79,7 +79,7 @@ public class UserHomePopularItemAdapter extends RecyclerView.Adapter<UserHomePop
                         intent.putExtra("MenuItemID", item.getId());
                         intent.putExtra("MenuItemName", item.getName());
                         intent.putExtra("MenuItemPrice", item.getPrice());
-                        intent.putExtra("MenuItemImageUrl", item.getImageUrl());
+                        intent.putExtra("MenuItemImageUrl", item.getImage_url());
                         intent.putExtra("MenuItemQuantity", item.getItemQuantity());
                         intent.putExtra("MenuItemDescription", item.getDescription());
                         requireContext.startActivity(intent);

@@ -9,7 +9,10 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.doan.Adapter.UserCartAdapter;
 import com.example.doan.DatabaseClass.FoodItem;
@@ -17,58 +20,72 @@ import com.example.doan.User.UserCartManager;
 import com.example.doan.User.UserSpaceItemDecoration;
 import com.example.doan.databinding.UserActivityCartBinding;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 public class UserCartActivity extends AppCompatActivity {
-    List<FoodItem> cartList = UserCartManager.getInstance().getCartItems();
-    UserCartAdapter adapter;
+    private UserCartAdapter adapter;
     private UserActivityCartBinding binding;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = UserActivityCartBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        ChangeOnCartManager();
-        setRecyclerView();
+        setupRecyclerView();
+        setupCartListener();
         setBtnBack();
         setBtnCheckOut();
+
+        // Gọi lại notify nếu dữ liệu đã có
+        UserCartManager.getInstance().notifyTotalChanged();
     }
 
-    public void ChangeOnCartManager() {
-        UserCartManager userCartManager = UserCartManager.getInstance();
-        userCartManager.setOnTotalChangedListener(new UserCartManager.OnTotalChangedListener() {
-            @Override
-            public void onTotalChanged(double newTotal) {
-                // Cập nhật TextView mỗi khi total thay đổi
-                String total = formatCurrency(newTotal)+ "đ" ;
-                binding.totalOrder.setText(total);
-            }
-        });
-        userCartManager.notifyTotalChanged();
-    }
-
-    public void setRecyclerView() {
-        adapter = new UserCartAdapter(cartList, this);
-
+    private void setupRecyclerView() {
+        adapter = new UserCartAdapter(UserCartManager.getInstance().getCartItems(), this);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.addItemDecoration(new UserSpaceItemDecoration(16));
     }
 
+    private void setupCartListener() {
+        UserCartManager.getInstance().setOnTotalChangedListener(newTotal -> {
+            Log.d(TAG, "onTotalChanged: " + newTotal);
+            binding.totalOrder.setText(String.valueOf(newTotal));
+
+            // Thông báo adapter cập nhật lại UI
+            if (adapter != null) {
+                adapter.notifyDataSetChanged();
+            }
+        });
+    }
+
     public void setBtnBack() {
+
         binding.btnBack.setOnClickListener(v -> finish());
     }
 
     public void setBtnCheckOut() {
         binding.btnCheckout.setOnClickListener(v -> {
-            Intent intent = new Intent(this, UserCheckOutActivity.class);
-            startActivity(intent);
+            if(UserCartManager.getInstance().getTotalOrder() > 0) {
+                binding.btnCheckout.setEnabled(false);
+                Intent intent = new Intent(this, UserCheckOutActivity.class);
+                startActivity(intent);
+                // Bật lại sau 500ms
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    binding.btnCheckout.setEnabled(true);
+                }, 500);
+            }
+            else {
+                Toast.makeText(this, "Giỏ hàng trống", Toast.LENGTH_SHORT).show();
+            }
         });
     }
-    private static String formatCurrency(double amount) {
-        DecimalFormat formatter = new DecimalFormat("#,###");
-        return formatter.format(amount);
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("CartDebug", "Cart size: " + UserCartManager.getInstance().getCartItems().size());
+
     }
 }

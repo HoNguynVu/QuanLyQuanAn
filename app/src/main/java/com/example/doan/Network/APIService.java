@@ -4,6 +4,9 @@ import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.DatabaseClass.Message;
 import com.example.doan.DatabaseClass.Notification;
 import com.example.doan.DatabaseClassRequest.MessageRequest;
+import com.example.doan.DatabaseClassRequest.CartSyncRequest;
+import com.example.doan.DatabaseClassResponse.CartGetResponse;
+import com.example.doan.DatabaseClassResponse.CartSyncResponse;
 import com.example.doan.DatabaseClassResponse.DiscountResponse;
 import com.example.doan.DatabaseClassResponse.FoodListResponse;
 import com.example.doan.DatabaseClassResponse.GenericResponse;
@@ -22,6 +25,7 @@ import com.example.doan.DatabaseClassResponse.UserResponse;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -203,6 +207,8 @@ public interface APIService {
             @Field("code") String discountCode
     );
 
+    @POST("create_cart.php")
+    Call<CartSyncResponse> syncCart(@Body CartSyncRequest body);
     @POST("send_message.php")
     Call<Map<String, Object>> sendMessage(@Body MessageRequest request);
 
@@ -224,4 +230,6 @@ public interface APIService {
 
 
 
+    @GET("get_cart.php")
+    Call<CartGetResponse> getCart(@Query("user_id") int userId);
 }
