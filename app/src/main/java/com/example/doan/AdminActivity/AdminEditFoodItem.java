@@ -202,6 +202,10 @@ public class AdminEditFoodItem extends AppCompatActivity {
 
                 if (response.isSuccessful() && response.body() != null) {
                     Toast.makeText(AdminEditFoodItem.this, response.body().message, Toast.LENGTH_SHORT).show();
+
+                    // Khi muốn quay lại và yêu cầu reload Activity A
+                    Intent returnIntent = new Intent();
+                    setResult(RESULT_OK, returnIntent);
                     finish();
                 } else {
                     Toast.makeText(AdminEditFoodItem.this, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
