@@ -1,5 +1,9 @@
 package com.example.doan.AdminActivity;
 
+import static android.app.Activity.RESULT_OK;
+
+import static androidx.core.app.ActivityCompat.recreate;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -29,6 +35,7 @@ import com.example.doan.DatabaseClassResponse.GenericResponse;
 import com.example.doan.Interface.ToolbarController;
 import com.example.doan.Network.APIService;
 import com.example.doan.Network.RetrofitClient;
+import com.example.doan.ProfileUser.DetailFoodActivity;
 import com.example.doan.R;
 
 import java.util.ArrayList;
@@ -90,7 +97,16 @@ public class FoodByCategory extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
-    
+
+    ActivityResultLauncher<Intent> launcher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    loadMenuFromServer();
+                }
+            }
+    );
+
     private String getCategoryEmoji(String category) {
         if (category == null) return "🍽️";
         switch (category.toLowerCase()) {
@@ -122,8 +138,9 @@ public class FoodByCategory extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
 
-        menuAdapter = new MenuAdapter(getContext(), itemList);
+        menuAdapter = new MenuAdapter(requireActivity(), itemList, launcher);
         recyclerView.setAdapter(menuAdapter);
+
     }
 
     private void loadMenuFromServer() {
@@ -153,10 +170,12 @@ public class FoodByCategory extends Fragment {
     public static class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder> {
         private final List<FoodItem> itemList;
         private final Context context;
+        private final ActivityResultLauncher<Intent> launcher;
 
-        public MenuAdapter(Context context, List<FoodItem> itemList) {
+        public MenuAdapter(Context context, List<FoodItem> itemList, ActivityResultLauncher<Intent> launcher) {
             this.context = context;
             this.itemList = itemList;
+            this.launcher = launcher;
         }
 
         @NonNull
@@ -195,6 +214,12 @@ public class FoodByCategory extends Fragment {
                 intent.putExtra("id", item.getId());
                 intent.putExtra("amount", item.getAvailable());
                 intent.putExtra("description", item.getDescription());
+                launcher.launch(intent);
+            });
+
+            holder.btnLookDetails.setOnClickListener(v -> {
+                Intent intent = new Intent(context, DetailFoodActivity.class);
+                intent.putExtra("id", item.getId());
                 context.startActivity(intent);
             });
 
@@ -238,7 +263,7 @@ public class FoodByCategory extends Fragment {
         static class MenuViewHolder extends RecyclerView.ViewHolder {
             TextView txtName, txtCategory, txtPrice;
             ImageView imgMenu;
-            AppCompatButton btnEdit, btnDelete;
+            AppCompatButton btnEdit, btnDelete, btnLookDetails;
             TextView txtAmount;
             public MenuViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -249,6 +274,7 @@ public class FoodByCategory extends Fragment {
                 imgMenu = itemView.findViewById(R.id.imgMenu);
                 btnDelete = itemView.findViewById(R.id.btnDelete);
                 btnEdit = itemView.findViewById(R.id.btnEdit);
+                btnLookDetails = itemView.findViewById(R.id.btnLookDetails);
             }
         }
     }

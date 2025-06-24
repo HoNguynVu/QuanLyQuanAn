@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -43,6 +44,8 @@ public class AdminChatFragment extends Fragment {
     private UserChatAdapter userAdapter;
 
     private EditText edtChatSearch;
+    private Runnable refreshTask; // Task để tự động làm mới
+    private Handler handler = new Handler();
 
     public AdminChatFragment() {}
 
@@ -54,9 +57,11 @@ public class AdminChatFragment extends Fragment {
         init(view);
         loadUsers();
         searchUsers();
-
+        startAutoRefresh();
         return view;
     }
+
+
 
     private void init(View view)
     {
@@ -171,6 +176,22 @@ public class AdminChatFragment extends Fragment {
                 Toast.makeText(getContext(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void startAutoRefresh() {
+        refreshTask = () -> {
+            loadUsers();
+            handler.postDelayed(refreshTask, 2000); // Cập nhật mỗi 2s
+        };
+        handler.post(refreshTask);
+    }
+    @Override
+    public void onDestroyView() //gọi dtroy để hủy task, tránh rò rỉ bộ nhớ
+    {
+        super.onDestroyView();
+        if (handler != null && refreshTask != null) {
+            handler.removeCallbacks(refreshTask);
+        }
     }
 
 
