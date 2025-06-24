@@ -1,5 +1,6 @@
 package com.example.doan.Network;
 
+import com.example.doan.DatabaseClass.Discount;
 import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.DatabaseClass.Message;
 import com.example.doan.DatabaseClass.Notification;
@@ -29,10 +30,13 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface APIService {
@@ -228,8 +232,20 @@ public interface APIService {
             @Field("receiver_id") int receiverId
     );
 
-
-
     @GET("get_cart.php")
     Call<CartGetResponse> getCart(@Query("user_id") int userId);
+
+    @GET("discount_api.php")
+    Call<List<Discount>> getAllDiscounts();
+
+    @POST("discount_api.php")
+    Call<Discount> createDiscount(@Body Discount discount);
+
+    @PUT("discount_api.php")
+    Call<Discount> updateDiscount(@Query("id") int id, @Body Discount discount);
+
+    @DELETE("discount_api.php")
+    Call<Void> deleteDiscount(@Query("id") int id);
+
+
 }

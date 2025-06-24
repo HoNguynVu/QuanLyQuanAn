@@ -107,6 +107,15 @@
                         style="@style/Widget.App.Button.TextButton"/>
 
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_discount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Quản lý voucher"
+                        app:icon="@drawable/ic_voucher"
+                        app:iconTint="@color/black"
+                        style="@style/Widget.App.Button.TextButton"/>
+
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_order"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.doan.AdminActivity.AdminSetting;
+import com.example.doan.AdminActivity.ManageDiscountActivity;
+import com.example.doan.DatabaseClass.Discount;
 import com.example.doan.Login.LoginActivity;
 import com.example.doan.R;
 import com.google.android.material.button.MaterialButton;
@@ -28,6 +30,7 @@ public class AdminProfileFragment extends Fragment {
     private MaterialTextView txtUserName;
     private MaterialTextView txtUserEmail;
     private MaterialButton btnSetting;
+    private MaterialButton btndiscount;
     private MaterialButton btnOrder;
     private AppCompatButton btnLogout;
     public AdminProfileFragment() {
@@ -52,6 +55,7 @@ public class AdminProfileFragment extends Fragment {
         btnSetting = view.findViewById(R.id.btn_setting);
         btnOrder = view.findViewById(R.id.btn_order);
         btnLogout = view.findViewById(R.id.btn_logout);
+        btndiscount = view.findViewById(R.id.btn_discount);
     }
 
     private void loadUserInfo() {
@@ -78,6 +82,12 @@ public class AdminProfileFragment extends Fragment {
                     .commit();
             ((AdminHome) requireActivity()).navigateToOrders();
 
+        });
+
+        btndiscount.setOnClickListener(v -> {
+            // Chuyển đến Fragment mã giảm giá
+            Intent intent = new Intent(getContext(), ManageDiscountActivity.class);
+            startActivity(intent);
         });
 
         btnLogout.setOnClickListener(v -> logout());
