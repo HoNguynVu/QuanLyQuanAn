@@ -19,6 +19,7 @@ public class RetrofitClient {
         if (retrofit == null) {
             // Gson cho phép phân tích lenient nếu JSON không chuẩn tuyệt đối
             Gson gson = new GsonBuilder()
+                    .setDateFormat("yyyy-MM-dd") // Cực quan trọng!
                     .setLenient()
                     .create();
 

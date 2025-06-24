@@ -2,9 +2,10 @@ package com.example.doan.DatabaseClass;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Discount {
+public class Discount implements Serializable {
 
     @SerializedName("id")
     private int id;
@@ -49,8 +50,15 @@ public class Discount {
         return validFrom;
     }
 
+    public void setValidFrom(Date validFrom) {
+        this.validFrom = validFrom;
+    }
+
     public Date getValidTo() {
         return validTo;
+    }
+    public void setValidTo(Date validTo) {
+        this.validTo = validTo;
     }
 
     public boolean isActive() {
@@ -73,6 +81,10 @@ public class Discount {
 
     public void setMaxDiscountAmount(double maxDiscountAmount) {
         this.maxDiscountAmount = maxDiscountAmount;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
 }

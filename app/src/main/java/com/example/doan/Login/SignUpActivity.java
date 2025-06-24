@@ -1,5 +1,6 @@
 package com.example.doan.Login;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
@@ -18,10 +19,12 @@ import com.example.doan.Network.APIService;
 import com.example.doan.Network.RetrofitClient;
 import com.example.doan.DatabaseClassResponse.GenericResponse;
 import com.example.doan.R;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -35,7 +38,7 @@ public class SignUpActivity extends AppCompatActivity {
     EditText txt_email;
     EditText txt_name;
     EditText txt_phone;
-    EditText txt_date_birth;
+    TextInputEditText txt_date_birth;
     EditText txt_password;
     EditText txt_confirm_password;
     ImageView ivTogglePassword;
@@ -43,6 +46,8 @@ public class SignUpActivity extends AppCompatActivity {
 
     final boolean[] isPassVisible = {false};
     final boolean[] isConfirmVisible = {false};
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+    private Calendar calendar = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +108,20 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
         signUpBtn.setOnClickListener(v ->SignUp());
+
+        txt_date_birth.setInputType(InputType.TYPE_NULL);  // Ngăn bàn phím hiện lên
+        txt_date_birth.setFocusable(false);                // Không cho focus textfield
+
+        txt_date_birth.setOnClickListener(v->showDatePicker(txt_date_birth));
+    }
+
+    private void showDatePicker(EditText target) {
+        calendar = Calendar.getInstance();
+        DatePickerDialog dialog = new DatePickerDialog(this, (view, year, month, day) -> {
+            calendar.set(year, month, day);
+            target.setText(sdf.format(calendar.getTime()));
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        dialog.show();
     }
 
     public void SignUp()
