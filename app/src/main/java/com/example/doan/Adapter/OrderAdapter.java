@@ -66,7 +66,9 @@ public class OrderAdapter extends ArrayAdapter<Order> {
             btnUpdate.setVisibility(View.GONE);
         } else {
             btnUpdate.setVisibility(View.VISIBLE);
-        }btnUpdate.setOnClickListener(v -> {
+        }
+
+        btnUpdate.setOnClickListener(v -> {
             String currentStatus = order.getStatus();
             
             // Tạo danh sách trạng thái có thể chuyển đổi dựa trên trạng thái hiện tại
@@ -117,6 +119,12 @@ public class OrderAdapter extends ArrayAdapter<Order> {
                                         tvStatus.setText("Trạng thái: " + selectedStatus);
                                         setStatusColor(tvStatus, selectedStatus);
                                         Toast.makeText(context, "Cập nhật trạng thái thành công", Toast.LENGTH_SHORT).show();
+                                        // Ẩn nút cập nhật nếu trạng thái đã là "Đã giao" hoặc "Hủy"
+                                        if ("Đã giao".equals(selectedStatus) || "Hủy".equals(selectedStatus)) {
+                                            btnUpdate.setVisibility(View.GONE);
+                                        } else {
+                                            btnUpdate.setVisibility(View.VISIBLE);
+                                        }
                                     } else {
                                         // Server trả về lỗi (ví dụ: vi phạm quy tắc chuyển trạng thái)
                                         Toast.makeText(context, "Lỗi: " + response.body().getMessage(), Toast.LENGTH_LONG).show();

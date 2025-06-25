@@ -1,5 +1,7 @@
 package com.example.doan.AdminFragment;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +18,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
@@ -84,6 +88,8 @@ public class AdminOrdersFragment extends Fragment {
         loadOrdersFromServer();
     }
 
+
+
     public void init(View view) {
         orderListView = view.findViewById(R.id.orderListView);
         tvNoResults = view.findViewById(R.id.tvNoResults);
@@ -98,7 +104,9 @@ public class AdminOrdersFragment extends Fragment {
         orderAdapter = new OrderAdapter(getContext(), filteredOrderList);
         orderListView.setAdapter(orderAdapter);
         setupOrderListClickListener();
-    }    private void setupOrderListClickListener() {
+    }
+
+    private void setupOrderListClickListener() {
         orderListView.setOnItemClickListener((parent, view, position, id) -> {
             if (position < filteredOrderList.size()) {
                 Order selectedOrder = filteredOrderList.get(position);
