@@ -2,13 +2,13 @@ package com.example.doan.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -17,17 +17,17 @@ import com.example.doan.User.CartLocalDb;
 import com.example.doan.User.CartMeta;
 import com.example.doan.User.UserCartManager;
 import com.example.doan.databinding.UserCartItemBinding;
-import com.example.doan.UserActivity.UserDetailsActivity;
 
 import java.util.List;
 
 public class UserCartAdapter extends RecyclerView.Adapter<UserCartAdapter.CartViewHolder> {
     private final List<FoodItem> cartList;
     private final Context requireContext;
-
-    public UserCartAdapter(Context requireContext) {
+    private final FragmentManager fragmentManager;
+    public UserCartAdapter(Context requireContext, FragmentManager fragmentManager) {
         this.cartList = UserCartManager.getInstance().getCartItems();
         this.requireContext = requireContext;
+        this.fragmentManager = fragmentManager;
     }
 
     @NonNull
@@ -77,21 +77,12 @@ public class UserCartAdapter extends RecyclerView.Adapter<UserCartAdapter.CartVi
             setBtnDelete(quantity, position, price);
         }
         public void setDetailView() {
-            binding.getRoot().setOnClickListener(new View.OnClickListener(){
-
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        Intent intent = new Intent(requireContext, UserDetailsActivity.class);
-                        intent.putExtra("MenuItemName", cartList.get(position).getName());
-                        intent.putExtra("MenuItemPrice", cartList.get(position).getPrice());
-                        intent.putExtra("MenuItemImageUrl", cartList.get(position).getImage_url());
-                        intent.putExtra("MenuItemQuantity", cartList.get(position).getItemQuantity());
-                        requireContext.startActivity(intent);
-                    }
-
-                }
+            binding.getRoot().setOnClickListener(v -> {
+                UserNoteChangeFragment sheet = new UserNoteChangeFragment();
+                Bundle args = new Bundle();
+                args.putString("note", binding.note.getText().toString());
+                sheet.setArguments(args);
+                sheet.show(fragmentManager, "UserNoteChangeFragment");
             });
         }
         public void setBtnMinus(int[] quantity, int position, double price) {
