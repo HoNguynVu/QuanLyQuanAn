@@ -1,6 +1,8 @@
 package com.example.doan.ProfileUser;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -43,6 +45,7 @@ public class DetailFoodActivity extends AppCompatActivity {
     private List<Review> reviewList = new ArrayList<>();
 
     private int foodId;
+    private String userRole;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -81,6 +84,9 @@ public class DetailFoodActivity extends AppCompatActivity {
         btnAddReview = findViewById(R.id.btn_add_review);
         btnBack = findViewById(R.id.btn_back);
         recyclerView = findViewById(R.id.recycler_reviews);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+        userRole = sharedPreferences.getString("role", "User");
     }
 
     // Khởi tạo adapter cho list đánh giá
@@ -92,6 +98,10 @@ public class DetailFoodActivity extends AppCompatActivity {
     // Đặt sự kiện cho các nút
     private void setButton() {
         btnAddReview.setOnClickListener(v -> {
+            if( !userRole.equals("User")) {
+                Toast.makeText(this, "Admin không thể thêm đánh giá", Toast.LENGTH_SHORT).show();
+                return;
+            }
             btnAddReview.setEnabled(false);
             Intent intent = new Intent(DetailFoodActivity.this, AddReviewActivity.class);
             intent.putExtra("food_id", foodId);

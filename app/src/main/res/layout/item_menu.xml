@@ -101,6 +101,21 @@
                 android:textSize="15sp" />
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnLookDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="Chi tiết"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:background="@drawable/button_item_menu"
+                android:backgroundTint="#3F6FFF"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_marginBottom="8dp"
+
+                android:textSize="15sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnDelete"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
@@ -108,9 +123,11 @@
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:background="@drawable/button_item_menu"
+                android:backgroundTint="#FF0000"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
                 android:textSize="15sp" />
+
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

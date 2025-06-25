@@ -138,15 +138,22 @@ public class LoginActivity extends AppCompatActivity {
                         editor.apply();
 
                         if ("admin".equalsIgnoreCase(u.getRole())) {
-                            startActivity(new Intent(LoginActivity.this, AdminHome.class));
+                            Intent intent = new Intent(LoginActivity.this, AdminHome.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
                         } else {
+                            // Chỉ load cart, không gọi finish trong callback
                             UserCartManager.getInstance().loadCartFromServer(LoginActivity.this, u.getId(), () -> {
-                                Intent intent = new Intent(LoginActivity.this, UserMainActivity.class);
-                                startActivity(intent);
-                                finish();
+                                runOnUiThread(() -> {
+                                    Intent intent = new Intent(LoginActivity.this, UserMainActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                    finish();
+                                });
                             });
                         }
-                        finish();
+
                     } else {
                         Toast.makeText(LoginActivity.this, loginResponse.message, Toast.LENGTH_SHORT).show();
                     }

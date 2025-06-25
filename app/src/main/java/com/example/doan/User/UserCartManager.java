@@ -3,6 +3,7 @@ package com.example.doan.User;
 import static android.content.ContentValues.TAG;
 
 import android.content.Context;
+import android.os.Looper;
 import android.util.Log;
 
 import com.example.doan.DatabaseClass.FoodItem;
@@ -303,7 +304,9 @@ public class UserCartManager {
             }
             db.cartMetaDao().insert(new CartMeta(TotalOrder));
             notifyTotalChanged();
-            if (onLoaded != null) onLoaded.run();
+            if (onLoaded != null) {
+                new android.os.Handler(Looper.getMainLooper()).post(onLoaded);
+            }
         });
     }
 

@@ -19,6 +19,7 @@ public class RetrofitClient {
         if (retrofit == null) {
             // Gson cho phép phân tích lenient nếu JSON không chuẩn tuyệt đối
             Gson gson = new GsonBuilder()
+                    .setDateFormat("yyyy-MM-dd") // Cực quan trọng!
                     .setLenient()
                     .create();
 
@@ -36,7 +37,7 @@ public class RetrofitClient {
                     .build();
 
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://10.0.2.2/restaurantapi/") // thay bằng IP LAN nếu dùng thiết bị thật
+                    .baseUrl("http://172.20.10.13/restaurantapi/") // thay bằng IP LAN nếu dùng thiết bị thật
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .client(client)
                     .build();
