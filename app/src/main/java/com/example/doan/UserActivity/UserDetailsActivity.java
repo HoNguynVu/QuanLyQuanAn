@@ -28,7 +28,7 @@ public class UserDetailsActivity extends AppCompatActivity {
     String foodQuantity;
     String foodImageUrl;
     String foodDescription;
-    int cartID;
+    int localID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,11 +95,11 @@ public class UserDetailsActivity extends AppCompatActivity {
             String total = formatCurrency(quantity * foodPrice) + "đ";
             binding.total.setText(total);
 
-            Log.d("CartID: ", String.valueOf(cartID));
+            Log.d("localID: ", String.valueOf(localID));
             // Cập nhật vào Room
             new Thread(() -> {
                 CartLocalDb db = CartLocalDb.getInstance(getApplicationContext());
-                FoodItem item = db.cartItemDao().findByCartId(cartID);
+                FoodItem item = db.cartItemDao().findByLocalId(localID);
                 if (item != null) {
                     item.setItemQuantity(String.valueOf(quantity));
                     db.cartItemDao().update(item);
@@ -131,8 +131,8 @@ public class UserDetailsActivity extends AppCompatActivity {
             FoodItem newItem = new FoodItem(foodID, foodName, "", foodPrice, foodImageUrl, 1, "", 5, note, String.valueOf(quantity));
 
             UserCartManager.getInstance().addItem(this, newItem, itemWithId -> {
-                cartID = itemWithId.getCartId();
-                Log.d(TAG, "CartID: " + cartID);
+                localID = itemWithId.getLocalId();
+                Log.d(TAG, "localID: " + localID);
             });
 
             binding.textInput.getEditText().setText("");

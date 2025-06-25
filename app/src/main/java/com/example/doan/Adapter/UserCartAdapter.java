@@ -1,5 +1,6 @@
 package com.example.doan.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -23,10 +24,9 @@ import java.util.List;
 public class UserCartAdapter extends RecyclerView.Adapter<UserCartAdapter.CartViewHolder> {
     private final List<FoodItem> cartList;
     private final Context requireContext;
-    static UserCartManager userCartManager = UserCartManager.getInstance();
 
-    public UserCartAdapter(List<FoodItem> cartList, Context requireContext) {
-        this.cartList = cartList;
+    public UserCartAdapter(Context requireContext) {
+        this.cartList = UserCartManager.getInstance().getCartItems();
         this.requireContext = requireContext;
     }
 
@@ -151,30 +151,40 @@ public class UserCartAdapter extends RecyclerView.Adapter<UserCartAdapter.CartVi
 
         public void setBtnDelete(int[] quantity, int position, double price) {
             binding.btnDelete.setOnClickListener(v -> {
-                // Lấy item tại vị trí đang được xóa
+                if (position == RecyclerView.NO_POSITION || position >= cartList.size()) return;
+
                 FoodItem item = cartList.get(position);
-                int cartId = item.getCartId();  // Dùng cartId làm khóa chính
+                int localId = item.getLocalId();
 
-                // 1. Xóa khỏi danh sách RecyclerView
-                cartList.remove(position);
-                notifyItemRemoved(position);
+                // Tính tổng tiền mới
+                double amountToRemove = price * quantity[0];
+                double newTotal = Math.max(0, userCartManager.getTotalOrder() - amountToRemove);
 
-                // 2. Xóa khỏi UserCartManager (danh sách tạm)
-                UserCartManager.getInstance().getCartItems().remove(item);
-
-                // 3. Cập nhật tổng tiền
-                double newTotal = Math.max(0, UserCartManager.getInstance().getTotalOrder() - price * quantity[0]);
-                UserCartManager.getInstance().setTotalOrder(newTotal);
-                UserCartManager.getInstance().notifyTotalChanged();
-
-                // 4. Xóa khỏi Room dựa vào cartId
+                // 1. Xóa khỏi Room trước
                 new Thread(() -> {
-                    CartLocalDb db = CartLocalDb.getInstance(requireContext);
-                    db.cartItemDao().deleteByCartId(cartId); // Xóa đúng bản ghi Room
-                    db.cartMetaDao().insert(new CartMeta(newTotal));
+                    try {
+                        CartLocalDb db = CartLocalDb.getInstance(requireContext);
+                        db.cartItemDao().deleteByLocalId(localId);
+                        db.cartMetaDao().insert(new CartMeta(newTotal));
+                        Log.d("CartDelete", "🗑️ Đã xóa item cartId=" + localId + " khỏi Room");
+
+                        // 2. Xử lý UI và UserCartManager trên main thread
+                        ((Activity) requireContext).runOnUiThread(() -> {
+                            cartList.remove(position);
+                            notifyItemRemoved(position);
+
+                            userCartManager.getCartItems().remove(item);
+                            userCartManager.setTotalOrder(newTotal);
+                            userCartManager.notifyTotalChanged();
+                        });
+                        Log.d("CartCount", "Cart item count: " + db.cartItemDao().getCartItemCount());
+                    } catch (Exception e) {
+                        Log.e("CartDelete", "❌ Lỗi khi xóa: " + e.getMessage());
+                    }
                 }).start();
             });
         }
+
 
 
     }

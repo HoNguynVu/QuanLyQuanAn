@@ -22,10 +22,13 @@ public interface CartItemDao {
     @Update
     void update(FoodItem item);
 
-    @Query("SELECT * FROM cart_items WHERE cartId = :cartId LIMIT 1")
-    FoodItem findByCartId(int cartId);
+    @Query("SELECT * FROM cart_items WHERE localId = :Id LIMIT 1")
+    FoodItem findByLocalId(int Id);
 
-    @Query("DELETE FROM cart_items WHERE cartId = :cartId")
-    void deleteByCartId(int cartId);
+    @Query("DELETE FROM cart_items WHERE localId = :Id")
+    void deleteByLocalId(int Id);
+
+    @Query("SELECT COUNT(*) FROM cart_items")
+    int getCartItemCount();
 }
 
