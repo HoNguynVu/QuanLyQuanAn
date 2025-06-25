@@ -53,6 +53,7 @@ public class OrdersUserAdapter extends ArrayAdapter<Order> {
 
             txtDate.setText("Ngày tạo: " + order.getCreatedAt());
             txtStatus.setText("Trạng thái: " + order.getStatus());
+            setStatusColor(txtStatus, order.getStatus());
         }
 
         Button btnViewDetail = convertView.findViewById(R.id.btnDetail);
@@ -71,5 +72,28 @@ public class OrdersUserAdapter extends ArrayAdapter<Order> {
             }
         });
         return convertView;
+    }
+    private void setStatusColor(TextView tvStatus, String status) {
+        int color;
+        switch (status) {
+            case "Đang chờ":
+                color = 0xFFFFC107; // Vàng
+                break;
+            case "Đã tiếp nhận":
+                color = 0xFFFF9800; // Cam
+                break;
+            case "Đang giao":
+                color = 0xFF2196F3; // Xanh
+                break;
+            case "Đã giao":
+                color = 0xFF4CAF50; // Xanh lá
+                break;
+            case "Hủy":
+                color = 0xFFF44336; // Đỏ
+                break;
+            default:
+                color = 0xFF000000; // Đen
+        }
+        tvStatus.setTextColor(color);
     }
 }

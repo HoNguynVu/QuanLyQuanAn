@@ -162,15 +162,11 @@ public class DetailOrderActivity extends AppCompatActivity {
         if (createdAt == null) createdAt = "Không rõ ngày";
         if (address == null) address = "Không rõ địa chỉ";
 
-        txtStatus.setText("Trạng thái: " + status);
         txtDate.setText("Ngày tạo: " + createdAt);
         txtTotal.setText(formattedAmount + "đ");
         txtAddress.setText("Địa chỉ: " + address);
-
-        int discount = getIntent().getIntExtra("discount_percent", 0);
-        if (discount != 0) {
-            txtDiscount.setText("Giảm giá: " + discount + "%");
-        }
+        txtStatus.setText("Trạng thái: " + status);
+        setStatusColor(txtStatus, status);
 
 
         adapter = new OrderItemAdapter(this, itemList);
@@ -180,5 +176,28 @@ public class DetailOrderActivity extends AppCompatActivity {
     // Hiển thị Toast đơn giản
     private void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+    private void setStatusColor(TextView tvStatus, String status) {
+        int color;
+        switch (status) {
+            case "Đang chờ":
+                color = 0xFFFFC107; // Vàng
+                break;
+            case "Đã tiếp nhận":
+                color = 0xFFFF9800; // Cam
+                break;
+            case "Đang giao":
+                color = 0xFF2196F3; // Xanh
+                break;
+            case "Đã giao":
+                color = 0xFF4CAF50; // Xanh lá
+                break;
+            case "Hủy":
+                color = 0xFFF44336; // Đỏ
+                break;
+            default:
+                color = 0xFF000000; // Đen
+        }
+        tvStatus.setTextColor(color);
     }
 }
