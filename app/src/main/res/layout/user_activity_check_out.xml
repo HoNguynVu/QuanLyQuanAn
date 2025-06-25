@@ -13,15 +13,15 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="56dp"
         android:background="#FFFFFF"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
             android:id="@+id/btnBack"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginStart="16dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="12dp"
             android:layout_marginTop="14dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_back"
@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Đặt hàng"
-            android:textSize="22sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             android:fontFamily="@font/arial_rounded"
             app:layout_constraintTop_toTopOf="parent"
@@ -54,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="12dp">
 
             <!-- Địa chỉ -->
             <androidx.cardview.widget.CardView
@@ -76,7 +76,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="Địa chỉ"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         android:fontFamily="@font/arial_rounded"
                         app:layout_constraintStart_toStartOf="parent"
@@ -89,7 +89,7 @@
                         android:layout_height="wrap_content"
                         android:text="Thay đổi"
                         android:textColor="#F44336"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:fontFamily="@font/arial_rounded"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -99,7 +99,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text=""
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:background="@drawable/bg_edit_text_log"
                         android:fontFamily="@font/arial_rounded"
                         app:layout_constraintTop_toBottomOf="@+id/tv_adr"
@@ -128,7 +128,7 @@
                         android:layout_height="wrap_content"
                         android:text="Mã giảm giá"
                         android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         android:fontFamily="@font/arial_rounded"
                         app:layout_constraintStart_toStartOf="parent"
@@ -139,7 +139,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text=""
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:background="@drawable/bg_edit_text_log"
                         android:fontFamily="@font/arial_rounded"
                         app:layout_constraintTop_toBottomOf="@id/tv_dis"
@@ -154,7 +154,7 @@
                         android:layout_height="wrap_content"
                         android:text="Áp dụng"
                         android:textColor="#F44336"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:textStyle="bold"
                         android:fontFamily="@font/arial_rounded"
                         app:layout_constraintTop_toTopOf="@id/edt_discount"
@@ -184,7 +184,7 @@
                         android:layout_height="wrap_content"
                         android:text="Đơn hàng"
                         android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         android:fontFamily="@font/arial_rounded"
                         app:layout_constraintStart_toStartOf="parent"
@@ -225,7 +225,7 @@
                         android:text="Thanh toán"
                         android:textStyle="bold"
                         android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:fontFamily="@font/arial_rounded" />
 
                     <LinearLayout
@@ -239,7 +239,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Tiền hàng"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:fontFamily="@font/arial_rounded"
                             android:id="@+id/tv_total" />
 
@@ -250,7 +250,7 @@
                             android:text="Price"
                             android:textColor="@color/black"
                             android:textStyle="bold"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:fontFamily="@font/arial_rounded" />
                     </LinearLayout>
 
@@ -265,7 +265,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Phí giao hàng"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:fontFamily="@font/arial_rounded"
                             android:id="@+id/tv_fee" />
 
@@ -275,7 +275,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="0"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:fontFamily="@font/arial_rounded" />
                     </LinearLayout>
                 </LinearLayout>
@@ -288,10 +288,10 @@
     <LinearLayout
         android:id="@+id/footer"
         android:layout_width="match_parent"
-        android:layout_height="72dp"
+        android:layout_height="64dp"
         android:background="#FFFFFF"
         android:gravity="center"
-        android:padding="12dp"
+        android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.cardview.widget.CardView
@@ -313,7 +313,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Đặt hàng"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textColor="@android:color/white"
                     android:textStyle="bold"
                     android:fontFamily="@font/arial_rounded"
@@ -327,7 +327,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Total"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textColor="@android:color/white"
                     android:textStyle="bold"
                     android:fontFamily="@font/arial_rounded"

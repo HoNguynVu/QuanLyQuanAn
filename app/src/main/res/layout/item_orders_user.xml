@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="12dp"
-    app:cardElevation="8dp"
-    app:cardCornerRadius="20dp"
+    android:layout_margin="8dp"
+    app:cardElevation="4dp"
+    app:cardCornerRadius="12dp"
     app:cardUseCompatPadding="true"
     android:foreground="?android:attr/selectableItemBackground">
 
@@ -13,22 +13,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp"
+        android:padding="12dp"
         android:background="#FFFFFF">
 
-        <!-- Header with order icon and ID -->
+        <!-- Header -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginBottom="12dp">
+            android:layout_marginBottom="8dp">
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:src="@drawable/ic_orders"
-                android:layout_marginEnd="12dp" />
+                android:layout_marginEnd="8dp" />
 
             <TextView
                 android:id="@+id/txtOrderId_user"
@@ -36,10 +36,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Mã đơn hàng:"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
-                android:textColor="#222222"
-                android:fontFamily="sans-serif-medium" />
+                android:textColor="#222222" />
         </LinearLayout>
 
         <!-- Order details -->
@@ -47,19 +46,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:layout_marginBottom="8dp">
+                android:layout_marginBottom="4dp">
 
                 <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_marginEnd="8dp" />
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_marginEnd="6dp" />
 
                 <TextView
                     android:id="@+id/txtAmount"
@@ -68,7 +67,7 @@
                     android:text="Tổng tiền:"
                     android:textColor="#E53935"
                     android:textStyle="bold"
-                    android:textSize="15sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -76,12 +75,12 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:layout_marginBottom="8dp">
+                android:layout_marginBottom="4dp">
 
                 <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_marginEnd="8dp" />
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_marginEnd="6dp" />
 
                 <TextView
                     android:id="@+id/txtDate"
@@ -99,9 +98,9 @@
                 android:gravity="center_vertical">
 
                 <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_marginEnd="8dp" />
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_marginEnd="6dp" />
 
                 <TextView
                     android:id="@+id/txtStatus"
@@ -117,21 +116,21 @@
         <!-- Divider -->
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="0.5dp"
             android:background="#E0E0E0"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="8dp" />
 
         <!-- Detail button -->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnDetail"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="30dp"
             android:text="Xem chi tiết"
             android:background="@drawable/button_item_menu"
             android:backgroundTint="#0053FF"
             android:textColor="@android:color/white"
             android:textStyle="bold"
-            android:textSize="15sp"
+            android:textSize="12sp"
             android:elevation="0dp"
             android:layout_gravity="center" />
     </LinearLayout>
