@@ -18,11 +18,12 @@ import com.example.doan.Adapter.UserCartAdapter;
 import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.User.UserCartManager;
 import com.example.doan.User.UserSpaceItemDecoration;
+import com.example.doan.UserFragment.UserNoteChangeFragment;
 import com.example.doan.databinding.UserActivityCartBinding;
 
 import java.util.List;
 
-public class UserCartActivity extends AppCompatActivity {
+public class UserCartActivity extends AppCompatActivity implements UserNoteChangeFragment.OnTextEnteredListener {
     private UserCartAdapter adapter;
     private UserActivityCartBinding binding;
 
@@ -87,5 +88,11 @@ public class UserCartActivity extends AppCompatActivity {
         super.onResume();
         Log.d("CartDebug", "Cart size: " + UserCartManager.getInstance().getCartItems().size());
 
+    }
+
+    @Override
+    public void onTextEntered(String text) {
+        // TODO: Xử lý text mới trả về từ bottom sheet
+        Log.d("NoteChange", "Người dùng nhập: " + text);
     }
 }

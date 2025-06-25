@@ -16,6 +16,7 @@ import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.User.CartLocalDb;
 import com.example.doan.User.CartMeta;
 import com.example.doan.User.UserCartManager;
+import com.example.doan.UserFragment.UserNoteChangeFragment;
 import com.example.doan.databinding.UserCartItemBinding;
 
 import java.util.List;
@@ -71,17 +72,37 @@ public class UserCartAdapter extends RecyclerView.Adapter<UserCartAdapter.CartVi
             binding.quantity.setText(cartList.get(position).getItemQuantity());
             binding.note.setText(cartList.get(position).getNote());
 
-            setDetailView();
+            setNoteChangeView(position);
             setBtnMinus(quantity, position, price);
             setBtnPlus(quantity, position, price);
             setBtnDelete(quantity, position, price);
         }
-        public void setDetailView() {
+        public void setNoteChangeView(int position) {
             binding.getRoot().setOnClickListener(v -> {
+                FoodItem item = cartList.get(position);
                 UserNoteChangeFragment sheet = new UserNoteChangeFragment();
                 Bundle args = new Bundle();
                 args.putString("note", binding.note.getText().toString());
                 sheet.setArguments(args);
+
+                // Nhận note mới từ BottomSheet
+                sheet.setOnTextEnteredListener(newNote -> {
+                    item.setNote(newNote);                          // cập nhật vào list
+                    binding.note.setText(newNote);                  // cập nhật UI
+                    notifyItemChanged(position);                    // cập nhật lại view
+
+                    // Lưu vào Room
+                    new Thread(() -> {
+                        try {
+                            CartLocalDb db = CartLocalDb.getInstance(requireContext);
+                            db.cartItemDao().update(item);
+                            Log.d("NoteUpdate", "✅ Note updated for cartId=" + item.getLocalId());
+                        } catch (Exception e) {
+                            Log.e("NoteUpdate", "❌ Lỗi khi update note: " + e.getMessage());
+                        }
+                    }).start();
+                });
+
                 sheet.show(fragmentManager, "UserNoteChangeFragment");
             });
         }
