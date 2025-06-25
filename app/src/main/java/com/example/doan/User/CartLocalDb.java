@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase;
 
 import com.example.doan.DatabaseClass.FoodItem;
 
-@Database(entities = {FoodItem.class, CartMeta.class}, version = 5)
+@Database(entities = {FoodItem.class, CartMeta.class}, version = 6)
 public abstract class CartLocalDb extends RoomDatabase {
 
     private static CartLocalDb instance;

@@ -70,6 +70,9 @@ public class UserCartManager {
                     .cartItemDao()
                     .getAll();
 
+            for (FoodItem item : itemList) {
+                Log.d("CartInit", "Item: cartId=" + item.getLocalId() + ", foodId=" + item.getId() + ", name=" + item.getName());
+            }
             this.cartItems.clear();
             this.cartItems.addAll(itemList);
 
@@ -103,7 +106,7 @@ public class UserCartManager {
         executor.execute(() -> {
             // Lấy cartId mới
             long generatedId = CartLocalDb.getInstance(context).cartItemDao().insert(item);
-            item.setCartId((int) generatedId); // Gán lại cartId vào item
+            item.setLocalId((int) generatedId); // Gán lại cartId vào item
 
             Log.d("CartID", "Generated CartID: " + generatedId);
 
@@ -295,7 +298,8 @@ public class UserCartManager {
             CartLocalDb db = CartLocalDb.getInstance(context);
             db.cartItemDao().clearCart();
             for (FoodItem item : cartItems) {
-                db.cartItemDao().insert(item);
+                long newID = db.cartItemDao().insert(item);
+                item.setLocalId((int)newID);
             }
             db.cartMetaDao().insert(new CartMeta(TotalOrder));
             notifyTotalChanged();

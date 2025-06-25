@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 @Entity(tableName = "cart_items")
 public class FoodItem {
     @PrimaryKey(autoGenerate = true)
-    private int cartId;
+    private int localId;
     @SerializedName("id")
     private int id;
     @SerializedName("name")
@@ -127,11 +127,11 @@ public class FoodItem {
     public void setNote(String note) {
         this.note = note;
     }
-    public int getCartId() {
-        return cartId;
+    public int getLocalId() {
+        return localId;
     }
 
-    public void setCartId(int cartId) {
-        this.cartId = cartId;
+    public void setLocalId(int localId) {
+        this.localId = localId;
     }
 }

@@ -42,7 +42,7 @@ public class UserCartActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView() {
-        adapter = new UserCartAdapter(UserCartManager.getInstance().getCartItems(), this);
+        adapter = new UserCartAdapter(this);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.addItemDecoration(new UserSpaceItemDecoration(16));
