@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,12 +19,17 @@ import com.example.doan.ProfileUser.OrderItemWithFood;
 import com.example.doan.R;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class OrderItemAdapter extends ArrayAdapter<OrderItemWithFood> {
     private Context context;
     private List<OrderItemWithFood> items;
     private boolean isAdminMode = false; // Biến để phân biệt admin mode
+    private boolean reviewMode = false;
+    private Set<OrderItemWithFood> selectedItems = new HashSet<>();
 
     public OrderItemAdapter(Context context, List<OrderItemWithFood> items) {
         super(context, 0, items);
@@ -38,6 +44,17 @@ public class OrderItemAdapter extends ArrayAdapter<OrderItemWithFood> {
         this.context = context;
         this.items = items;
         this.isAdminMode = isAdminMode;
+    }
+
+    public void setReviewMode(boolean reviewMode) {
+        this.reviewMode = reviewMode;
+        if (!reviewMode) {
+            selectedItems.clear();
+        }
+    }
+
+    public List<OrderItemWithFood> getSelectedItems() {
+        return new ArrayList<>(selectedItems);
     }
 
     @NonNull
@@ -82,8 +99,11 @@ public class OrderItemAdapter extends ArrayAdapter<OrderItemWithFood> {
             convertView.setOnClickListener(null);
         }
 
+
+
         return convertView;
     }
+
     private String formatCurrency(double amount) {
         DecimalFormat formatter = new DecimalFormat("#,###");
         return formatter.format(amount);
