@@ -25,6 +25,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private EditText edtCurrentPassword, edtNewPassword, edtConfirmPassword;
     private Button btnChangePassword;
 
+    private ImageView imgBack;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,18 +43,20 @@ public class ChangePasswordActivity extends AppCompatActivity {
         edtNewPassword = findViewById(R.id.edtNewPassword);
         edtConfirmPassword = findViewById(R.id.edtConfirmPassword);
         btnChangePassword = findViewById(R.id.btnChangePassword);
+        imgBack = findViewById(R.id.imgBack1);
     }
 
     // Gắn sự kiện cho các thành phần giao diện
     private void setupListeners() {
         btnChangePassword.setOnClickListener(view -> handleChangePassword());
 
-        ImageView imgBack = findViewById(R.id.imgBack1);
         imgBack.setOnClickListener(view -> finish());
     }
 
     // Xử lý logic đổi mật khẩu khi người dùng nhấn nút "Đổi mật khẩu"
     private void handleChangePassword() {
+        btnChangePassword.setEnabled(false);
+
         String oldPassword = edtCurrentPassword.getText().toString().trim();
         String newPassword = edtNewPassword.getText().toString().trim();
         String confirmPassword = edtConfirmPassword.getText().toString().trim();
@@ -83,6 +87,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 showToast("Lỗi kết nối: " + t.getMessage());
             }
         });
+
+        btnChangePassword.setEnabled(true);
     }
 
 

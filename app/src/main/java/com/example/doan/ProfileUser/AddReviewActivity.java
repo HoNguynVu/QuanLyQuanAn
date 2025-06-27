@@ -95,9 +95,9 @@ public class AddReviewActivity extends AppCompatActivity {
             int rating = (int)ratingBarUser.getRating();
             SharedPreferences sharedPreferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
             int userID = sharedPreferences.getInt("id",-1);
-
             addReview(comment, rating , userID);
             setResult(RESULT_OK); // báo về cho Activity gọi nó
+            btnSubmit.setEnabled(true);
             finish();
         });
         btnCancel.setOnClickListener(v -> {
