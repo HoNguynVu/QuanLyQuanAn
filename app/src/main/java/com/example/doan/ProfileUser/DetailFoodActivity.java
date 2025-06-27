@@ -198,8 +198,7 @@ public class DetailFoodActivity extends AppCompatActivity {
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK) {
-                        loadFoodDetails(foodId);
-                        loadFoodReviews(foodId);
+                        finish();
                     }
                 }
         );
