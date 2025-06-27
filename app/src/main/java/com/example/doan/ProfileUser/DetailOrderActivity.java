@@ -2,6 +2,7 @@ package com.example.doan.ProfileUser;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,7 +30,7 @@ public class DetailOrderActivity extends AppCompatActivity {
     private ListView listView;
     private List<OrderItemWithFood> itemList = new ArrayList<>();
     private OrderItemAdapter adapter;
-    private Button btnBack;
+    private Button btnBack,btnAddReview;
     private String orderId;
 
     @Override
@@ -39,7 +40,7 @@ public class DetailOrderActivity extends AppCompatActivity {
 
         initViews();
         setupBackButton();
-
+        setupAddReviewButton();
         orderId = getIntent().getStringExtra("order_id");
         if (orderId == null || orderId.isEmpty()) {
             showToast("Không có mã đơn hàng");
@@ -59,14 +60,28 @@ public class DetailOrderActivity extends AppCompatActivity {
         txtStatus = findViewById(R.id.txt_order_status);
         txtAddress = findViewById(R.id.txt_order_address);
         txtTotal = findViewById(R.id.txt_total_amount);
+
         listView = findViewById(R.id.lv_order_items);
         btnBack = findViewById(R.id.btn_back);
+        btnAddReview = findViewById(R.id.btn_Add_Review);
 
     }
 
     // Thiết lập sự kiện nút Back
     private void setupBackButton() {
         btnBack.setOnClickListener(v -> finish());
+    }
+
+    // Thiết lập sự kiện nút Thêm đánh giá
+    private void setupAddReviewButton() {
+        btnAddReview.setOnClickListener(v -> {
+           showToast("Hãy chọn món ăn bạn muốn đánh giá");
+           adapter.setReviewMode(true);
+           if (adapter != null) {
+                adapter.setReviewMode(true);
+                adapter.notifyDataSetChanged(); // Cập nhật lại để click hoạt động
+           }
+        });
     }
 
     // Gọi API lấy chi tiết đơn hàng (list món)
@@ -168,15 +183,31 @@ public class DetailOrderActivity extends AppCompatActivity {
         txtStatus.setText("Trạng thái: " + status);
         setStatusColor(txtStatus, status);
 
-
-        adapter = new OrderItemAdapter(this, itemList);
+        if (adapter == null) {
+            adapter = new OrderItemAdapter(this, itemList);
+            listView.setAdapter(adapter);
+        } else {
+            adapter.notifyDataSetChanged();
+        }
         listView.setAdapter(adapter);
+
+        if (status.equals("Đã giao")) {
+            btnAddReview.setVisibility(View.VISIBLE);
+            btnAddReview.setEnabled(true);
+        }
+        else
+        {
+            btnAddReview.setVisibility(View.GONE);
+            btnAddReview.setEnabled(false);
+        }
+
     }
 
     // Hiển thị Toast đơn giản
     private void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
+
     private void setStatusColor(TextView tvStatus, String status) {
         int color;
         switch (status) {

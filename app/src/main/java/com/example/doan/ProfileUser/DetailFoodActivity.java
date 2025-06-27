@@ -26,6 +26,7 @@ import com.example.doan.Network.APIService;
 import com.example.doan.Network.RetrofitClient;
 import com.example.doan.R;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,7 +99,7 @@ public class DetailFoodActivity extends AppCompatActivity {
     // Đặt sự kiện cho các nút
     private void setButton() {
         btnAddReview.setOnClickListener(v -> {
-            if( !userRole.equals("User")) {
+            if(!userRole.equals("User")) {
                 Toast.makeText(this, "Admin không thể thêm đánh giá", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -146,7 +147,7 @@ public class DetailFoodActivity extends AppCompatActivity {
     // Hiển thị thông tin món ăn lên UI
     private void bindFoodData(FoodItem food) {
         txtName.setText("Tên món ăn : "+ food.getName());
-        txtPrice.setText("Giá món ăn : " + food.getPrice() + "đ");
+        txtPrice.setText("Giá món ăn : " +  formatCurrency(food.getPrice())+"đ");
         txtDescription.setText(food.getDescription());
         txtRatingAvg.setText(food.getRatingAvg() + "★");
         Glide.with(this).load(food.getImage_url()).into(imgFood);
@@ -160,6 +161,7 @@ public class DetailFoodActivity extends AppCompatActivity {
         }
 
         APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
+        Log.d("API", "Gọi API lấy đánh giá cho món ăn ID: " + foodId);
         Call<List<Review>> call = apiService.getReviewsByFoodId(String.valueOf(foodId));
 
 
@@ -183,7 +185,6 @@ public class DetailFoodActivity extends AppCompatActivity {
         reviewList.clear();
         reviewList.addAll(reviews);
         Log.d("REVIEW", "Số review nhận được: " + reviews.size());
-
         reviewAdapter.notifyDataSetChanged();
     }
 
@@ -203,5 +204,9 @@ public class DetailFoodActivity extends AppCompatActivity {
                 }
         );
 
+    }
+    private static String formatCurrency(double amount) {
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        return formatter.format(amount);
     }
 }
