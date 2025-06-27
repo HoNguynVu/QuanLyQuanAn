@@ -60,6 +60,7 @@ public class DetailOrderActivity extends AppCompatActivity {
         txtStatus = findViewById(R.id.txt_order_status);
         txtAddress = findViewById(R.id.txt_order_address);
         txtTotal = findViewById(R.id.txt_total_amount);
+
         listView = findViewById(R.id.lv_order_items);
         btnBack = findViewById(R.id.btn_back);
         btnAddReview = findViewById(R.id.btn_Add_Review);
@@ -74,8 +75,13 @@ public class DetailOrderActivity extends AppCompatActivity {
     // Thiết lập sự kiện nút Thêm đánh giá
     private void setupAddReviewButton() {
         btnAddReview.setOnClickListener(v -> {
-           showToast("Vui lòng chọn món ăn bạn muốn đánh giá");
-                });
+           showToast("Hãy chọn món ăn bạn muốn đánh giá");
+           adapter.setReviewMode(true);
+           if (adapter != null) {
+                adapter.setReviewMode(true);
+                adapter.notifyDataSetChanged(); // Cập nhật lại để click hoạt động
+           }
+        });
     }
 
     // Gọi API lấy chi tiết đơn hàng (list món)
@@ -177,13 +183,24 @@ public class DetailOrderActivity extends AppCompatActivity {
         txtStatus.setText("Trạng thái: " + status);
         setStatusColor(txtStatus, status);
 
-        adapter = new OrderItemAdapter(this, itemList);
+        if (adapter == null) {
+            adapter = new OrderItemAdapter(this, itemList);
+            listView.setAdapter(adapter);
+        } else {
+            adapter.notifyDataSetChanged();
+        }
         listView.setAdapter(adapter);
 
-        if (status.equals("Đã giao"))
+        if (status.equals("Đã giao")) {
             btnAddReview.setVisibility(View.VISIBLE);
+            btnAddReview.setEnabled(true);
+        }
         else
+        {
             btnAddReview.setVisibility(View.GONE);
+            btnAddReview.setEnabled(false);
+        }
+
     }
 
     // Hiển thị Toast đơn giản
