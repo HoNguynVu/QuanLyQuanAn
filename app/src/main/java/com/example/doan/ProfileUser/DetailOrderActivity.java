@@ -75,12 +75,14 @@ public class DetailOrderActivity extends AppCompatActivity {
     // Thiết lập sự kiện nút Thêm đánh giá
     private void setupAddReviewButton() {
         btnAddReview.setOnClickListener(v -> {
+            btnAddReview.setEnabled(false);
            showToast("Hãy chọn món ăn bạn muốn đánh giá");
            adapter.setReviewMode(true);
            if (adapter != null) {
                 adapter.setReviewMode(true);
                 adapter.notifyDataSetChanged(); // Cập nhật lại để click hoạt động
            }
+            btnAddReview.setEnabled(true);
         });
     }
 
