@@ -37,7 +37,7 @@ public class RetrofitClient {
                     .build();
 
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://172.20.10.13/restaurantapi/") // thay bằng IP LAN nếu dùng thiết bị thật
+                    .baseUrl("http://10.0.2.2/restaurantapi/") // thay bằng IP LAN nếu dùng thiết bị thật
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .client(client)
                     .build();
