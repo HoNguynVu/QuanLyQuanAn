@@ -25,6 +25,7 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import com.example.doan.AdminActivity.AdminOrderDetailActivity;
 import com.example.doan.DatabaseClass.Order;
 import com.example.doan.Adapter.OrderAdapter;
 import com.example.doan.Interface.ToolbarController;
@@ -108,9 +109,12 @@ public class AdminOrdersFragment extends Fragment {
 
     private void setupOrderListClickListener() {
         orderListView.setOnItemClickListener((parent, view, position, id) -> {
+
+            Toast.makeText(getContext(), "Mã đơn hàng: " + filteredOrderList.get(position).getOrderId(), Toast.LENGTH_SHORT).show();
             if (position < filteredOrderList.size()) {
                 Order selectedOrder = filteredOrderList.get(position);
-                Intent intent = new Intent(getContext(), com.example.doan.AdminActivity.AdminOrderDetailActivity.class);
+                Intent intent = new Intent(getContext(), AdminOrderDetailActivity.class);
+
                 intent.putExtra("order_id", selectedOrder.getOrderId());
                 intent.putExtra("status", selectedOrder.getStatus());
                 intent.putExtra("created_at", selectedOrder.getCreatedAt());
