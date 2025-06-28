@@ -23,6 +23,10 @@ import retrofit2.Response;
 public class MyProfileActivity extends AppCompatActivity {
 
     private EditText edtName, edtEmail, edtPhone, edtBirth;
+
+    private Button btnSave;
+
+    private ImageView imgBack;
     private CurrentUser currentUser;
 
     @Override
@@ -43,6 +47,8 @@ public class MyProfileActivity extends AppCompatActivity {
         edtPhone = findViewById(R.id.edtPhone);
         edtBirth = findViewById(R.id.edtBirth);
         currentUser = CurrentUser.getInstance();
+        btnSave = findViewById(R.id.btnSave);
+        imgBack = findViewById(R.id.imgBack);
     }
 
     //Load thông tin người dùng vào giao diện
@@ -56,10 +62,8 @@ public class MyProfileActivity extends AppCompatActivity {
 
     //Gán sự kiện click cho nút lưu và nút quay lại
     private void setupListeners() {
-        Button btnSave = findViewById(R.id.btnSave);
         btnSave.setOnClickListener(view -> updateUserProfile());
 
-        ImageView imgBack = findViewById(R.id.imgBack);
         imgBack.setOnClickListener(view -> finish());
     }
 
@@ -70,6 +74,8 @@ public class MyProfileActivity extends AppCompatActivity {
 
     //Gọi API để cập nhật thông tin người dùng
     private void updateUserProfile() {
+        btnSave.setEnabled(false); // Vô hiệu hóa nút lưu trong khi đang xử lý
+
         String newName = edtName.getText().toString().trim();
         String newPhone = edtPhone.getText().toString().trim();
         String newDob = edtBirth.getText().toString().trim();
@@ -85,7 +91,6 @@ public class MyProfileActivity extends AppCompatActivity {
             showToast("Không tìm thấy email người dùng!");
             return;
         }
-
 
         APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
         Call<String> call = apiService.updateUser(email, newName, newPhone, newDob);
@@ -125,6 +130,7 @@ public class MyProfileActivity extends AppCompatActivity {
                 showToast("Lỗi: " + t.getMessage());
             }
         });
+        btnSave.setEnabled(true); // Kích hoạt lại nút lưu sau khi hoàn thành
     }
 
     //Hiển thị Toast thông báo

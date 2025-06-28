@@ -269,21 +269,48 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Back Button -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_back"
+        <!-- Button Container -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/buttonContainer"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:text="Quay lại"
-            android:textSize="16sp"
-            android:textAllCaps="false"
-            android:textStyle="bold"
-            android:textColor="@android:color/white"
-            android:backgroundTint="#0053FF"
-            android:background="@drawable/button_item_menu"
-            app:cornerRadius="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"/>
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="8dp"
+            app:cardUseCompatPadding="true"
+            android:layout_marginTop="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <Button
+                    android:id="@+id/btn_Add_Review"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đánh giá món ăn"
+                    android:textSize="16sp"
+                    android:padding="12dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/red"
+                    android:textColor="@color/white"/>
+
+                <Button
+                    android:id="@+id/btn_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Quay lại"
+                    android:padding="12dp"
+                    android:textSize="16sp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/black"
+                    android:textColor="@color/white"/>
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 </ScrollView>

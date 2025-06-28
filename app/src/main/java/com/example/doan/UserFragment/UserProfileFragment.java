@@ -56,27 +56,35 @@ public class UserProfileFragment extends Fragment {
 
     private void setupListeners() {
         btnEditProfile.setOnClickListener(v -> {
+            btnEditProfile.setEnabled(false);
             Intent intent = new Intent(getContext(), MyProfileActivity.class);
             startActivity(intent);
+            btnEditProfile.setEnabled(true);
         });
 
         btnChangePassword.setOnClickListener(v -> {
+            btnChangePassword.setEnabled(false);
             Intent intent = new Intent(getContext(), ChangePasswordActivity.class);
             startActivity(intent);
+            btnChangePassword.setEnabled(true);
         });
 
         btnOrderHistory.setOnClickListener(v -> {
+            btnOrderHistory.setEnabled(false);
             Intent intent = new Intent(getContext(), MyOrdersActivity.class);
             startActivity(intent);
+            btnOrderHistory.setEnabled(true);
         });
 
         btnLogout.setOnClickListener(v -> {
+            btnLogout.setEnabled(false);
             SharedPreferences sharedPreferences = requireContext().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
             int userID = sharedPreferences.getInt("id", 0);
             UserCartManager.getInstance().syncCartToServer(requireContext(), userID, () -> {
                 UserCartManager.getInstance().cleanCart(requireContext());
                 logout();
             });
+            btnLogout.setEnabled(true);
         });
     }
 

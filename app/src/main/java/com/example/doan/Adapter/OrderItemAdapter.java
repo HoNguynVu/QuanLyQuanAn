@@ -2,6 +2,7 @@ package com.example.doan.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,18 +19,24 @@ import com.example.doan.ProfileUser.OrderItemWithFood;
 import com.example.doan.R;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class OrderItemAdapter extends ArrayAdapter<OrderItemWithFood> {
     private Context context;
     private List<OrderItemWithFood> items;
     private boolean isAdminMode = false; // Biến để phân biệt admin mode
+    private boolean reviewMode = false; // Biến để xác định có được review hay không
+    private Set<OrderItemWithFood> selectedItems = new HashSet<>();
 
     public OrderItemAdapter(Context context, List<OrderItemWithFood> items) {
         super(context, 0, items);
         this.context = context;
         this.items = items;
         this.isAdminMode = false; // Mặc định là user mode
+        this.reviewMode = false;
     }
 
     // Constructor cho admin mode
@@ -38,6 +45,20 @@ public class OrderItemAdapter extends ArrayAdapter<OrderItemWithFood> {
         this.context = context;
         this.items = items;
         this.isAdminMode = isAdminMode;
+    }
+
+    public void setReviewMode(boolean reviewMode) {
+        this.reviewMode = reviewMode;
+    }
+    public boolean getReviewMode() {
+        return reviewMode;
+    }
+    public boolean isAdminMode() {
+        return isAdminMode;
+    }
+
+    public List<OrderItemWithFood> getSelectedItems() {
+        return new ArrayList<>(selectedItems);
     }
 
     @NonNull
@@ -62,28 +83,31 @@ public class OrderItemAdapter extends ArrayAdapter<OrderItemWithFood> {
         txtPrice.setText("Giá: " + formatCurrency(food.getPrice()) + " đ");
         txtNote.setText("Ghi chú: " + item.getOrderItem().getNote());
 
-        // Load ảnh bằng Glide (thêm thư viện Glide vào project)
         Glide.with(context)
                 .load(food.getImage_url())
-                .placeholder(R.drawable.ic_launcher_background)  // ảnh mặc định nếu chưa load được
+                .placeholder(R.drawable.ic_launcher_background)
                 .into(imgFood);
 
-        // Chỉ cho phép click nếu không phải admin mode
-        if (!isAdminMode) {
+
+        if (!isAdminMode && reviewMode) {
+            Log.d("OrderItemAdapter", String.valueOf(reviewMode));
+            Log.d("OrderItemAdapter", String.valueOf(isAdminMode));
+            convertView.setClickable(true);
+            convertView.setFocusable(true);
             convertView.setOnClickListener(v -> {
                 Intent intent = new Intent(context, DetailFoodActivity.class);
                 intent.putExtra("id", food.getId());
                 context.startActivity(intent);
+                notifyDataSetChanged();
             });
         } else {
-            // Nếu là admin mode, vô hiệu hóa click
             convertView.setClickable(false);
             convertView.setFocusable(false);
             convertView.setOnClickListener(null);
         }
-
         return convertView;
     }
+
     private String formatCurrency(double amount) {
         DecimalFormat formatter = new DecimalFormat("#,###");
         return formatter.format(amount);

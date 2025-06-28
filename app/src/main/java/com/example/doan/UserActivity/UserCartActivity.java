@@ -18,11 +18,13 @@ import com.example.doan.Adapter.UserCartAdapter;
 import com.example.doan.DatabaseClass.FoodItem;
 import com.example.doan.User.UserCartManager;
 import com.example.doan.User.UserSpaceItemDecoration;
+import com.example.doan.UserFragment.UserNoteChangeFragment;
 import com.example.doan.databinding.UserActivityCartBinding;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
-public class UserCartActivity extends AppCompatActivity {
+public class UserCartActivity extends AppCompatActivity implements UserNoteChangeFragment.OnTextEnteredListener {
     private UserCartAdapter adapter;
     private UserActivityCartBinding binding;
 
@@ -42,7 +44,7 @@ public class UserCartActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView() {
-        adapter = new UserCartAdapter(this);
+        adapter = new UserCartAdapter(this, getSupportFragmentManager());
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.addItemDecoration(new UserSpaceItemDecoration(16));
@@ -51,7 +53,7 @@ public class UserCartActivity extends AppCompatActivity {
     private void setupCartListener() {
         UserCartManager.getInstance().setOnTotalChangedListener(newTotal -> {
             Log.d(TAG, "onTotalChanged: " + newTotal);
-            binding.totalOrder.setText(String.valueOf(newTotal));
+            binding.totalOrder.setText(formatCurrency(newTotal)+"đ");
 
             // Thông báo adapter cập nhật lại UI
             if (adapter != null) {
@@ -87,5 +89,16 @@ public class UserCartActivity extends AppCompatActivity {
         super.onResume();
         Log.d("CartDebug", "Cart size: " + UserCartManager.getInstance().getCartItems().size());
 
+    }
+
+    @Override
+    public void onTextEntered(String text) {
+        // TODO: Xử lý text mới trả về từ bottom sheet
+        Log.d("NoteChange", "Người dùng nhập: " + text);
+    }
+
+    private static String formatCurrency(double amount) {
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        return formatter.format(amount);
     }
 }

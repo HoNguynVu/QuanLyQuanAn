@@ -25,17 +25,19 @@
             android:layout_margin="1dp">
 
         <!-- Ảnh món ăn -->
-        <ImageView
-            android:id="@+id/img_food"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:background="#F7FAFC"
-            android:contentDescription="Ảnh món ăn"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher_background" />
 
-        <!-- Thông tin món ăn -->
-        <LinearLayout
+            <!-- Thông tin món ăn -->
+            <ImageView
+                android:id="@+id/img_food"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="#F7FAFC"
+                android:contentDescription="Ảnh món ăn"
+                android:scaleType="centerCrop"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_launcher_background" />
+
+            <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -80,7 +82,7 @@
                 android:textSize="16sp"
                 android:textColor="#718096"
                 android:layout_marginTop="2dp" />
-
-        </LinearLayout>        </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
