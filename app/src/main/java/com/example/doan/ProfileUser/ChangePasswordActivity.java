@@ -104,8 +104,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
             return false;
         }
 
-        if (newPass.length() < 9 || !newPass.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{9,}$")) {
-            edtNewPassword.setError("Mật khẩu phải có ít nhất 9 ký tự, bao gồm chữ và số");
+        if (newPass.length() < 8 || !newPass.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")) {
+            edtNewPassword.setError("Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ và số");
             return false;
         }
 
