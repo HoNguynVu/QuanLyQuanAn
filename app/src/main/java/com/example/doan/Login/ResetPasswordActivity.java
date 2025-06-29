@@ -100,7 +100,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
             return;
         }
 
-        if (pass.length() < 8 || !pass.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{9,}$")) {
+        if (pass.length() < 8 || !pass.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")) {
             edtNewPassword.setError("Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ và số");
             return;
         }

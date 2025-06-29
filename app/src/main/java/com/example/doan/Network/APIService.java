@@ -17,6 +17,7 @@ import com.example.doan.DatabaseClass.OrderItem;
 import com.example.doan.DatabaseClass.Review;
 import com.example.doan.DatabaseClassRequest.OrderRequest;
 import com.example.doan.DatabaseClassResponse.OrderResponse;
+import com.example.doan.DatabaseClassResponse.PopularFoodResponse;
 import com.example.doan.DatabaseClassResponse.StatisticsResponse;
 import com.example.doan.DatabaseClassResponse.StatusResponse;
 import com.example.doan.DatabaseClassResponse.UploadResponse;
@@ -247,5 +248,6 @@ public interface APIService {
     @DELETE("discount_api.php")
     Call<Void> deleteDiscount(@Query("id") int id);
 
-
+    @GET("get_popular_foods.php")
+    Call<PopularFoodResponse> getPopularFoods();
 }
