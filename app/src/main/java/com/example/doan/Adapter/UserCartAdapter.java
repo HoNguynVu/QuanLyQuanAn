@@ -19,6 +19,7 @@ import com.example.doan.User.UserCartManager;
 import com.example.doan.UserFragment.UserNoteChangeFragment;
 import com.example.doan.databinding.UserCartItemBinding;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class UserCartAdapter extends RecyclerView.Adapter<UserCartAdapter.CartViewHolder> {
@@ -63,7 +64,7 @@ public class UserCartAdapter extends RecyclerView.Adapter<UserCartAdapter.CartVi
         public void bind(int position) {
             double price = cartList.get(position).getPrice();
             final int[] quantity = {Integer.parseInt(cartList.get(position).getItemQuantity())};
-            String total = (price * quantity[0]) + "";
+            String total = formatCurrency(price * quantity[0]) + "đ";
 
             binding.tvName.setText(cartList.get(position).getName());
             binding.tvPrice.setText(total);
@@ -118,7 +119,7 @@ public class UserCartAdapter extends RecyclerView.Adapter<UserCartAdapter.CartVi
                     userCartManager.notifyTotalChanged();
 
                     double newTotal = quantity[0] * price;
-                    binding.tvPrice.setText(String.valueOf(newTotal));
+                    binding.tvPrice.setText(formatCurrency(newTotal) + "đ");
 
                     new Thread(() -> {
                         try {
@@ -145,7 +146,7 @@ public class UserCartAdapter extends RecyclerView.Adapter<UserCartAdapter.CartVi
                 userCartManager.notifyTotalChanged();
 
                 double newTotal = quantity[0] * price;
-                binding.tvPrice.setText(String.valueOf(newTotal));
+                binding.tvPrice.setText(formatCurrency(newTotal) + "đ");
 
                 new Thread(() -> {
                     try {
@@ -196,9 +197,10 @@ public class UserCartAdapter extends RecyclerView.Adapter<UserCartAdapter.CartVi
                 }).start();
             });
         }
-
-
-
+    }
+    private static String formatCurrency(double amount) {
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        return formatter.format(amount);
     }
 
 

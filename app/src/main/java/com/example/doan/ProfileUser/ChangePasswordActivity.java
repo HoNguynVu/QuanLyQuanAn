@@ -25,6 +25,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private EditText edtCurrentPassword, edtNewPassword, edtConfirmPassword;
     private Button btnChangePassword;
 
+    private ImageView imgBack;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,18 +43,20 @@ public class ChangePasswordActivity extends AppCompatActivity {
         edtNewPassword = findViewById(R.id.edtNewPassword);
         edtConfirmPassword = findViewById(R.id.edtConfirmPassword);
         btnChangePassword = findViewById(R.id.btnChangePassword);
+        imgBack = findViewById(R.id.imgBack1);
     }
 
     // Gắn sự kiện cho các thành phần giao diện
     private void setupListeners() {
         btnChangePassword.setOnClickListener(view -> handleChangePassword());
 
-        ImageView imgBack = findViewById(R.id.imgBack1);
         imgBack.setOnClickListener(view -> finish());
     }
 
     // Xử lý logic đổi mật khẩu khi người dùng nhấn nút "Đổi mật khẩu"
     private void handleChangePassword() {
+        btnChangePassword.setEnabled(false);
+
         String oldPassword = edtCurrentPassword.getText().toString().trim();
         String newPassword = edtNewPassword.getText().toString().trim();
         String confirmPassword = edtConfirmPassword.getText().toString().trim();
@@ -83,6 +87,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 showToast("Lỗi kết nối: " + t.getMessage());
             }
         });
+
+        btnChangePassword.setEnabled(true);
     }
 
 
@@ -98,8 +104,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
             return false;
         }
 
-        if (newPass.length() < 9 || !newPass.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{9,}$")) {
-            edtNewPassword.setError("Mật khẩu phải có ít nhất 9 ký tự, bao gồm chữ và số");
+        if (newPass.length() < 8 || !newPass.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")) {
+            edtNewPassword.setError("Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ và số");
             return false;
         }
 

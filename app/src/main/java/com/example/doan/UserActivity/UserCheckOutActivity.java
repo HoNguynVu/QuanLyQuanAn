@@ -27,6 +27,7 @@ import com.example.doan.User.UserCartManager;
 import com.example.doan.databinding.UserActivityCheckOutBinding;
 import com.google.gson.Gson;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import retrofit2.Call;
@@ -126,16 +127,15 @@ public class UserCheckOutActivity extends AppCompatActivity {
         }
 
         // Hiển thị số nguyên nếu bạn không cần số lẻ
-        binding.price.setText(String.format("%.0f", total)); // Giá gốc
-        binding.fee.setText("0");
-        binding.totalOrder.setText(String.format("%.0f", finalTotal)); // Tổng sau giảm
+        binding.price.setText(formatCurrency(total) + "đ"); // Giá gốc
+        binding.fee.setText("0đ");
+        binding.totalOrder.setText(formatCurrency(finalTotal) + "đ"); // Tổng sau giảm
 
         // Nếu bạn muốn hiển thị phép tính như: "100 - 10% = 90"
         String priceCalcText;
         if (discountAmount > 0) {
-            priceCalcText = String.format("%.0f - %.0f%% = %.0f", total, (double) discountAmount, finalTotal);
+            priceCalcText = String.format("%sđ - %.0f%% = %sđ", total, (double) discountAmount, finalTotal);
             binding.price.setText(priceCalcText);
-
         } else {
 
         }
@@ -205,4 +205,8 @@ public class UserCheckOutActivity extends AppCompatActivity {
             });
         });
     }
+        private static String formatCurrency(double amount) {
+            DecimalFormat formatter = new DecimalFormat("#,###");
+            return formatter.format(amount);
+        }
 }

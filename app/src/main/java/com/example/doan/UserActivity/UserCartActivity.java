@@ -21,6 +21,7 @@ import com.example.doan.User.UserSpaceItemDecoration;
 import com.example.doan.UserFragment.UserNoteChangeFragment;
 import com.example.doan.databinding.UserActivityCartBinding;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class UserCartActivity extends AppCompatActivity implements UserNoteChangeFragment.OnTextEnteredListener {
@@ -52,7 +53,7 @@ public class UserCartActivity extends AppCompatActivity implements UserNoteChang
     private void setupCartListener() {
         UserCartManager.getInstance().setOnTotalChangedListener(newTotal -> {
             Log.d(TAG, "onTotalChanged: " + newTotal);
-            binding.totalOrder.setText(String.valueOf(newTotal));
+            binding.totalOrder.setText(formatCurrency(newTotal)+"đ");
 
             // Thông báo adapter cập nhật lại UI
             if (adapter != null) {
@@ -94,5 +95,10 @@ public class UserCartActivity extends AppCompatActivity implements UserNoteChang
     public void onTextEntered(String text) {
         // TODO: Xử lý text mới trả về từ bottom sheet
         Log.d("NoteChange", "Người dùng nhập: " + text);
+    }
+
+    private static String formatCurrency(double amount) {
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        return formatter.format(amount);
     }
 }

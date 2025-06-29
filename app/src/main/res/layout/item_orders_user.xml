@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Mã đơn hàng:"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="#222222" />
         </LinearLayout>
@@ -124,14 +124,11 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnDetail"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:text="Xem chi tiết"
             android:background="@drawable/button_item_menu"
-            android:backgroundTint="#0053FF"
             android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:textSize="12sp"
-            android:elevation="0dp"
-            android:layout_gravity="center" />
+            android:textStyle="normal"
+            android:textSize="14sp" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

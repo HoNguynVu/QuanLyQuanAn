@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -82,6 +83,9 @@ public class AdminSetting extends AppCompatActivity {
             Toast.makeText(this, "Không có email người dùng", Toast.LENGTH_SHORT).show();
             finish();
         }
+
+        edtDob.setInputType(InputType.TYPE_NULL);  // Ngăn bàn phím hiện lên
+        edtDob.setFocusable(false);
     }
 
     public void initClick()
@@ -157,6 +161,13 @@ public class AdminSetting extends AppCompatActivity {
             public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Toast.makeText(AdminSetting.this, response.body().message, Toast.LENGTH_SHORT).show();
+                    SharedPreferences prefs = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putString("username", name);
+                    editor.putString("phone", phone);
+                    editor.putString("dob", dob);
+                    editor.apply();
+                    finish();
                 } else {
                     Toast.makeText(AdminSetting.this, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
                 }
