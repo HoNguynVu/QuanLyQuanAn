@@ -123,7 +123,7 @@ public class UserHomeFragment extends Fragment {
     }
 
     public void getFoodData() {
-        UserDataFetcher.fetchFoods(new UserDataFetcher.FetchCallBack<FoodItem>() {
+        UserDataFetcher.fetchPopularFoods(new UserDataFetcher.FetchCallBack<FoodItem>() {
 
             @Override
             public void onSuccess(List<FoodItem> data) {
@@ -137,6 +137,6 @@ public class UserHomeFragment extends Fragment {
             public void onError(String message) {
                 Log.d("Lỗi Retrofit: ", message);
             }
-        }, "all");
+        });
     }
 }
