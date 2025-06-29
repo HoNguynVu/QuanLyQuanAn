@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="Home"
+    <item android:title="Trang chủ"
         android:id="@+id/homeFragment"
         android:icon="@drawable/ic_home"/>
 
-    <item android:title="Search"
+    <item android:title="Thực đơn"
         android:id="@+id/shoppingFragment"
         android:icon="@drawable/search"/>
 
-    <item android:title="Chat"
+    <item android:title="Nhắn tin"
         android:id="@+id/chatFragment"
         android:icon="@drawable/ic_chat"/>
 
-    <item android:title="Notification"
+    <item android:title="Thông báo"
         android:id="@+id/notificationFragment"
         android:icon="@drawable/ic_notification"/>
 
-    <item android:title="Profile"
+    <item android:title="Tài khoản"
         android:id="@+id/profileFragment"
         android:icon="@drawable/ic_person"/>
 
