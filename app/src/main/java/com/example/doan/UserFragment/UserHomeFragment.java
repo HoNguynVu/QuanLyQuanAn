@@ -3,6 +3,7 @@ package com.example.doan.UserFragment;
 import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -104,13 +105,16 @@ public class UserHomeFragment extends Fragment {
         ArrayList<SlideModel> imageList = new ArrayList<>();
         imageList.add(new SlideModel(R.drawable.banner1, ScaleTypes.FIT));
         imageList.add(new SlideModel(R.drawable.banner2, ScaleTypes.FIT));
-        imageList.add(new SlideModel(R.drawable.banner3, ScaleTypes.FIT));
         binding.imageSlider.setImageList(imageList, ScaleTypes.FIT);
         binding.imageSlider.setItemClickListener(new ItemClickListener() {
             @Override
             public void onItemSelected(int position) {
-                String itemMessage = "Bạn đã chọn ảnh " + (position + 1);
-                Toast.makeText(requireContext(), itemMessage, Toast.LENGTH_SHORT).show();
+                if(position==1)
+                {
+                    Intent intent = new Intent(Intent.ACTION_DIAL); // Mở giao diện quay số
+                    intent.setData(Uri.parse("tel:0335492367"));    // Số điện thoại cần dán vào
+                    startActivity(intent);
+                }
             }
             public void doubleClick(int position) {
 
