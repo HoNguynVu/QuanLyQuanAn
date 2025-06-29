@@ -174,16 +174,18 @@ public class DetailOrderActivity extends AppCompatActivity {
         String status = getIntent().getStringExtra("status");
         String createdAt = getIntent().getStringExtra("created_at");
         String address = getIntent().getStringExtra("address");
+        int discountPercent = getIntent().getIntExtra("discount_percent",0);
 
         if (status == null) status = "Đang xử lý";
         if (createdAt == null) createdAt = "Không rõ ngày";
         if (address == null) address = "Không rõ địa chỉ";
-
         txtDate.setText("Ngày tạo: " + createdAt);
         txtTotal.setText(formattedAmount + "đ");
         txtAddress.setText("Địa chỉ: " + address);
+        txtDiscount.setText("Giảm giá: " + discountPercent +"%");
         txtStatus.setText("Trạng thái: " + status);
         setStatusColor(txtStatus, status);
+
 
         if (adapter == null) {
             adapter = new OrderItemAdapter(this, itemList);
