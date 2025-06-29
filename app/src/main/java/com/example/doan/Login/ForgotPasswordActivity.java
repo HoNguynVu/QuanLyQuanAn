@@ -67,6 +67,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             return;
         }
 
+        btnSendOtp.setEnabled(false);
         APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
         Call<GenericResponse> call = apiService.sendResetOtp(email);
 
@@ -77,7 +78,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                     GenericResponse res = response.body();
                     if ("otp_sent".equals(res.status)) {
                         Toast.makeText(ForgotPasswordActivity.this, "Mã OTP đã được gửi!", Toast.LENGTH_SHORT).show();
-
+                        btnSendOtp.setEnabled(true);
                         // Chuyển sang màn hình nhập OTP
                         Intent intent = new Intent(ForgotPasswordActivity.this, VerifyResetOtpActivity.class);
                         intent.putExtra("email", email);
@@ -85,10 +86,11 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                         finish();
                     } else {
                         Toast.makeText(ForgotPasswordActivity.this, res.message, Toast.LENGTH_SHORT).show();
+                        btnSendOtp.setEnabled(true);
                     }
                 } else {
                     Toast.makeText(ForgotPasswordActivity.this, "Lỗi phản hồi từ máy chủ", Toast.LENGTH_SHORT).show();
-
+                    btnSendOtp.setEnabled(true);
                 }
             }
 
