@@ -218,11 +218,12 @@ app/
 #### 1.2 Thiết lập Database
 1. Mở trình duyệt và truy cập `http://localhost/phpmyadmin`
 2. Tạo database mới có tên `restaurant_db`
-3. Import file SQL từ thư mục `/database` trong repository
+3. Import file SQL `restaurant_db.sql` trong repository
 
 #### 1.3 Upload API files
-1. Copy thư mục `restaurantapi` vào `C:\xampp\htdocs\`
-2. Cấu trúc thư mục:
+1. Tải file zip `restaurantapi.zip` trong repository, giải nén ra thư mục  `restaurantapi`
+2. Copy thư mục `restaurantapi` vào `C:\xampp\htdocs\`
+3. Cấu trúc thư mục:
 ```
 C:\xampp\htdocs\restaurantapi\
 ├── login.php
