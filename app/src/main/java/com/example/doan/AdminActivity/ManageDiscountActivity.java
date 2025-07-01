@@ -126,8 +126,10 @@ public class ManageDiscountActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     Toast.makeText(ManageDiscountActivity.this, "Đã xóa mã giảm giá", Toast.LENGTH_SHORT).show();
                     loadDiscounts();
+                } else if (response.code() == 409) {
+                    Toast.makeText(ManageDiscountActivity.this, "Không thể xóa, mã giảm giá đã được sử dụng trong đơn hàng!", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(ManageDiscountActivity.this, "Xóa thất bại", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ManageDiscountActivity.this, "Xóa thất bại, vui lòng thử lại!", Toast.LENGTH_SHORT).show();
                 }
             }
 
