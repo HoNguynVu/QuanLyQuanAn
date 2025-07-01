@@ -83,6 +83,7 @@
 - Đánh giá và bình luận món ăn
 - Quản lý thông tin cá nhân
 - Nhận thông báo
+- Chat với quản trị viên
 
 #### Dành cho Quản trị viên (Admin)
 - Quản lý thực đơn (thêm, sửa, xóa món ăn)
@@ -90,6 +91,7 @@
 - Thống kê doanh thu
 - Quản lý thông tin cá nhân
 - Xem báo cáo và biểu đồ
+- Chat với khách hàng
 
 ## MÔ TẢ CHI TIẾT
 <a name="motact"></a>
@@ -129,6 +131,7 @@ app/
   - `/restaurantapi/get_foods.php`: Lấy danh sách món ăn
   - `/restaurantapi/get_foods_by_category.php`: Lấy món ăn theo danh mục
   - `/restaurantapi/get_foods_by_id.php`: Lấy thông tin món ăn theo ID
+  - `/restaurantapi/get_popular_foods.php`: Lấy món ăn phổ biến
   - `/restaurantapi/add_food.php`: Thêm món ăn mới
   - `/restaurantapi/update_food.php`: Cập nhật thông tin món ăn
   - `/restaurantapi/delete_food.php`: Xóa món ăn
@@ -138,9 +141,15 @@ app/
   - `/restaurantapi/get_orders_by_user.php`: Lấy đơn hàng theo user
   - `/restaurantapi/get_order_items.php`: Lấy chi tiết món trong đơn hàng
   - `/restaurantapi/update_order_status.php`: Cập nhật trạng thái đơn hàng
+- **Cart Management**
+  - `/restaurantapi/create_cart.php`: Tạo giỏ hàng
+  - `/restaurantapi/get_cart_.php`: Lấy thông tin giỏ hàng
 - **Reviews System**
   - `/restaurantapi/add_review.php`: Thêm đánh giá
   - `/restaurantapi/get_reviews_by_food_id.php`: Lấy đánh giá theo món ăn
+- **Discount System**
+  - `/restaurantapi/discount_api.php`: API CRUD cho mã giảm giá
+  - `/restaurantapi/search_discount_by_code.php`: Tìm kiếm mã giảm giá
 - **Notification System**
   - `/restaurantapi/create_notification.php`: Tạo thông báo
   - `/restaurantapi/add_notification.php`: Thêm thông báo
@@ -164,6 +173,7 @@ app/
 4. **Mã giảm giá** cho đơn hàng
 5. **Hệ thống đánh giá** 5 sao cho món ăn
 6. **Thông báo** realtime cho người dùng
+7. **Hệ thống chat** giữa khách hàng và quản trị viên
 
 ## HƯỚNG DẪN CÀI ĐẶT VÀ CHẠY ỨNG DỤNG
 <a name="hd"></a>
