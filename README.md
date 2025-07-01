@@ -78,6 +78,7 @@
 #### Dành cho Khách hàng (User)
 - Đăng ký/Đăng nhập tài khoản
 - Xem thực đơn và chi tiết món ăn
+- Tìm kiếm món ăn
 - Đặt hàng và quản lý giỏ hàng
 - Xem lịch sử đơn hàng
 - Đánh giá và bình luận món ăn
@@ -90,8 +91,9 @@
 - Quản lý đơn hàng
 - Thống kê doanh thu
 - Quản lý thông tin cá nhân
+- Quản lý mã giảm giá
 - Xem báo cáo và biểu đồ
-- Chat với khách hàng
+- Chat với khách hàng và quản trị viên khác
 
 ## MÔ TẢ CHI TIẾT
 <a name="motact"></a>
@@ -107,71 +109,91 @@ app/
 ├── src/main/java/com/example/doan/
 │   ├── AdminActivity/          # Các Activity dành cho Admin
 │   ├── AdminFragment/          # Các Fragment dành cho Admin
+│   ├── User/                   # Các hàm chuyển đổi trong các Activity của User
 │   ├── UserActivity/           # Các Activity dành cho User
 │   ├── UserFragment/           # Các Fragment dành cho User
 │   ├── ProfileUser/            # Quản lý profile user
 │   ├── Login/                  # Đăng nhập/Đăng ký
 │   ├── DatabaseClass/          # Model classes
 │   ├── DatabaseClassResponse/  # Response models
-│   ├── Network/               # API services
-│   └── Adapter/               # RecyclerView adapters
-└── src/main/res/              # Resources (layouts, drawables, etc.)
+│   ├── DatabaseClassRequest/   # Request models
+│   ├── Network/                # API services
+│   └── Adapter/                # RecyclerView adapters
+└── src/main/res/               # Resources (layouts, drawables, etc.)
 ```
 
 ### API Endpoints
+
 - **Authentication & User Management**
   - `/restaurantapi/login.php`: Đăng nhập
   - `/restaurantapi/signup.php`: Đăng ký tài khoản
   - `/restaurantapi/verify_otp.php`: Xác thực OTP đăng ký
   - `/restaurantapi/forgot_password.php`: Quên mật khẩu
-  - `/restaurantapi/verify_reset_password.php`: Xác thực OTP reset mật khẩu
-  - `/restaurantapi/reset_password.php`: Đặt lại mật khẩu
+  - `/restaurantapi/verify_reset_otp.php`: Xác thực OTP đặt lại mật khẩu
+  - `/restaurantapi/reset_password.php`: Đặt lại mật khẩu mới
   - `/restaurantapi/change_password.php`: Đổi mật khẩu
+  - `/restaurantapi/get_user_by_id.php`: Lấy thông tin người dùng theo ID
+  - `/restaurantapi/get_user_list.php`: Lấy danh sách người dùng
+  - `/restaurantapi/update_user.php`: Cập nhật thông tin người dùng
+  - `/restaurantapi/get_admin_info.php`: Lấy thông tin tài khoản admin
+  - `/restaurantapi/update_admin_info.php`: Cập nhật thông tin tài khoản admin
+
 - **Food Management**
-  - `/restaurantapi/get_foods.php`: Lấy danh sách món ăn
+  - `/restaurantapi/get_foods.php`: Lấy danh sách tất cả món ăn
   - `/restaurantapi/get_foods_by_category.php`: Lấy món ăn theo danh mục
   - `/restaurantapi/get_foods_by_id.php`: Lấy thông tin món ăn theo ID
-  - `/restaurantapi/get_popular_foods.php`: Lấy món ăn phổ biến
+  - `/restaurantapi/get_popular_foods.php`: Lấy danh sách món ăn phổ biến
   - `/restaurantapi/add_food.php`: Thêm món ăn mới
   - `/restaurantapi/update_food.php`: Cập nhật thông tin món ăn
   - `/restaurantapi/delete_food.php`: Xóa món ăn
+
 - **Order Management**
   - `/restaurantapi/create_order.php`: Tạo đơn hàng mới
-  - `/restaurantapi/get_orders.php`: Lấy danh sách đơn hàng (Admin)
-  - `/restaurantapi/get_orders_by_user.php`: Lấy đơn hàng theo user
-  - `/restaurantapi/get_order_items.php`: Lấy chi tiết món trong đơn hàng
+  - `/restaurantapi/get_orders.php`: Lấy danh sách tất cả đơn hàng (Admin)
+  - `/restaurantapi/get_orders_by_user.php`: Lấy đơn hàng theo người dùng
+  - `/restaurantapi/get_order_items.php`: Lấy chi tiết món ăn trong đơn hàng
   - `/restaurantapi/update_order_status.php`: Cập nhật trạng thái đơn hàng
+
 - **Cart Management**
   - `/restaurantapi/create_cart.php`: Tạo giỏ hàng
-  - `/restaurantapi/get_cart_.php`: Lấy thông tin giỏ hàng
+  - `/restaurantapi/get_cart.php`: Lấy thông tin giỏ hàng theo người dùng
+
 - **Reviews System**
-  - `/restaurantapi/add_review.php`: Thêm đánh giá
-  - `/restaurantapi/get_reviews_by_food_id.php`: Lấy đánh giá theo món ăn
+  - `/restaurantapi/add_review.php`: Thêm đánh giá cho món ăn
+  - `/restaurantapi/get_reviews_by_food_id.php`: Lấy danh sách đánh giá theo ID món ăn
+
 - **Discount System**
-  - `/restaurantapi/discount_api.php`: API CRUD cho mã giảm giá
-  - `/restaurantapi/search_discount_by_code.php`: Tìm kiếm mã giảm giá
+  - `/restaurantapi/discount_api.php`: API CRUD cho mã giảm giá (Thêm, sửa, xóa, lấy DS)
+  - `/restaurantapi/search_discount_by_code.php`: Tìm kiếm mã giảm giá theo mã
+
 - **Notification System**
   - `/restaurantapi/create_notification.php`: Tạo thông báo
-  - `/restaurantapi/add_notification.php`: Thêm thông báo
+  - `/restaurantapi/add_notification.php`: Thêm thông báo (Admin gửi)
   - `/restaurantapi/get_notifications.php`: Lấy danh sách thông báo
-- **User Profile Management**
-  - `/restaurantapi/get_user_by_id.php`: Lấy thông tin user theo ID
-  - `/restaurantapi/update_user.php`: Cập nhật thông tin user
-  - `/restaurantapi/get_admin_info.php`: Lấy thông tin admin
-  - `/restaurantapi/update_admin_info.php`: Cập nhật thông tin admin
+  - `/restaurantapi/get_message.php`: Lấy nội dung tin nhắn/thông báo
+  - `/restaurantapi/send_message.php`: Gửi tin nhắn/thông báo
+  - `/restaurantapi/mark_messages_as_read.php`: Đánh dấu thông báo đã đọc
+
 - **Statistics and Analytics**
-  - `/restaurantapi/get_statistics.php`: Lấy thống kê doanh thu
+  - `/restaurantapi/get_statistics.php`: Lấy thống kê doanh thu, đơn hàng
+
+- **Image & File Management**
+  - `/restaurantapi/upload_image.php`: Upload hình ảnh (món ăn, avatar,...)
+
 - **System and Database**
-  - `/restaurantapi/db.php`: File kết nối database
+  - `/restaurantapi/db.php`: File cấu hình kết nối cơ sở dữ liệu
+  - `/restaurantapi/check_db.php`: Kiểm tra kết nối cơ sở dữ liệu
+
 - **Email Service**
-  - Thư mục `PHPMailer/`: Thư viện gửi email cho OTP và thông báo 
+  - Thư mục `PHPMailer/`: Thư viện gửi email xác thực OTP, thông báo hệ thống
+
 
 ### Tính năng nổi bật
 1. **Xác thực OTP qua email** khi đăng ký
 2. **Upload ảnh** cho món ăn với xử lý Base64
 3. **Biểu đồ thống kê** doanh thu bằng MPAndroidChart
 4. **Mã giảm giá** cho đơn hàng
-5. **Hệ thống đánh giá** 5 sao cho món ăn
+5. **Hệ thống đánh giá** 1-5 sao cho món ăn
 6. **Thông báo** realtime cho người dùng
 7. **Hệ thống chat** giữa khách hàng và quản trị viên
 
@@ -204,10 +226,8 @@ app/
 ```
 C:\xampp\htdocs\restaurantapi\
 ├── login.php
-├── register.php
-├── getFoods.php
-├── getOrders.php
-├── update_order_status.php
+├── signup.php
+├── add_food.php
 └── ... (các file API khác)
 ```
 
@@ -244,6 +264,17 @@ public class RetrofitClient {
     // Hoặc sử dụng IP thực của máy: "http://192.168.1.100/restaurantapi/"
 }
 ```
+Tương tự với file `network_security_config.xml`:
+```xml
+public class RetrofitClient {
+   <?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">10.0.2.2</domain>
+    // Hoặc sử dụng IP thực của máy: "192.168.1.100"
+}
+```
+
 
 **Lưu ý về IP:**
 - **Emulator**: Sử dụng `10.0.2.2` thay cho `localhost`
