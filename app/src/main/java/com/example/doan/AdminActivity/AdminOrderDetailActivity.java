@@ -158,6 +158,7 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
         if (status == null) status = "Đang xử lý";
         if (createdAt == null) createdAt = "Không rõ ngày";
         txtStatus.setText("Trạng thái: " + status);
+        setStatusColor(txtStatus, status);
         txtDate.setText("Ngày tạo: " + createdAt);
         txtTotal.setText("Tổng tiền: " + formatCurrency(amount) + " VND");
 
@@ -167,5 +168,28 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
     private String formatCurrency(double amount) {
         DecimalFormat formatter = new DecimalFormat("#,###");
         return formatter.format(amount);
+    }
+    private void setStatusColor(TextView tvStatus, String status) {
+        int color;
+        switch (status) {
+            case "Đang chờ":
+                color = 0xFFFFC107; // Vàng
+                break;
+            case "Đã tiếp nhận":
+                color = 0xFFFF9800; // Cam
+                break;
+            case "Đang giao":
+                color = 0xFF2196F3; // Xanh
+                break;
+            case "Đã giao":
+                color = 0xFF4CAF50; // Xanh lá
+                break;
+            case "Hủy":
+                color = 0xFFF44336; // Đỏ
+                break;
+            default:
+                color = 0xFF000000; // Đen
+        }
+        tvStatus.setTextColor(color);
     }
 }
