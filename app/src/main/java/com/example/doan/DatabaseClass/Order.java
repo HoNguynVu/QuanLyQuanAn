@@ -23,7 +23,9 @@ public class Order {
     private List<OrderItem> items;
 
     @SerializedName("address")
-    private String address;    @SerializedName("customer_name")
+    private String address;
+
+    @SerializedName("customer_name")
     private String customerName;
 
     @SerializedName("phone")

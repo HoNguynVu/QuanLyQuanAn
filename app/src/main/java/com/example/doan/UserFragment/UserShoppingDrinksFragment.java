@@ -72,6 +72,6 @@ public class UserShoppingDrinksFragment extends Fragment {
             public void onError(String message) {
                 Log.d("Lỗi Retrofit: ", message);
             }
-        }, "Đồ uống");
+        }, "Thức uống");
     }
 }

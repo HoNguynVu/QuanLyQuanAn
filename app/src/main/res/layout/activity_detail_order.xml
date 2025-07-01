@@ -294,7 +294,7 @@
                     android:padding="12dp"
                     android:layout_marginStart="10dp"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/red"
+                    android:backgroundTint="@color/green"
                     android:textColor="@color/white"/>
 
                 <Button
@@ -307,7 +307,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_weight="1"
                     android:layout_gravity="center"
-                    android:backgroundTint="@color/black"
+                    android:backgroundTint="@color/red"
                     android:textColor="@color/white"/>
             </LinearLayout>
 
