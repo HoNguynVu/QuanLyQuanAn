@@ -266,13 +266,13 @@ public class RetrofitClient {
 ```
 Tương tự với file `network_security_config.xml`:
 ```xml
-public class RetrofitClient {
    <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">10.0.2.2</domain>
     // Hoặc sử dụng IP thực của máy: "192.168.1.100"
-}
+    </domain-config>
+</network-security-config>
 ```
 
 
