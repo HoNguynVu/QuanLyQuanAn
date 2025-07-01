@@ -24,6 +24,7 @@ public class Order {
 
     @SerializedName("address")
     private String address;
+
     @SerializedName("customer_name")
     private String customerName;
 

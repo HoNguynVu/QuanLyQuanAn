@@ -41,7 +41,7 @@ public class ChatActivity extends AppCompatActivity {
     private String userName;
 
     TextView txtUserName;
-    TextView txtUserStatus;
+
 
     private RecyclerView recyclerView;
     private EditText edtMessage;
@@ -76,9 +76,9 @@ public class ChatActivity extends AppCompatActivity {
         String receiverRole = getIntent().getStringExtra("user_role"); // 👈 lấy role
 
         txtUserName = findViewById(R.id.txtUserName);
-        txtUserStatus = findViewById(R.id.txtUserStatus);
+
         txtUserName.setText(userName);
-        txtUserStatus.setText("Đang hoạt động");
+
 
         recyclerView = findViewById(R.id.recyclerViewMessages);
         edtMessage = findViewById(R.id.edtMessage);
