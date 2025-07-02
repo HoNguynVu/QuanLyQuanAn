@@ -39,8 +39,6 @@ CREATE TABLE order_items (
   order_id INT NOT NULL,
   food_id INT NOT NULL,
   quantity INT DEFAULT 1,
-  rating INT CHECK (rating BETWEEN 1 AND 5),
-  review TEXT,
   note TEXT,
   FOREIGN KEY (order_id) REFERENCES orders(id),
   FOREIGN KEY (food_id) REFERENCES foods(id)
