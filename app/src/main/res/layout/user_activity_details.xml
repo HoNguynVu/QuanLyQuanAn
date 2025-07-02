@@ -137,7 +137,7 @@
                 android:id="@+id/line"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="0dp"
                 android:background="#CCCCCC"
                 android:layout_marginStart="-24dp"
                 android:layout_marginEnd="-24dp"
@@ -145,9 +145,10 @@
                 app:layout_constraintTop_toBottomOf="@+id/detailsFoodDescription" />
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/noteCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="70dp"
+                android:layout_marginTop="0dp"
                 app:cardCornerRadius="0dp"
                 app:cardElevation="0dp"
                 app:strokeWidth="0dp"
@@ -180,7 +181,7 @@
                             android:id="@+id/note"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="0dp"
+                            android:layout_marginStart="8dp"
                             android:text="Ghi chú"
                             android:textColor="@color/black"
                             android:textSize="18sp"
@@ -208,8 +209,86 @@
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+
+            <!-- Reviews Section -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/reviewsCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="-8dp"
+                android:layout_marginEnd="-8dp"
+                android:layout_marginTop="0dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="8dp"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintTop_toBottomOf="@id/noteCard">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp"
+                    android:background="#FFFFFF">
+
+                    <!-- Reviews Header -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:id="@+id/ic_review"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginEnd="8dp"
+                            android:src="@drawable/ic_check"
+                            android:contentDescription="Review icon" />
+
+                        <TextView
+                            android:id="@+id/txt_review_title"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Đánh giá"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#222222"
+                            android:fontFamily="@font/arial_rounded" />
+
+                        <TextView
+                            android:id="@+id/txt_rating_avg"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="4.5 ★"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="#FF9800"
+                            android:fontFamily="@font/arial_rounded" />
+                    </LinearLayout>
+
+                    <!-- Divider -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#E0E0E0"
+                        android:layout_marginBottom="12dp" />
+
+                    <!-- Reviews RecyclerView -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_reviews"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        android:nestedScrollingEnabled="true"
+                        android:overScrollMode="ifContentScrolls" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </ScrollView>
+
 
     <!-- Enhanced Footer -->
     <com.google.android.material.card.MaterialCardView

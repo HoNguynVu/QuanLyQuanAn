@@ -7,17 +7,30 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.doan.Adapter.ReviewAdapter;
 import com.example.doan.DatabaseClass.FoodItem;
+import com.example.doan.DatabaseClass.Review;
+import com.example.doan.Network.APIService;
+import com.example.doan.Network.RetrofitClient;
 import com.example.doan.User.CartLocalDb;
 import com.example.doan.User.UserCartManager;
 import com.example.doan.databinding.UserActivityDetailsBinding;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class UserDetailsActivity extends AppCompatActivity {
     UserActivityDetailsBinding binding;
@@ -28,6 +41,10 @@ public class UserDetailsActivity extends AppCompatActivity {
     String foodQuantity;
     String foodImageUrl;
     String foodDescription;
+    private TextView txtRatingAvg;
+    private RecyclerView recyclerView;
+    private ReviewAdapter reviewAdapter;
+    private List<Review> reviewList = new ArrayList<>();
     int localID;
 
     @Override
@@ -39,6 +56,7 @@ public class UserDetailsActivity extends AppCompatActivity {
         getIntentData();
         bindData();
         setBtnBack();
+        loadFoodReviews(foodID);
 
         //tăng số lượng và cập nhật tổng tiền
         setBtnPlus();
@@ -86,6 +104,46 @@ public class UserDetailsActivity extends AppCompatActivity {
 
         //mô tả món ăn
         binding.detailsFoodDescription.setText(foodDescription);
+
+        txtRatingAvg = binding.txtRatingAvg;
+        recyclerView = binding.recyclerReviews;
+        initAdapter();
+    }
+
+    private void initAdapter() {
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        reviewAdapter = new ReviewAdapter(reviewList);
+        recyclerView.setAdapter(reviewAdapter);
+    }
+
+    private void updateReviewList(List<Review> reviews) {
+        reviewList.clear();
+        reviewList.addAll(reviews);
+        Log.d("REVIEW", "Số review nhận được: " + reviews.size());
+        reviewAdapter.notifyDataSetChanged();
+    }
+
+    private void loadFoodReviews(int id) {
+
+
+        APIService apiService = RetrofitClient.getRetrofitInstance().create(APIService.class);
+        Log.d("API", "Gọi API lấy đánh giá cho món ăn ID: " + foodID);
+        Call<List<Review>> call = apiService.getReviewsByFoodId(String.valueOf(foodID));
+
+
+        call.enqueue(new Callback<List<Review>>() {
+            @Override
+            public void onResponse(Call<List<Review>> call, Response<List<Review>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    updateReviewList(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Review>> call, Throwable t) {
+                Toast.makeText(UserDetailsActivity.this, "Không tải được đánh giá", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void setBtnPlus() {
