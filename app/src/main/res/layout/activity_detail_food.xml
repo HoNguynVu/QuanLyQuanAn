@@ -123,7 +123,9 @@
                     android:textColor="#555555"
                     android:lineSpacingExtra="2dp" />
             </LinearLayout>
-        </androidx.cardview.widget.CardView>        <!-- Reviews Card -->
+        </androidx.cardview.widget.CardView>
+
+        <!-- Reviews Card -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -191,7 +193,9 @@
                     android:overScrollMode="ifContentScrolls" />
 
             </LinearLayout>
-        </androidx.cardview.widget.CardView>        <!-- Action Buttons -->
+        </androidx.cardview.widget.CardView>
+
+        <!-- Action Buttons -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
